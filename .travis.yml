@@ -14,7 +14,7 @@ addons:
   sonarcloud:
     organization: "cdrommens"
     token:
-      secure: $SONAR_TOKEN
+      secure: $SONAR_TOKEN # encrypted value of your token
 
 after_success:
   # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
