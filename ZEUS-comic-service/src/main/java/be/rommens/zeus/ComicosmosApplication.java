@@ -1,4 +1,4 @@
-package be.rommens.comicosmos;
+package be.rommens.zeus;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
