@@ -18,6 +18,12 @@
     </dependency>
 
     <dependency>
+      <groupId>be.rommens</groupId>
+      <artifactId>HERA-scraper</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
