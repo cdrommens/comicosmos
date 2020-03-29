@@ -1,5 +1,6 @@
-package be.rommens.comicosmos;
+package be.rommens.zeus;
 
+import be.rommens.hera.Dependency;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +16,8 @@ public class ComicosmosApplication {
 
 	@GetMapping("/")
 	public String home() {
-	    return "Hello world!";
+            Dependency dependency = new Dependency("testje");
+	    return "Hello world! - " + dependency.hello();
         }
 
 }
