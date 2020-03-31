@@ -5,7 +5,7 @@
   },
   "response": {
     "status": 200,
-    "body": "Hello world!",
+    "bodyFileName": "test.json",
     "headers": {
       "Content-Type": "text/plain"
     }

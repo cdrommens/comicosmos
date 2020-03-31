@@ -1,9 +1,13 @@
 package be.rommens.hera.providers;
 
+import be.rommens.hera.ProviderProperty;
+import be.rommens.hera.Provider;
 import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
@@ -16,15 +20,23 @@ import java.util.stream.Collectors;
  * Date : 29/03/2020
  * Time : 13:53
  */
+@Component
+@EnableConfigurationProperties(ProviderProperty.class)
 public class ReadComicsScraper {
 
-    private static final String BASE = "http://readcomicsonline.ru/comic/";
+    private final String base;
+    private final ProviderProperty providerProperty;
+
+    public ReadComicsScraper(ProviderProperty providerProperty) {
+        this.providerProperty = providerProperty;
+        this.base = providerProperty.getUrl().get(Provider.READCOMICS.getPropertyName());
+    }
 
     public String testConn() throws IOException {
-        String url = "/some/thing";
+        String url = "http://localhost:8888/some/thing";
         try {
             Document source = Jsoup.connect(url).get();
-            return source.data();
+            return source.body().toString();
         }
         catch(HttpStatusException ex) {
             //throw new ComicNotFoundException("URL for " + technicalComicName + " is not found", ex);
@@ -33,6 +45,10 @@ public class ReadComicsScraper {
             //throw new ComicNotConnectedException("Could not connect to URL for " + technicalComicName , ex);
         }
         return "";
+    }
+
+    public String getProviderProperty() {
+        return providerProperty.getUrl().get(Provider.READCOMICS.getPropertyName());
     }
 
     public List<String> getAllIssues(String technicalComicName) throws IOException {
@@ -72,10 +88,10 @@ public class ReadComicsScraper {
     }
 
     private String buildUrlForIssueOverview(String technicalComicName) {
-        return BASE + technicalComicName;
+        return base + technicalComicName;
     }
 
     private String buildUrlForIssue(String technicalComicName, String issue) {
-        return BASE + technicalComicName + "/" + issue;
+        return base + technicalComicName + "/" + issue;
     }
 }
