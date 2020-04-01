@@ -17,6 +17,7 @@
 
 	<properties>
 		<java.version>1.8</java.version>
+    <spring-cloud.version>Hoxton.RELEASE</spring-cloud.version>
     <jsoup.version>1.12.1</jsoup.version> <!-- //TODO : latest is 1.13.1 -->
     <wiremock.version>2.25.0</wiremock.version>
     <commons.logging.version>1.2</commons.logging.version>
@@ -35,15 +36,11 @@
         <version>${jsoup.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.github.tomakehurst</groupId>
-        <artifactId>wiremock</artifactId>
-        <version>${wiremock.version}</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>commons-logging</groupId>
-        <artifactId>commons-logging</artifactId>
-        <version>${project.version}</version>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-dependencies</artifactId>
+        <version>${spring-cloud.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>
