@@ -1,10 +1,6 @@
 package be.rommens.hera.providers;
 
-import com.github.tomakehurst.wiremock.WireMockServer;
 import org.hamcrest.Matchers;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,7 +10,6 @@ import java.io.IOException;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.springframework.cloud.contract.wiremock.WireMockSpring.options;
 
 /**
  * User : cederik
@@ -38,4 +33,5 @@ public class ReadComicsScraperTest {
         String result = readComicsScraper.testConn();
         assertThat(result, Matchers.containsString("world"));
     }
+
 }
