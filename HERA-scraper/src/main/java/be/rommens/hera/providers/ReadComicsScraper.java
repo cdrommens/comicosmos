@@ -2,6 +2,10 @@ package be.rommens.hera.providers;
 
 import be.rommens.hera.Provider;
 import be.rommens.hera.ProviderProperty;
+import be.rommens.hera.exceptions.ComicNotFoundException;
+import be.rommens.hera.models.ScrapedComic;
+import be.rommens.hera.models.ScrapedIssue;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
@@ -15,9 +19,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -27,6 +29,7 @@ import java.util.stream.Collectors;
  */
 @Component
 @EnableConfigurationProperties(ProviderProperty.class)
+@Slf4j
 public class ReadComicsScraper {
 
     private final String base;
@@ -37,23 +40,21 @@ public class ReadComicsScraper {
         this.base = providerProperty.getUrl().get(Provider.READCOMICS.getPropertyName());
     }
 
-    public String testConn() throws IOException {
-        String url = providerProperty.getUrl().get(Provider.READCOMICS.getPropertyName()) + "/comic/batman-2016";
+    public ScrapedComic scrapeComic(String technicalComicName) throws IOException {
         try {
-            Document source = Jsoup.connect(url).get();
+            Document source = Jsoup.connect(buildUrlForComic(technicalComicName)).get();
+            ScrapedComic scrapedComic = new ScrapedComic();
             Elements colSm8 = source.getElementsByClass("col-sm-8");
-            Map<String, String> result = new HashMap<>();
             String title =
                 source.getElementsByClass("listmanga-header").stream()
                     .map(Element::text).filter(text -> !StringUtils.contains(text.trim(), "Chapter"))
                     .findFirst()
                 .orElse("");
-            result.put("title", title);
+            scrapedComic.setTitle(title);
             Elements cover = source.select("img[src*=cover]");
-            result.put("cover", cover.attr("src"));
+            scrapedComic.setCover(cover.attr("src"));
             for(Element e : colSm8) {
                 Elements dl = e.getElementsByTag("dl");
-                //dl.childElementsList().get(1).tag()
                 for (Element d : dl) {
                     List<Node> nodes = d.childNodes();
                     List<Element> elements = nodes.stream().filter(Element.class::isInstance).map(Element.class::cast).collect(Collectors.toList());
@@ -67,20 +68,23 @@ public class ReadComicsScraper {
                             switch (key) {
                                 case "Type":
                                     value = s.text();
+                                    scrapedComic.setType(value);
                                     break;
                                 case "Status":
                                     value = s.getElementsByTag("span").text();
+                                    scrapedComic.setStatus(value);
                                     break;
                                 case "Author(s)":
                                     value = s.getElementsByTag("a").text();
+                                    scrapedComic.setAuthor(value);
                                     break;
                                 case "Date of release":
                                     value = s.text();
+                                    scrapedComic.setDateOfRelease(value);
                                     break;
                             }
                         }
                         if (StringUtils.isNotEmpty(value)) {
-                            result.put(key, value);
                             key = null;
                             value = null;
                         }
@@ -99,12 +103,9 @@ public class ReadComicsScraper {
                         value = c.text();
                     }
                 }
-                result.put(key, value);
+                scrapedComic.setSummary(value);
             }
 
-            result.forEach((key, value) -> System.out.println("[" + key + "] = " + value));
-
-            Map<String, String> chapters = new HashMap<>();
             Elements ul = source.getElementsByClass("chapters");
             for (Element l : ul) {
                 Elements lis = l.getElementsByTag("li");
@@ -112,21 +113,20 @@ public class ReadComicsScraper {
                     String key = li.getElementsByTag("a").get(0).text().trim();
                     String chapterUrl = li.getElementsByTag("a").get(0).attr("href");
                     String value = li.getElementsByClass("date-chapter-title-rtl").get(0).text().trim();
-                    chapters.put(key, value);
+                    scrapedComic.addIssue(new ScrapedIssue(key, chapterUrl, value));
                 }
             }
 
-            chapters.forEach((key, value) -> System.out.println("[" + key + "] = " + value));
+            log.info(scrapedComic.toString());
 
-            return source.body().toString();
+            return scrapedComic;
         }
         catch(HttpStatusException ex) {
-            //throw new ComicNotFoundException("URL for " + technicalComicName + " is not found", ex);
+            throw new ComicNotFoundException("URL for " + technicalComicName + " is not found", ex);
         }
-        catch (SocketTimeoutException ex) {
-            //throw new ComicNotConnectedException("Could not connect to URL for " + technicalComicName , ex);
-        }
-        return "";
+        /*catch (SocketTimeoutException ex) {
+            throw new ComicNotConnectedException("Could not connect to URL for " + technicalComicName , ex);
+        }*/
     }
 
     public String getProviderProperty() {
@@ -134,7 +134,7 @@ public class ReadComicsScraper {
     }
 
     public List<String> getAllIssues(String technicalComicName) throws IOException {
-        String url = buildUrlForIssueOverview(technicalComicName);
+        String url = buildUrlForComic(technicalComicName);
         try {
             Document source = Jsoup.connect(url).get();
             Elements issuesHref = source.select("a[href^=" + url + "]");
@@ -169,7 +169,7 @@ public class ReadComicsScraper {
         return new ArrayList<>();
     }
 
-    private String buildUrlForIssueOverview(String technicalComicName) {
+    private String buildUrlForComic(String technicalComicName) {
         return base + technicalComicName;
     }
 
