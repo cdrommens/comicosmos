@@ -1,10 +1,13 @@
 package be.rommens.hera.providers;
 
-import be.rommens.hera.ProviderProperty;
 import be.rommens.hera.Provider;
+import be.rommens.hera.ProviderProperty;
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;
@@ -12,7 +15,9 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -33,9 +38,86 @@ public class ReadComicsScraper {
     }
 
     public String testConn() throws IOException {
-        String url = "http://localhost:8888/some/thing";
+        String url = providerProperty.getUrl().get(Provider.READCOMICS.getPropertyName()) + "/comic/batman-2016";
         try {
             Document source = Jsoup.connect(url).get();
+            Elements colSm8 = source.getElementsByClass("col-sm-8");
+            Map<String, String> result = new HashMap<>();
+            String title =
+                source.getElementsByClass("listmanga-header").stream()
+                    .map(Element::text).filter(text -> !StringUtils.contains(text.trim(), "Chapter"))
+                    .findFirst()
+                .orElse("");
+            result.put("title", title);
+            Elements cover = source.select("img[src*=cover]");
+            result.put("cover", cover.attr("src"));
+            for(Element e : colSm8) {
+                Elements dl = e.getElementsByTag("dl");
+                //dl.childElementsList().get(1).tag()
+                for (Element d : dl) {
+                    List<Node> nodes = d.childNodes();
+                    List<Element> elements = nodes.stream().filter(Element.class::isInstance).map(Element.class::cast).collect(Collectors.toList());
+                    String key = null;
+                    String value = null;
+                    for (Element s : elements) {
+                        if ("dt".equals(s.tag().getName())) {
+                            key = s.text();
+                        }
+                        if ("dd".equals(s.tag().getName())) {
+                            switch (key) {
+                                case "Type":
+                                    value = s.text();
+                                    break;
+                                case "Status":
+                                    value = s.getElementsByTag("span").text();
+                                    break;
+                                case "Author(s)":
+                                    value = s.getElementsByTag("a").text();
+                                    break;
+                                case "Date of release":
+                                    value = s.text();
+                                    break;
+                            }
+                        }
+                        if (StringUtils.isNotEmpty(value)) {
+                            result.put(key, value);
+                            key = null;
+                            value = null;
+                        }
+                    }
+                }
+            }
+            Elements mangaWell = source.getElementsByClass("manga well");
+            for (Element m : mangaWell) {
+                String key = null;
+                String value = null;
+                for (Element c : m.children()) {
+                    if ("h5".equals(c.tagName())) {
+                        key = c.getElementsByTag("strong").text();
+                    }
+                    if (StringUtils.isNotEmpty(key) && "p".equals(c.tagName())) {
+                        value = c.text();
+                    }
+                }
+                result.put(key, value);
+            }
+
+            result.forEach((key, value) -> System.out.println("[" + key + "] = " + value));
+
+            Map<String, String> chapters = new HashMap<>();
+            Elements ul = source.getElementsByClass("chapters");
+            for (Element l : ul) {
+                Elements lis = l.getElementsByTag("li");
+                for (Element li : lis) {
+                    String key = li.getElementsByTag("a").get(0).text().trim();
+                    String chapterUrl = li.getElementsByTag("a").get(0).attr("href");
+                    String value = li.getElementsByClass("date-chapter-title-rtl").get(0).text().trim();
+                    chapters.put(key, value);
+                }
+            }
+
+            chapters.forEach((key, value) -> System.out.println("[" + key + "] = " + value));
+
             return source.body().toString();
         }
         catch(HttpStatusException ex) {
