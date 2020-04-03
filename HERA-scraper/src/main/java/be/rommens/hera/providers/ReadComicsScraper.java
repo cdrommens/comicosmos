@@ -152,11 +152,10 @@ public class ReadComicsScraper {
 
     private Document getSource(String technicalComicName) throws IOException {
         return Jsoup.connect(buildUrlForComic(technicalComicName))
-            .header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8")
-            .header("Accept-Encoding", "gzip, deflate, br")
+            .header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9")
             .header("Accept-Language", "en-US,en;q=0.9,fr-FR;q=0.8,fr;q=0.7,la;q=0.6")
             .header("Connection", "keep-alive")
-            .header("User-Agent", RandomUserAgent.getRandomUserAgent())
+            .userAgent(RandomUserAgent.getRandomUserAgent())
             .header("Pragma", "no-cache")
             .header("Host", "google.com")
             .get();
