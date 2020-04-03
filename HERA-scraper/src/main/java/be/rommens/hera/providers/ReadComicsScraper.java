@@ -2,6 +2,7 @@ package be.rommens.hera.providers;
 
 import be.rommens.hera.Provider;
 import be.rommens.hera.ProviderProperty;
+import be.rommens.hera.RandomUserAgent;
 import be.rommens.hera.exceptions.ComicNotFoundException;
 import be.rommens.hera.models.ScrapedComic;
 import be.rommens.hera.models.ScrapedIssue;
@@ -42,8 +43,7 @@ public class ReadComicsScraper {
 
     public ScrapedComic scrapeComic(String technicalComicName) throws IOException {
         try {
-            //TODO : connection details
-            Document source = Jsoup.connect(buildUrlForComic(technicalComicName)).get();
+            Document source = getSource(technicalComicName);
             ScrapedComic scrapedComic = new ScrapedComic();
 
             String title =
@@ -148,5 +148,17 @@ public class ReadComicsScraper {
             return tagValue.text();
         }
         return null;
+    }
+
+    private Document getSource(String technicalComicName) throws IOException {
+        return Jsoup.connect(buildUrlForComic(technicalComicName))
+            .header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8")
+            .header("Accept-Encoding", "gzip, deflate, br")
+            .header("Accept-Language", "en-US,en;q=0.9,fr-FR;q=0.8,fr;q=0.7,la;q=0.6")
+            .header("Connection", "keep-alive")
+            .header("User-Agent", RandomUserAgent.getRandomUserAgent())
+            .header("Pragma", "no-cache")
+            .header("Host", "google.com")
+            .get();
     }
 }
