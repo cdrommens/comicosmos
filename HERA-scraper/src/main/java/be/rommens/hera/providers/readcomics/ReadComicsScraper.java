@@ -1,12 +1,12 @@
 package be.rommens.hera.providers.readcomics;
 
-import be.rommens.hera.ProviderProperty;
-import be.rommens.hera.RandomUserAgent;
-import be.rommens.hera.core.Provider;
-import be.rommens.hera.core.exceptions.ComicNotFoundException;
-import be.rommens.hera.core.models.ScrapedComic;
-import be.rommens.hera.core.models.ScrapedIssue;
-import be.rommens.hera.core.models.ScrapedIssueDetails;
+import be.rommens.hera.api.Provider;
+import be.rommens.hera.api.exceptions.ComicNotFoundException;
+import be.rommens.hera.api.models.ScrapedComic;
+import be.rommens.hera.api.models.ScrapedIssue;
+import be.rommens.hera.api.models.ScrapedIssueDetails;
+import be.rommens.hera.core.ProviderProperty;
+import be.rommens.hera.core.RandomUserAgent;
 import be.rommens.hera.providers.readcomics.mappers.PublisherMapper;
 import com.google.common.collect.Iterables;
 import lombok.extern.slf4j.Slf4j;

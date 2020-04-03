@@ -1,10 +1,10 @@
 package be.rommens.hera.providers;
 
-import be.rommens.hera.core.Publisher;
-import be.rommens.hera.core.exceptions.ComicNotFoundException;
-import be.rommens.hera.core.models.ScrapedComic;
-import be.rommens.hera.core.models.ScrapedIssue;
-import be.rommens.hera.core.models.ScrapedIssueDetails;
+import be.rommens.hera.api.Publisher;
+import be.rommens.hera.api.exceptions.ComicNotFoundException;
+import be.rommens.hera.api.models.ScrapedComic;
+import be.rommens.hera.api.models.ScrapedIssue;
+import be.rommens.hera.api.models.ScrapedIssueDetails;
 import be.rommens.hera.providers.readcomics.ReadComicsScraper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,8 +1,7 @@
 package be.rommens.hera.providers.readcomics.mappers;
 
-import be.rommens.hera.core.Publisher;
+import be.rommens.hera.api.Publisher;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.lang.NonNull;
 
 /**
  * User : cederik
@@ -11,7 +10,10 @@ import org.springframework.lang.NonNull;
  */
 public class PublisherMapper {
 
-    public Publisher mapTo(@NonNull String publisher) {
+    public Publisher mapTo(String publisher) {
+        if (StringUtils.isEmpty(publisher)) {
+            return null;
+        }
         String sanitizedPublisher = StringUtils.remove(publisher, StringUtils.SPACE).toUpperCase();
         switch (sanitizedPublisher) {
             case "DCCOMICS":

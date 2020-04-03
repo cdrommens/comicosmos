@@ -1,6 +1,6 @@
 package be.rommens.hera.providers;
 
-import be.rommens.hera.core.Publisher;
+import be.rommens.hera.api.Publisher;
 import be.rommens.hera.providers.readcomics.mappers.PublisherMapper;
 import org.junit.jupiter.api.Test;
 

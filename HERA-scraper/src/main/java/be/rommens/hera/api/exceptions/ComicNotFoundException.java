@@ -1,4 +1,4 @@
-package be.rommens.hera.core.exceptions;
+package be.rommens.hera.api.exceptions;
 
 /**
  * User : cederik

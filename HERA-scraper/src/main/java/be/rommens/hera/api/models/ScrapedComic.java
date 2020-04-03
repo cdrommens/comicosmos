@@ -1,6 +1,6 @@
-package be.rommens.hera.core.models;
+package be.rommens.hera.api.models;
 
-import be.rommens.hera.core.Publisher;
+import be.rommens.hera.api.Publisher;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
