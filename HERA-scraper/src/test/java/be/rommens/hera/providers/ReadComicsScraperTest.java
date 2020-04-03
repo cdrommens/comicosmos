@@ -1,9 +1,11 @@
 package be.rommens.hera.providers;
 
-import be.rommens.hera.exceptions.ComicNotFoundException;
-import be.rommens.hera.models.ScrapedComic;
-import be.rommens.hera.models.ScrapedIssue;
-import be.rommens.hera.models.ScrapedIssueDetails;
+import be.rommens.hera.core.Publisher;
+import be.rommens.hera.core.exceptions.ComicNotFoundException;
+import be.rommens.hera.core.models.ScrapedComic;
+import be.rommens.hera.core.models.ScrapedIssue;
+import be.rommens.hera.core.models.ScrapedIssueDetails;
+import be.rommens.hera.providers.readcomics.ReadComicsScraper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -42,7 +44,7 @@ public class ReadComicsScraperTest {
     public void testScrapComicFound() throws IOException {
         ScrapedComic scrapedComic = readComicsScraper.scrapeComic("batman-2016");
         assertThat(scrapedComic.getTitle(), is("Batman (2016-)"));
-        assertThat(scrapedComic.getType(), is("DC Comics"));
+        assertThat(scrapedComic.getPublisher(), is(Publisher.DC_COMICS));
         assertThat(scrapedComic.getAuthor(), is("Tom King"));
         assertThat(scrapedComic.getDateOfRelease(), is("2016"));
         assertThat(scrapedComic.getStatus(), is("Ongoing"));

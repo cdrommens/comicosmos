@@ -1,5 +1,6 @@
-package be.rommens.hera.models;
+package be.rommens.hera.core.models;
 
+import be.rommens.hera.core.Publisher;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
@@ -17,10 +18,10 @@ import java.util.Set;
 public class ScrapedComic {
 
     private String title;
-    private String type;
+    private Publisher publisher;
     private String author;
     private String dateOfRelease;
-    private String status;
+    private String status;          //TODO : after inventory, convert to enum
     private String cover;
     private String summary;
     @Setter(value = AccessLevel.NONE)

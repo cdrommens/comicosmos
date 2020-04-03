@@ -1,4 +1,4 @@
-package be.rommens.hera;
+package be.rommens.hera.core;
 
 /**
  * User : cederik

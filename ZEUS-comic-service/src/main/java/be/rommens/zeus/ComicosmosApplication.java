@@ -1,6 +1,6 @@
 package be.rommens.zeus;
 
-import be.rommens.hera.providers.ReadComicsScraper;
+import be.rommens.hera.providers.readcomics.ReadComicsScraper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;

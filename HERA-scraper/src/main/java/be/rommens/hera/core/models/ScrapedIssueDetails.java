@@ -1,4 +1,4 @@
-package be.rommens.hera.models;
+package be.rommens.hera.core.models;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

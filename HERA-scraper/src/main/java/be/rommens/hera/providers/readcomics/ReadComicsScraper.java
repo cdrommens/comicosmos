@@ -1,12 +1,13 @@
-package be.rommens.hera.providers;
+package be.rommens.hera.providers.readcomics;
 
-import be.rommens.hera.Provider;
 import be.rommens.hera.ProviderProperty;
 import be.rommens.hera.RandomUserAgent;
-import be.rommens.hera.exceptions.ComicNotFoundException;
-import be.rommens.hera.models.ScrapedComic;
-import be.rommens.hera.models.ScrapedIssue;
-import be.rommens.hera.models.ScrapedIssueDetails;
+import be.rommens.hera.core.Provider;
+import be.rommens.hera.core.exceptions.ComicNotFoundException;
+import be.rommens.hera.core.models.ScrapedComic;
+import be.rommens.hera.core.models.ScrapedIssue;
+import be.rommens.hera.core.models.ScrapedIssueDetails;
+import be.rommens.hera.providers.readcomics.mappers.PublisherMapper;
 import com.google.common.collect.Iterables;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -62,7 +63,7 @@ public class ReadComicsScraper {
             }
 
             String type = findTextOfSiblingOfElementByTagAndText(source, "dt", "Type");
-            scrapedComic.setType(type);
+            scrapedComic.setPublisher(new PublisherMapper().mapTo(type));
 
             String dateOfRelease = findTextOfSiblingOfElementByTagAndText(source, "dt", "Date of release");
             scrapedComic.setDateOfRelease(dateOfRelease);
