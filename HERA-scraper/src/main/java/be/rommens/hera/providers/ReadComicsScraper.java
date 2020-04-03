@@ -6,6 +6,7 @@ import be.rommens.hera.RandomUserAgent;
 import be.rommens.hera.exceptions.ComicNotFoundException;
 import be.rommens.hera.models.ScrapedComic;
 import be.rommens.hera.models.ScrapedIssue;
+import be.rommens.hera.models.ScrapedIssueDetails;
 import com.google.common.collect.Iterables;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -18,8 +19,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.net.SocketTimeoutException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,9 +40,13 @@ public class ReadComicsScraper {
         this.base = providerProperty.getUrl().get(Provider.READCOMICS.getPropertyName());
     }
 
+    public String getProviderProperty() {
+        return providerProperty.getUrl().get(Provider.READCOMICS.getPropertyName());
+    }
+
     public ScrapedComic scrapeComic(String technicalComicName) throws IOException {
         try {
-            Document source = getSource(technicalComicName);
+            Document source = getSource(buildUrlForComic(technicalComicName));
             ScrapedComic scrapedComic = new ScrapedComic();
 
             String title =
@@ -58,19 +61,19 @@ public class ReadComicsScraper {
                 scrapedComic.setCover(cover.attr("src"));
             }
 
-            String type = extractValueOfNextTag(source, "dt", "Type");
+            String type = findTextOfSiblingOfElementByTagAndText(source, "dt", "Type");
             scrapedComic.setType(type);
 
-            String dateOfRelease = extractValueOfNextTag(source, "dt", "Date of release");
+            String dateOfRelease = findTextOfSiblingOfElementByTagAndText(source, "dt", "Date of release");
             scrapedComic.setDateOfRelease(dateOfRelease);
 
-            String status = extractValueOfNextTag(source, "dt", "Status");
+            String status = findTextOfSiblingOfElementByTagAndText(source, "dt", "Status");
             scrapedComic.setStatus(status);
 
-            String author = extractValueOfNextTag(source, "dt", "Author(s)");
+            String author = findTextOfSiblingOfElementByTagAndText(source, "dt", "Author(s)");
             scrapedComic.setAuthor(author);
 
-            String summary = extractValueOfNextTag(source, "h5", "Summary");
+            String summary = findTextOfSiblingOfElementByTagAndText(source, "h5", "Summary");
             scrapedComic.setSummary(summary);
 
             Element chapters = Iterables.getOnlyElement(source.getElementsByClass("chapters"));
@@ -79,7 +82,7 @@ public class ReadComicsScraper {
                 String key = Iterables.getOnlyElement(issue.getElementsByTag("a")).text();
                 String chapterUrl = Iterables.getOnlyElement(issue.getElementsByTag("a")).attr("href");
                 String value = Iterables.getOnlyElement(issue.getElementsByClass("date-chapter-title-rtl")).text();
-                scrapedComic.addIssue(new ScrapedIssue(key, chapterUrl, value));
+                scrapedComic.addIssue(new ScrapedIssueDetails(key, chapterUrl, value));
             }
 
             log.trace(scrapedComic.toString());
@@ -91,44 +94,19 @@ public class ReadComicsScraper {
         }
     }
 
-    public String getProviderProperty() {
-        return providerProperty.getUrl().get(Provider.READCOMICS.getPropertyName());
-    }
-
-    public List<String> getAllIssues(String technicalComicName) throws IOException {
-        String url = buildUrlForComic(technicalComicName);
+    public ScrapedIssue scrapeIssue(String technicalComicName, String issue) throws IOException {
         try {
-            Document source = Jsoup.connect(url).get();
-            Elements issuesHref = source.select("a[href^=" + url + "]");
-            if (!issuesHref.isEmpty()) {
-                //return issuesHref.stream().map(this::mapIssue).collect(Collectors.toList());
-            }
-        }
-        catch(HttpStatusException ex) {
-            //throw new ComicNotFoundException("URL for " + technicalComicName + " is not found", ex);
-        }
-        catch (SocketTimeoutException ex) {
-            //throw new ComicNotConnectedException("Could not connect to URL for " + technicalComicName , ex);
-        }
-        return new ArrayList<>();
-    }
-
-    public List<String> getPageListForIssue(String technicalComicName, String issue) throws IOException {
-        String url = buildUrlForIssue(technicalComicName, issue);
-        try {
-            Document source = Jsoup.connect(url).get();
+            Document source = getSource(buildUrlForIssue(technicalComicName, issue));
             Elements images = source.select("img[data-src]");
             if (!images.isEmpty()) {
-                return images.stream().map(element -> element.attributes().get("data-src").trim()).collect(Collectors.toList());
+                List<String> pages = images.stream().map(element -> element.attributes().get("data-src").trim()).collect(Collectors.toList());
+                return new ScrapedIssue(technicalComicName, issue, pages.size(), pages);
             }
         }
         catch(HttpStatusException ex) {
-            //throw new ComicNotFoundException("URL for " + technicalComicName + " with issue " + issue + " is not found", ex);
+            throw new ComicNotFoundException("URL for " + technicalComicName + " with issue " + issue + " is not found", ex);
         }
-        catch (SocketTimeoutException ex) {
-            //throw new ComicNotConnectedException("Could not connect to URL for " + technicalComicName + " with issue " + issue, ex);
-        }
-        return new ArrayList<>();
+        return null;
     }
 
     private String buildUrlForComic(String technicalComicName) {
@@ -139,7 +117,7 @@ public class ReadComicsScraper {
         return base + technicalComicName + "/" + issue;
     }
 
-    private String extractValueOfNextTag(Document source, String htmlTag, String searchText) {
+    private String findTextOfSiblingOfElementByTagAndText(Document source, String htmlTag, String searchText) {
         Elements tagList = source.getElementsContainingText(searchText);
         Element tag = tagList.stream().filter(s -> htmlTag.equals(s.tag().getName())).findFirst().orElse(null);
         if (tag != null) {
@@ -150,8 +128,8 @@ public class ReadComicsScraper {
         return null;
     }
 
-    private Document getSource(String technicalComicName) throws IOException {
-        return Jsoup.connect(buildUrlForComic(technicalComicName))
+    private Document getSource(String url) throws IOException {
+        return Jsoup.connect(url)
             .header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9")
             .header("Accept-Language", "en-US,en;q=0.9,fr-FR;q=0.8,fr;q=0.7,la;q=0.6")
             .header("Connection", "keep-alive")

@@ -3,7 +3,7 @@ package be.rommens.hera.providers;
 import be.rommens.hera.exceptions.ComicNotFoundException;
 import be.rommens.hera.models.ScrapedComic;
 import be.rommens.hera.models.ScrapedIssue;
-import org.hamcrest.Matchers;
+import be.rommens.hera.models.ScrapedIssueDetails;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,8 +13,7 @@ import org.springframework.test.context.TestPropertySource;
 import java.io.IOException;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
@@ -28,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  */
 @SpringBootTest(classes = ReadComicsScraper.class)
 @AutoConfigureWireMock(port = 8888)
-@TestPropertySource("classpath:providers-test.properties")
+@TestPropertySource("classpath:providers-test.properties")  //TODO : use DynamicTestProperty for dynamic port of wiremock
 public class ReadComicsScraperTest {
 
     @Autowired
@@ -51,10 +50,10 @@ public class ReadComicsScraperTest {
         assertThat(scrapedComic.getSummary(), is("\"I AM GOTHAM\" Chapter One No one has ever stopped the Caped Crusader. Not The Joker. Not Two-Face. Not " +
             "even the entire Justice League. But how does Batman confront a new hero who wants to save the city from the Dark Knight? CAN'T MISS: Superstar " +
             "artist David Finch returns to Batman alongside writer Tom King for this five-part storyline."));
-        assertThat(scrapedComic.getIssues(), Matchers.hasSize(95));
-        ScrapedIssue expectedIssueRegular = new ScrapedIssue("Batman (2016-) #33",
+        assertThat(scrapedComic.getIssues(), hasSize(95));
+        ScrapedIssueDetails expectedIssueRegular = new ScrapedIssueDetails("Batman (2016-) #33",
             "https://readcomicsonline.ru/comic/batman-2016/33", "18 Oct. 2017");
-        ScrapedIssue expectedIssueAnnual = new ScrapedIssue("Batman (2016-) #Annual 3",
+        ScrapedIssueDetails expectedIssueAnnual = new ScrapedIssueDetails("Batman (2016-) #Annual 3",
             "https://readcomicsonline.ru/comic/batman-2016/Annual-3", "12 Dec. 2018");
         assertThat(scrapedComic.getIssues(), hasItem(expectedIssueRegular));
         assertThat(scrapedComic.getIssues(), hasItem(expectedIssueAnnual));
@@ -64,6 +63,23 @@ public class ReadComicsScraperTest {
     public void testScrapeComicNotFound() {
         Exception exception = assertThrows(ComicNotFoundException.class, () -> readComicsScraper.scrapeComic("unknown"));
         assertThat(exception.getMessage(), is("URL for unknown is not found"));
+    }
+
+    @Test
+    public void testScrapeIssueFound() throws IOException {
+        ScrapedIssue scrapedIssue = readComicsScraper.scrapeIssue("batman-2016", "1");
+        assertThat(scrapedIssue.getComic(), is("batman-2016"));
+        assertThat(scrapedIssue.getIssueNumber(), is("1"));
+        assertThat(scrapedIssue.getNumberOfPages(), is(25));
+        assertThat(scrapedIssue.getPages(), not(empty()));
+        assertThat(scrapedIssue.getPages(), hasSize(25));
+        assertThat(scrapedIssue.getPages(), hasItem("https://readcomicsonline.ru/uploads/manga/batman-2016/chapters/1/16.jpg"));
+    }
+
+    @Test
+    public void testScrapeIssueNotFound() {
+        Exception exception = assertThrows(ComicNotFoundException.class, () -> readComicsScraper.scrapeIssue("unknown", "999"));
+        assertThat(exception.getMessage(), is("URL for unknown with issue 999 is not found"));
     }
 
 }

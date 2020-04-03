@@ -24,9 +24,9 @@ public class ScrapedComic {
     private String cover;
     private String summary;
     @Setter(value = AccessLevel.NONE)
-    private Set<ScrapedIssue> issues = new HashSet<>();
+    private Set<ScrapedIssueDetails> issues = new HashSet<>();
 
-    public void addIssue(ScrapedIssue issue) {
+    public void addIssue(ScrapedIssueDetails issue) {
         issues.add(issue);
     }
 }
