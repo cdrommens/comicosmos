@@ -5,13 +5,13 @@ import be.rommens.hera.ProviderProperty;
 import be.rommens.hera.exceptions.ComicNotFoundException;
 import be.rommens.hera.models.ScrapedComic;
 import be.rommens.hera.models.ScrapedIssue;
+import com.google.common.collect.Iterables;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;
@@ -42,91 +42,53 @@ public class ReadComicsScraper {
 
     public ScrapedComic scrapeComic(String technicalComicName) throws IOException {
         try {
+            //TODO : connection details
             Document source = Jsoup.connect(buildUrlForComic(technicalComicName)).get();
             ScrapedComic scrapedComic = new ScrapedComic();
-            Elements colSm8 = source.getElementsByClass("col-sm-8");
+
             String title =
                 source.getElementsByClass("listmanga-header").stream()
                     .map(Element::text).filter(text -> !StringUtils.contains(text.trim(), "Chapter"))
                     .findFirst()
-                .orElse("");
+                .orElse(null);
             scrapedComic.setTitle(title);
+
             Elements cover = source.select("img[src*=cover]");
-            scrapedComic.setCover(cover.attr("src"));
-            for(Element e : colSm8) {
-                Elements dl = e.getElementsByTag("dl");
-                for (Element d : dl) {
-                    List<Node> nodes = d.childNodes();
-                    List<Element> elements = nodes.stream().filter(Element.class::isInstance).map(Element.class::cast).collect(Collectors.toList());
-                    String key = null;
-                    String value = null;
-                    for (Element s : elements) {
-                        if ("dt".equals(s.tag().getName())) {
-                            key = s.text();
-                        }
-                        if ("dd".equals(s.tag().getName())) {
-                            switch (key) {
-                                case "Type":
-                                    value = s.text();
-                                    scrapedComic.setType(value);
-                                    break;
-                                case "Status":
-                                    value = s.getElementsByTag("span").text();
-                                    scrapedComic.setStatus(value);
-                                    break;
-                                case "Author(s)":
-                                    value = s.getElementsByTag("a").text();
-                                    scrapedComic.setAuthor(value);
-                                    break;
-                                case "Date of release":
-                                    value = s.text();
-                                    scrapedComic.setDateOfRelease(value);
-                                    break;
-                            }
-                        }
-                        if (StringUtils.isNotEmpty(value)) {
-                            key = null;
-                            value = null;
-                        }
-                    }
-                }
-            }
-            Elements mangaWell = source.getElementsByClass("manga well");
-            for (Element m : mangaWell) {
-                String key = null;
-                String value = null;
-                for (Element c : m.children()) {
-                    if ("h5".equals(c.tagName())) {
-                        key = c.getElementsByTag("strong").text();
-                    }
-                    if (StringUtils.isNotEmpty(key) && "p".equals(c.tagName())) {
-                        value = c.text();
-                    }
-                }
-                scrapedComic.setSummary(value);
+            if (cover != null) {
+                scrapedComic.setCover(cover.attr("src"));
             }
 
-            Elements ul = source.getElementsByClass("chapters");
-            for (Element l : ul) {
-                Elements lis = l.getElementsByTag("li");
-                for (Element li : lis) {
-                    String key = li.getElementsByTag("a").get(0).text().trim();
-                    String chapterUrl = li.getElementsByTag("a").get(0).attr("href");
-                    String value = li.getElementsByClass("date-chapter-title-rtl").get(0).text().trim();
-                    scrapedComic.addIssue(new ScrapedIssue(key, chapterUrl, value));
-                }
+            String type = extractValueOfNextTag(source, "dt", "Type");
+            scrapedComic.setType(type);
+
+            String dateOfRelease = extractValueOfNextTag(source, "dt", "Date of release");
+            scrapedComic.setDateOfRelease(dateOfRelease);
+
+            String status = extractValueOfNextTag(source, "dt", "Status");
+            scrapedComic.setStatus(status);
+
+            String author = extractValueOfNextTag(source, "dt", "Author(s)");
+            scrapedComic.setAuthor(author);
+
+            String summary = extractValueOfNextTag(source, "h5", "Summary");
+            scrapedComic.setSummary(summary);
+
+            Element chapters = Iterables.getOnlyElement(source.getElementsByClass("chapters"));
+            Elements chapterListItem = chapters.getElementsByTag("li");
+            for (Element issue : chapterListItem) {
+                String key = Iterables.getOnlyElement(issue.getElementsByTag("a")).text();
+                String chapterUrl = Iterables.getOnlyElement(issue.getElementsByTag("a")).attr("href");
+                String value = Iterables.getOnlyElement(issue.getElementsByClass("date-chapter-title-rtl")).text();
+                scrapedComic.addIssue(new ScrapedIssue(key, chapterUrl, value));
             }
 
-            log.info(scrapedComic.toString());
+            log.trace(scrapedComic.toString());
 
             return scrapedComic;
         }
-        catch(HttpStatusException ex) {
+        catch (HttpStatusException ex) {
             throw new ComicNotFoundException("URL for " + technicalComicName + " is not found", ex);
         }
-        /*catch (SocketTimeoutException ex) {
-            throw new ComicNotConnectedException("Could not connect to URL for " + technicalComicName , ex);
-        }*/
     }
 
     public String getProviderProperty() {
@@ -175,5 +137,16 @@ public class ReadComicsScraper {
 
     private String buildUrlForIssue(String technicalComicName, String issue) {
         return base + technicalComicName + "/" + issue;
+    }
+
+    private String extractValueOfNextTag(Document source, String htmlTag, String searchText) {
+        Elements tagList = source.getElementsContainingText(searchText);
+        Element tag = tagList.stream().filter(s -> htmlTag.equals(s.tag().getName())).findFirst().orElse(null);
+        if (tag != null) {
+            int indexInParent = tag.parent().children().indexOf(tag);
+            Element tagValue = tag.parent().child(indexInParent + 1);
+            return tagValue.text();
+        }
+        return null;
     }
 }
