@@ -1,21 +1,18 @@
 package be.rommens.hera.providers.readcomics.mappers;
 
 import be.rommens.hera.api.Publisher;
-import org.apache.commons.lang3.StringUtils;
+import be.rommens.hera.core.Mapper;
 
 /**
  * User : cederik
  * Date : 03/04/2020
  * Time : 20:56
  */
-public class PublisherMapper {
+public class PublisherMapper implements Mapper<Publisher> {
 
-    public Publisher mapTo(String publisher) {
-        if (StringUtils.isEmpty(publisher)) {
-            return null;
-        }
-        String sanitizedPublisher = StringUtils.remove(publisher, StringUtils.SPACE).toUpperCase();
-        switch (sanitizedPublisher) {
+    @Override
+    public Enum<Publisher> mappingLogic(String valueInUppercase) {
+        switch (valueInUppercase) {
             case "DCCOMICS":
                 return Publisher.DC_COMICS;
             case "MARVELCOMICS":
