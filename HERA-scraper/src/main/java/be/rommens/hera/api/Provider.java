@@ -7,7 +7,8 @@ package be.rommens.hera.api;
  */
 public enum Provider {
 
-    READCOMICS("readcomics");
+    READCOMICS("readcomics"),
+    EXAMPLE("example");
 
     private final String propertyName;
 

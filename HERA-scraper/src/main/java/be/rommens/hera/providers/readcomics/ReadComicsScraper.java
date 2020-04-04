@@ -5,18 +5,16 @@ import be.rommens.hera.api.exceptions.ComicNotFoundException;
 import be.rommens.hera.api.models.ScrapedComic;
 import be.rommens.hera.api.models.ScrapedIssue;
 import be.rommens.hera.api.models.ScrapedIssueDetails;
+import be.rommens.hera.core.AbstractScraper;
 import be.rommens.hera.core.ProviderProperty;
-import be.rommens.hera.core.RandomUserAgent;
 import be.rommens.hera.providers.readcomics.mappers.PublisherMapper;
 import com.google.common.collect.Iterables;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.HttpStatusException;
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -28,23 +26,18 @@ import java.util.stream.Collectors;
  * Date : 29/03/2020
  * Time : 13:53
  */
-@Component
-@EnableConfigurationProperties(ProviderProperty.class)
 @Slf4j
-public class ReadComicsScraper {
+@Component("readComicsScraper")
+public class ReadComicsScraper extends AbstractScraper {
 
     private final String base;
-    private final ProviderProperty providerProperty;
 
     public ReadComicsScraper(ProviderProperty providerProperty) {
-        this.providerProperty = providerProperty;
-        this.base = providerProperty.getUrl().get(Provider.READCOMICS.getPropertyName());
+        super(providerProperty);
+        this.base = getProviderProperty(Provider.READCOMICS);
     }
 
-    public String getProviderProperty() {
-        return providerProperty.getUrl().get(Provider.READCOMICS.getPropertyName());
-    }
-
+    @Override
     public ScrapedComic scrapeComic(String technicalComicName) throws IOException {
         try {
             Document source = getSource(buildUrlForComic(technicalComicName));
@@ -95,6 +88,7 @@ public class ReadComicsScraper {
         }
     }
 
+    @Override
     public ScrapedIssue scrapeIssue(String technicalComicName, String issue) throws IOException {
         try {
             Document source = getSource(buildUrlForIssue(technicalComicName, issue));
@@ -110,11 +104,13 @@ public class ReadComicsScraper {
         return null;
     }
 
-    private String buildUrlForComic(String technicalComicName) {
+    @Override
+    protected String buildUrlForComic(String technicalComicName) {
         return base + technicalComicName;
     }
 
-    private String buildUrlForIssue(String technicalComicName, String issue) {
+    @Override
+    protected String buildUrlForIssue(String technicalComicName, String issue) {
         return base + technicalComicName + "/" + issue;
     }
 
@@ -127,16 +123,5 @@ public class ReadComicsScraper {
             return tagValue.text();
         }
         return null;
-    }
-
-    private Document getSource(String url) throws IOException {
-        return Jsoup.connect(url)
-            .header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9")
-            .header("Accept-Language", "en-US,en;q=0.9,fr-FR;q=0.8,fr;q=0.7,la;q=0.6")
-            .header("Connection", "keep-alive")
-            .userAgent(RandomUserAgent.getRandomUserAgent())
-            .header("Pragma", "no-cache")
-            .header("Host", "google.com")
-            .get();
     }
 }

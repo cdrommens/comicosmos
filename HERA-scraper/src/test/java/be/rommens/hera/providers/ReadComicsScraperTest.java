@@ -5,6 +5,7 @@ import be.rommens.hera.api.exceptions.ComicNotFoundException;
 import be.rommens.hera.api.models.ScrapedComic;
 import be.rommens.hera.api.models.ScrapedIssue;
 import be.rommens.hera.api.models.ScrapedIssueDetails;
+import be.rommens.hera.core.Scraper;
 import be.rommens.hera.providers.readcomics.ReadComicsScraper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,12 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class ReadComicsScraperTest {
 
     @Autowired
-    private ReadComicsScraper readComicsScraper;
-
-    @Test
-    public void test() {
-        assertThat(readComicsScraper.getProviderProperty(), is("http://localhost:8888/readcomics/comic/"));
-    }
+    private Scraper readComicsScraper;
 
     @Test
     public void testScrapComicFound() throws IOException {

@@ -1,26 +1,38 @@
 package be.rommens.zeus;
 
-import be.rommens.hera.providers.readcomics.ReadComicsScraper;
+import be.rommens.hera.api.Provider;
+import be.rommens.hera.api.models.ScrapedComic;
+import be.rommens.hera.api.service.ScraperFactory;
+import be.rommens.hera.core.Scraper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+
 @SpringBootApplication
-@Import(ReadComicsScraper.class)
+@Import(ScraperFactory.class) //TODO : get rid of this
 @RestController
 public class ComicosmosApplication {
 
-    private final ReadComicsScraper dependency;
+    private final ScraperFactory dependency;
 
-    public ComicosmosApplication(ReadComicsScraper dependency) {
+    public ComicosmosApplication(ScraperFactory dependency) {
         this.dependency = dependency;
     }
 
     @GetMapping("/")
     public String home() {
-        return "Hello world! - " + dependency.getProviderProperty();
+        Scraper scraper = dependency.createScraper(Provider.EXAMPLE);
+        try {
+            ScrapedComic scrapedComic = scraper.scrapeComic("batman-2016");
+            System.out.println(scrapedComic.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "Hello world! - ";
     }
 
     public static void main(String[] args) {
