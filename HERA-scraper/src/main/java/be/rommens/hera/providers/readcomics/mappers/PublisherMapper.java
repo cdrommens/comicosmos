@@ -11,7 +11,7 @@ import be.rommens.hera.core.Mapper;
 public class PublisherMapper implements Mapper<Publisher> {
 
     @Override
-    public Enum<Publisher> mappingLogic(String valueInUppercase) {
+    public Publisher mappingLogic(String valueInUppercase) {
         switch (valueInUppercase) {
             case "DCCOMICS":
                 return Publisher.DC_COMICS;
