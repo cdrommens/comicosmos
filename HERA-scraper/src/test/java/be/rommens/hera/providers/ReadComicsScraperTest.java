@@ -6,7 +6,6 @@ import be.rommens.hera.api.models.ScrapedComic;
 import be.rommens.hera.api.models.ScrapedIssue;
 import be.rommens.hera.api.models.ScrapedIssueDetails;
 import be.rommens.hera.core.Scraper;
-import be.rommens.hera.providers.readcomics.ReadComicsScraper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * -------------
  * Wiremock recording : http://wiremock.org/docs/record-playback/
  */
-@SpringBootTest(classes = ReadComicsScraper.class)
+@SpringBootTest
 @AutoConfigureWireMock(port = 8888)
 @TestPropertySource("classpath:providers-test.properties")  //TODO : use DynamicTestProperty for dynamic port of wiremock
 public class ReadComicsScraperTest {

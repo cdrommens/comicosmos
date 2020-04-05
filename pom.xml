@@ -25,6 +25,8 @@
 
   <modules>
     <module>HERA-scraper</module>
+    <module>HERA-scraper-spring-boot-autoconfigure</module>
+    <module>HERA-scraper-spring-boot-starter</module>
     <module>ZEUS-comic-service</module>
   </modules>
 

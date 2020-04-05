@@ -7,19 +7,29 @@
     <artifactId>comicosmos</artifactId>
     <version>0.0.1-SNAPSHOT</version> <!-- //TODO : can this be automatic? -->
   </parent>
-  <artifactId>ZEUS-comic-service</artifactId>
-  <description>ZEUS Comic microservice</description>
-  <packaging>jar</packaging>
+  <artifactId>HERA-scraper-spring-boot-autoconfigure</artifactId>
+  <description>Spring boot autoconfigure for useing the Hera scraper library</description>
 
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-web</artifactId>
+      <artifactId>spring-boot-starter</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-autoconfigure</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-configuration-processor</artifactId>
+      <optional>true</optional>
     </dependency>
 
     <dependency>
       <groupId>be.rommens</groupId>
-      <artifactId>HERA-scraper-spring-boot-starter</artifactId>
+      <artifactId>HERA-scraper</artifactId>
       <version>${project.version}</version>
     </dependency>
 
@@ -34,13 +44,24 @@
         </exclusion>
       </exclusions>
     </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-configuration-processor</artifactId>
+      <optional>true</optional>
+    </dependency>
+
   </dependencies>
 
   <build>
     <plugins>
       <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>${java.version}</source>
+          <target>${java.version}</target>
+        </configuration>
       </plugin>
     </plugins>
   </build>

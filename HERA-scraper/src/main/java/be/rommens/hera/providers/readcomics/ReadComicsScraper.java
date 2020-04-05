@@ -1,12 +1,12 @@
 package be.rommens.hera.providers.readcomics;
 
-import be.rommens.hera.api.Provider;
 import be.rommens.hera.api.exceptions.ComicNotFoundException;
 import be.rommens.hera.api.models.ScrapedComic;
 import be.rommens.hera.api.models.ScrapedIssue;
 import be.rommens.hera.api.models.ScrapedIssueDetails;
 import be.rommens.hera.core.AbstractScraper;
-import be.rommens.hera.core.ProviderProperty;
+import be.rommens.hera.core.ScrapingConfig;
+import be.rommens.hera.core.ScrapingConfigParams;
 import be.rommens.hera.providers.readcomics.mappers.PublisherMapper;
 import com.google.common.collect.Iterables;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +15,6 @@ import org.jsoup.HttpStatusException;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.List;
@@ -27,14 +26,10 @@ import java.util.stream.Collectors;
  * Time : 13:53
  */
 @Slf4j
-@Component("readComicsScraper")
 public class ReadComicsScraper extends AbstractScraper {
 
-    private final String base;
-
-    public ReadComicsScraper(ProviderProperty providerProperty) {
-        super(providerProperty);
-        this.base = getProviderProperty(Provider.READCOMICS);
+    public ReadComicsScraper(ScrapingConfig config) {
+        super(config);
     }
 
     @Override
@@ -106,12 +101,12 @@ public class ReadComicsScraper extends AbstractScraper {
 
     @Override
     protected String buildUrlForComic(String technicalComicName) {
-        return base + technicalComicName;
+        return scrapingConfig.getProperty(ScrapingConfigParams.BASE_URL) + technicalComicName;
     }
 
     @Override
     protected String buildUrlForIssue(String technicalComicName, String issue) {
-        return base + technicalComicName + "/" + issue;
+        return scrapingConfig.getProperty(ScrapingConfigParams.BASE_URL)  + technicalComicName + "/" + issue;
     }
 
     private String findTextOfSiblingOfElementByTagAndText(Document source, String htmlTag, String searchText) {

@@ -6,14 +6,12 @@ import be.rommens.hera.api.service.ScraperFactory;
 import be.rommens.hera.core.Scraper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Import;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 
 @SpringBootApplication
-@Import(ScraperFactory.class) //TODO : get rid of this
 @RestController
 public class ComicosmosApplication {
 
