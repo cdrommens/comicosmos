@@ -13,6 +13,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 
 /**
  * User : cederik
@@ -22,6 +23,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConditionalOnClass(ScraperFactory.class)
 @EnableConfigurationProperties(ProviderProperties.class)
+@PropertySource("classpath:providers.properties")
 public class ScraperAutoConfiguration {
 
     private final ApplicationContext applicationContext;

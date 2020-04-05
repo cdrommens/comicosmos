@@ -26,7 +26,7 @@ public class ComicosmosApplication {
         Scraper scraper = dependency.createScraper(Provider.EXAMPLE);
         try {
             ScrapedComic scrapedComic = scraper.scrapeComic("batman-2016");
-            System.out.println(scrapedComic.toString());
+            System.out.println("Result : " + scrapedComic.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
