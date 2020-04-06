@@ -2,6 +2,7 @@ package be.rommens.hera.providers;
 
 import be.rommens.hera.api.Publisher;
 import be.rommens.hera.providers.readcomics.mappers.PublisherMapper;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -28,5 +29,11 @@ public class PublisherMapperTest {
         assertThat(Publisher.MARVEL_COMICS, is(new PublisherMapper().mapTo("MarvelComics")));
         assertThat(Publisher.MARVEL_COMICS, is(new PublisherMapper().mapTo("marvel comics")));
         assertThat(Publisher.MARVEL_COMICS, is(new PublisherMapper().mapTo("marvelcomics")));
+    }
+
+    @Test
+    public void testEmptyOrNull() {
+        assertThat(new PublisherMapper().mapTo(null), is(Matchers.nullValue()));
+        assertThat(new PublisherMapper().mapTo(""), is(Matchers.nullValue()));
     }
 }

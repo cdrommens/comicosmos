@@ -41,7 +41,7 @@ public class ScraperMock extends AbstractScraper {
         if (comicNotFoundException != null) {
             throw comicNotFoundException;
         }
-        return null;
+        throw new IllegalStateException("no returned mock objects defined");
     }
 
     @Override
@@ -52,7 +52,7 @@ public class ScraperMock extends AbstractScraper {
         if (comicNotFoundException != null) {
             throw comicNotFoundException;
         }
-        return null;
+        throw new IllegalStateException("no returned mock objects defined");
     }
 
     public void setExpectedScrapedComic(ScrapedComic scrapedComic) {

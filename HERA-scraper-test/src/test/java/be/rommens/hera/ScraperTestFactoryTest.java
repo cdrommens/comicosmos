@@ -91,4 +91,18 @@ public class ScraperTestFactoryTest {
         Scraper scraper = ScraperTestFactory.willThrowComicNotFound("name");
         assertThrows(ComicNotFoundException.class, () -> scraper.scrapeIssue("unknown", "issue"));
     }
+
+    @Test
+    public void testWillThrowUnsupportedOperationException() {
+        ScraperMock scraperMock = new ScraperMock(null);
+        assertThrows(UnsupportedOperationException.class, () -> scraperMock.buildUrlForComic("unknown"));
+        assertThrows(UnsupportedOperationException.class, () -> scraperMock.buildUrlForIssue("unknown", "issue"));
+    }
+
+    @Test
+    public void testWillThrowIllegalStateException() {
+        Scraper scraper = ScraperTestFactory.willReturnScrapedComic(null);
+        assertThrows(IllegalStateException.class, () -> scraper.scrapeComic("name"));
+        assertThrows(IllegalStateException.class, () -> scraper.scrapeIssue("unknown", "issue"));
+    }
 }

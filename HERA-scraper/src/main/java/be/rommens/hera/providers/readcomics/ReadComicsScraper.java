@@ -92,11 +92,11 @@ public class ReadComicsScraper extends AbstractScraper {
                 List<String> pages = images.stream().map(element -> element.attributes().get("data-src").trim()).collect(Collectors.toList());
                 return new ScrapedIssue(technicalComicName, issue, pages.size(), pages);
             }
+            return null;
         }
         catch(HttpStatusException ex) {
             throw new ComicNotFoundException("URL for " + technicalComicName + " with issue " + issue + " is not found", ex);
         }
-        return null;
     }
 
     @Override
