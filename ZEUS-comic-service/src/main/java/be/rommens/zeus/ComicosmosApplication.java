@@ -6,14 +6,12 @@ import be.rommens.hera.api.service.ScraperFactory;
 import be.rommens.hera.core.Scraper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Import;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 
 @SpringBootApplication
-@Import(ScraperFactory.class) //TODO : get rid of this
 @RestController
 public class ComicosmosApplication {
 
@@ -28,7 +26,7 @@ public class ComicosmosApplication {
         Scraper scraper = dependency.createScraper(Provider.EXAMPLE);
         try {
             ScrapedComic scrapedComic = scraper.scrapeComic("batman-2016");
-            System.out.println(scrapedComic.toString());
+            System.out.println("Result : " + scrapedComic.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }

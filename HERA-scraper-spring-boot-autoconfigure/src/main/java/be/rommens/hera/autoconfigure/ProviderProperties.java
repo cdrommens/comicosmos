@@ -1,8 +1,6 @@
-package be.rommens.hera.core;
+package be.rommens.hera.autoconfigure;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 
 import java.util.Map;
 
@@ -11,10 +9,8 @@ import java.util.Map;
  * Date : 31/03/2020
  * Time : 14:23
  */
-@Configuration
 @ConfigurationProperties(prefix = "providers")
-@PropertySource("classpath:providers.properties")
-public class ProviderProperty {
+public class ProviderProperties {
 
     private Map<String, String> url;
 

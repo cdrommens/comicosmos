@@ -2,7 +2,7 @@
   "id" : "5324e282-b91b-4704-ae27-7f18d238dd56",
   "name" : "comic_unknown",
   "request" : {
-    "url" : "/readcomics/comic/unknown",
+    "url" : "/readcomics/unknown",
     "method" : "GET"
   },
   "response" : {

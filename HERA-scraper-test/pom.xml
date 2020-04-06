@@ -7,26 +7,14 @@
     <artifactId>comicosmos</artifactId>
     <version>0.0.1-SNAPSHOT</version> <!-- //TODO : can this be automatic? -->
   </parent>
-  <artifactId>ZEUS-comic-service</artifactId>
-  <description>ZEUS Comic microservice</description>
+  <artifactId>HERA-scraper-test</artifactId>
+  <description>Hera scraper test library</description>
   <packaging>jar</packaging>
 
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-web</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>be.rommens</groupId>
-      <artifactId>HERA-scraper-spring-boot-starter</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>be.rommens</groupId>
-      <artifactId>HERA-scraper-test</artifactId>
-      <version>${project.version}</version>
+      <artifactId>spring-boot-starter</artifactId>
     </dependency>
 
     <dependency>
@@ -40,15 +28,34 @@
         </exclusion>
       </exclusions>
     </dependency>
-  </dependencies>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-      </plugin>
-    </plugins>
-  </build>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-configuration-processor</artifactId>
+      <optional>true</optional>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>be.rommens</groupId>
+      <artifactId>HERA-scraper</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+</dependencies>
 
 </project>

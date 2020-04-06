@@ -1,17 +1,23 @@
 package be.rommens.hera.providers;
 
+import be.rommens.hera.api.Provider;
 import be.rommens.hera.api.Publisher;
 import be.rommens.hera.api.exceptions.ComicNotFoundException;
 import be.rommens.hera.api.models.ScrapedComic;
 import be.rommens.hera.api.models.ScrapedIssue;
 import be.rommens.hera.api.models.ScrapedIssueDetails;
 import be.rommens.hera.core.Scraper;
+import be.rommens.hera.core.ScrapingConfig;
+import be.rommens.hera.core.ScrapingConfigParams;
 import be.rommens.hera.providers.readcomics.ReadComicsScraper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
+import org.springframework.context.annotation.Bean;
+import org.springframework.core.env.Environment;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import java.io.IOException;
 
@@ -28,13 +34,34 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * -------------
  * Wiremock recording : http://wiremock.org/docs/record-playback/
  */
-@SpringBootTest(classes = ReadComicsScraper.class)
+@SpringJUnitConfig
 @AutoConfigureWireMock(port = 8888)
-@TestPropertySource("classpath:providers-test.properties")  //TODO : use DynamicTestProperty for dynamic port of wiremock
+@TestPropertySource(properties = {
+    "providers.url.readcomics=http://localhost:${wiremock.server.port}/readcomics/"
+})
 public class ReadComicsScraperTest {
 
     @Autowired
     private Scraper readComicsScraper;
+
+    @TestConfiguration
+    static class TestConfig {
+        @Autowired
+        private Environment environment;
+
+        @Bean
+        ScrapingConfig config() {
+            ScrapingConfig config = new ScrapingConfig();
+            config.setProperty(ScrapingConfigParams.BASE_URL,
+                environment.getProperty(ScrapingConfigParams.BASE_URL + "." + Provider.READCOMICS.getPropertyName()));
+            return config;
+        }
+
+        @Bean
+        Scraper readComicsScraper() {
+            return new ReadComicsScraper(config());
+        }
+    }
 
     @Test
     public void testScrapComicFound() throws IOException {

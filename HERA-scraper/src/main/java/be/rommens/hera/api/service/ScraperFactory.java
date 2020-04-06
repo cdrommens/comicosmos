@@ -5,7 +5,6 @@ import be.rommens.hera.core.Scraper;
 import be.rommens.hera.providers.example.ExampleScraper;
 import be.rommens.hera.providers.readcomics.ReadComicsScraper;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Import;
 import org.springframework.stereotype.Service;
 
 /**
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
  * Time : 14:03
  */
 @Service
-@Import({ReadComicsScraper.class, ExampleScraper.class}) //TODO : get rid of this
 public class ScraperFactory {
 
     private final ApplicationContext applicationContext;

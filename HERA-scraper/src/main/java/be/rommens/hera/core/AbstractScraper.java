@@ -1,9 +1,7 @@
 package be.rommens.hera.core;
 
-import be.rommens.hera.api.Provider;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
 import java.io.IOException;
 
@@ -12,20 +10,13 @@ import java.io.IOException;
  * Date : 04/04/2020
  * Time : 13:38
  */
-@EnableConfigurationProperties(ProviderProperty.class)
+
 public abstract class AbstractScraper implements Scraper{
 
-    private final ProviderProperty providerProperty;
+    protected final ScrapingConfig scrapingConfig;
 
-    public AbstractScraper(ProviderProperty providerProperty) {
-        this.providerProperty = providerProperty;
-    }
-
-    protected String getProviderProperty(Provider provider) {
-        if (provider != null) {
-            return providerProperty.getUrl().get(provider.getPropertyName());
-        }
-        return null;
+    public AbstractScraper(ScrapingConfig scrapingConfig) {
+        this.scrapingConfig = scrapingConfig;
     }
 
     protected Document getSource(String url) throws IOException {
