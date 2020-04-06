@@ -11,14 +11,13 @@ import be.rommens.hera.core.ScrapingConfig;
 import be.rommens.hera.core.ScrapingConfigParams;
 import be.rommens.hera.providers.readcomics.ReadComicsScraper;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import java.io.IOException;
 
@@ -35,9 +34,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * -------------
  * Wiremock recording : http://wiremock.org/docs/record-playback/
  */
-@ExtendWith(SpringExtension.class)
+@SpringJUnitConfig
 @AutoConfigureWireMock(port = 8888)
-@TestPropertySource("classpath:providers-test.properties")  //TODO : use DynamicTestProperty for dynamic port of wiremock
+@TestPropertySource(properties = {
+    "providers.url.readcomics=http://localhost:${wiremock.server.port}/readcomics/"
+})
 public class ReadComicsScraperTest {
 
     @Autowired

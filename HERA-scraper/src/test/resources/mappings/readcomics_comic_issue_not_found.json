@@ -2,7 +2,7 @@
   "id" : "3754cad9-9487-4ed1-ba50-23361a99eefb",
   "name" : "comic_batman-2016_999",
   "request" : {
-    "url" : "/readcomics/comic/unknown/999",
+    "url" : "/readcomics/unknown/999",
     "method" : "GET"
   },
   "response" : {

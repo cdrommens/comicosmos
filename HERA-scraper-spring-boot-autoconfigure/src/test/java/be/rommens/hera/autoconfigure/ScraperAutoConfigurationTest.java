@@ -3,10 +3,8 @@ package be.rommens.hera.autoconfigure;
 import be.rommens.hera.api.Provider;
 import be.rommens.hera.api.service.ScraperFactory;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -17,8 +15,7 @@ import static org.hamcrest.Matchers.notNullValue;
  * Date : 05/04/2020
  * Time : 09:43
  */
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = ScraperAutoConfiguration.class)
+@SpringJUnitConfig(classes = ScraperAutoConfiguration.class)
 public class ScraperAutoConfigurationTest {
 
     @Autowired

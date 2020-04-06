@@ -2,7 +2,7 @@
   "id" : "59deab35-561c-489a-93b5-01301ba8f339",
   "name" : "comic_batman-2016_1",
   "request" : {
-    "url" : "/readcomics/comic/batman-2016/1",
+    "url" : "/readcomics/batman-2016/1",
     "method" : "GET"
   },
   "response" : {

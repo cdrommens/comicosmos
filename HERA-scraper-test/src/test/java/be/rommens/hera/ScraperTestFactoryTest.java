@@ -75,11 +75,20 @@ public class ScraperTestFactoryTest {
     }
 
     @Test
-    public void testWillThrowComicNotFound() {
+    public void testWillThrowComicNotFoundFromComic() {
         ScraperMock scraperMock = new ScraperMock(null);
         scraperMock.setExpectedException("name");
 
         Scraper scraper = ScraperTestFactory.willThrowComicNotFound("name");
-        Exception exception = assertThrows(ComicNotFoundException.class, () -> scraper.scrapeComic("unknown"));
+        assertThrows(ComicNotFoundException.class, () -> scraper.scrapeComic("unknown"));
+    }
+
+    @Test
+    public void testWillThrowComicNotFoundFromIssue() {
+        ScraperMock scraperMock = new ScraperMock(null);
+        scraperMock.setExpectedException("name");
+
+        Scraper scraper = ScraperTestFactory.willThrowComicNotFound("name");
+        assertThrows(ComicNotFoundException.class, () -> scraper.scrapeIssue("unknown", "issue"));
     }
 }
