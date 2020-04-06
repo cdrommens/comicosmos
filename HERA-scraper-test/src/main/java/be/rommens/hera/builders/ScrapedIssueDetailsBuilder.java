@@ -13,10 +13,6 @@ public final class ScrapedIssueDetailsBuilder {
     private String url;
     private String date;
 
-    public ScrapedIssueDetailsBuilder() {
-
-    }
-
     public ScrapedIssueDetailsBuilder issue(String issue) {
         this.issue = issue;
         return this;

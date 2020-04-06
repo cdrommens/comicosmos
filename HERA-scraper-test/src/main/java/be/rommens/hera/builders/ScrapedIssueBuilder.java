@@ -17,10 +17,6 @@ public final class ScrapedIssueBuilder {
     private Integer numberOfPages;
     private List<String> pages = new ArrayList<>();
 
-    public ScrapedIssueBuilder() {
-
-    }
-
     public ScrapedIssueBuilder comic(String comic) {
         this.comic = comic;
         return this;

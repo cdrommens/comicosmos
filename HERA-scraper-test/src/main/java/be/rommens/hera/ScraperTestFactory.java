@@ -11,6 +11,10 @@ import be.rommens.hera.core.Scraper;
  */
 public class ScraperTestFactory {
 
+    private ScraperTestFactory() {
+        //private constructor to hide implicit one
+    }
+
     public static Scraper willReturnScrapedComic(ScrapedComic result) {
         ScraperMock scraperMock = new ScraperMock(null);
         scraperMock.setExpectedScrapedComic(result);

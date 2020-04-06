@@ -8,4 +8,8 @@ package be.rommens.hera.core;
 public class ScrapingConfigParams {
 
     public static final String BASE_URL = "providers.url";
+
+    private ScrapingConfigParams() {
+        //private constructor to hide implicit one
+    }
 }

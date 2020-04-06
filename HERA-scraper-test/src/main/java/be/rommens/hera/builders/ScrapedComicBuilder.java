@@ -23,10 +23,6 @@ public final class ScrapedComicBuilder {
     private String summary;
     private Set<ScrapedIssueDetails> issues = new HashSet<>();
 
-    public ScrapedComicBuilder() {
-
-    }
-
     public ScrapedComicBuilder title(String title) {
         this.title = title;
         return this;
