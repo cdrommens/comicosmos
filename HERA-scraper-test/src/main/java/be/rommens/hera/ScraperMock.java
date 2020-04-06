@@ -25,12 +25,12 @@ public class ScraperMock extends AbstractScraper {
 
     @Override
     protected String buildUrlForComic(String technicalComicName) {
-        return null;
+        throw new UnsupportedOperationException("Should not be called");
     }
 
     @Override
     protected String buildUrlForIssue(String technicalComicName, String issue) {
-        return null;
+        throw new UnsupportedOperationException("Should not be called");
     }
 
     @Override
