@@ -17,8 +17,6 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
 
 import java.io.IOException;
 
@@ -35,12 +33,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * -------------
  * Wiremock recording : http://wiremock.org/docs/record-playback/
  */
-@SpringBootTest(classes = ReadComicsScraperTest.class)
-@ContextConfiguration(classes = ReadComicsScraperTest.TestConfig.class)
+@SpringBootTest(
+    classes = {ReadComicsScraper.class, ReadComicsScraperTest.TestConfig.class},
+    properties = {
+        "providers.url.readcomics=http://localhost:${wiremock.server.port}/readcomics/"
+    }
+)
 @AutoConfigureWireMock(port = 0)
-@TestPropertySource(properties = {
-    "providers.url.readcomics=http://localhost:${wiremock.server.port}/readcomics/"
-})
 public class ReadComicsScraperTest {
 
     @Autowired
@@ -57,11 +56,6 @@ public class ReadComicsScraperTest {
             config.setProperty(ScrapingConfigParams.BASE_URL,
                 environment.getProperty(ScrapingConfigParams.BASE_URL + "." + Provider.READCOMICS.getPropertyName()));
             return config;
-        }
-
-        @Bean
-        Scraper readComicsScraper() {
-            return new ReadComicsScraper(config());
         }
     }
 
