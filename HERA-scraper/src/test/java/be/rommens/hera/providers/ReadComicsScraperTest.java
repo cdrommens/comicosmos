@@ -12,12 +12,11 @@ import be.rommens.hera.core.ScrapingConfigParams;
 import be.rommens.hera.providers.readcomics.ReadComicsScraper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import java.io.IOException;
 
@@ -34,11 +33,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * -------------
  * Wiremock recording : http://wiremock.org/docs/record-playback/
  */
-@SpringJUnitConfig
-@AutoConfigureWireMock(port = 8888)
-@TestPropertySource(properties = {
-    "providers.url.readcomics=http://localhost:${wiremock.server.port}/readcomics/"
-})
+@SpringBootTest(
+    classes = {ReadComicsScraper.class, ReadComicsScraperTest.TestConfig.class},
+    properties = {
+        "providers.url.readcomics=http://localhost:${wiremock.server.port}/readcomics/"
+    }
+)
+@AutoConfigureWireMock(port = 0)
 public class ReadComicsScraperTest {
 
     @Autowired
@@ -55,11 +56,6 @@ public class ReadComicsScraperTest {
             config.setProperty(ScrapingConfigParams.BASE_URL,
                 environment.getProperty(ScrapingConfigParams.BASE_URL + "." + Provider.READCOMICS.getPropertyName()));
             return config;
-        }
-
-        @Bean
-        Scraper readComicsScraper() {
-            return new ReadComicsScraper(config());
         }
     }
 
