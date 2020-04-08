@@ -1,7 +1,6 @@
 package be.rommens.hera.providers;
 
 import be.rommens.hera.api.Provider;
-import be.rommens.hera.api.Publisher;
 import be.rommens.hera.api.exceptions.ComicNotFoundException;
 import be.rommens.hera.api.models.ScrapedComic;
 import be.rommens.hera.api.models.ScrapedIssue;
@@ -63,7 +62,7 @@ public class ReadComicsScraperTest {
     public void testScrapComicFound() throws IOException {
         ScrapedComic scrapedComic = readComicsScraper.scrapeComic("batman-2016");
         assertThat(scrapedComic.getTitle(), is("Batman (2016-)"));
-        assertThat(scrapedComic.getPublisher(), is(Publisher.DC_COMICS));
+        assertThat(scrapedComic.getPublisher(), is("DC Comics"));
         assertThat(scrapedComic.getAuthor(), is("Tom King"));
         assertThat(scrapedComic.getDateOfRelease(), is("2016"));
         assertThat(scrapedComic.getStatus(), is("Ongoing"));

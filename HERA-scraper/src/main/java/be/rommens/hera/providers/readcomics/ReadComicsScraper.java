@@ -7,7 +7,6 @@ import be.rommens.hera.api.models.ScrapedIssueDetails;
 import be.rommens.hera.core.AbstractScraper;
 import be.rommens.hera.core.ScrapingConfig;
 import be.rommens.hera.core.ScrapingConfigParams;
-import be.rommens.hera.providers.readcomics.mappers.PublisherMapper;
 import com.google.common.collect.Iterables;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -51,7 +50,7 @@ public class ReadComicsScraper extends AbstractScraper {
             }
 
             String type = findTextOfSiblingOfElementByTagAndText(source, "dt", "Type");
-            scrapedComic.setPublisher(new PublisherMapper().mapTo(type));
+            scrapedComic.setPublisher(type);
 
             String dateOfRelease = findTextOfSiblingOfElementByTagAndText(source, "dt", "Date of release");
             scrapedComic.setDateOfRelease(dateOfRelease);

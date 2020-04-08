@@ -1,6 +1,5 @@
 package be.rommens.hera.builders;
 
-import be.rommens.hera.api.Publisher;
 import be.rommens.hera.api.models.ScrapedComic;
 import be.rommens.hera.api.models.ScrapedIssueDetails;
 
@@ -15,7 +14,7 @@ import java.util.Set;
 public final class ScrapedComicBuilder {
 
     private String title;
-    private Publisher publisher;
+    private String publisher;
     private String author;
     private String dateOfRelease;
     private String status;          //TODO : after inventory, convert to enum
@@ -28,7 +27,7 @@ public final class ScrapedComicBuilder {
         return this;
     }
 
-    public ScrapedComicBuilder publisher(Publisher publisher) {
+    public ScrapedComicBuilder publisher(String publisher) {
         this.publisher = publisher;
         return this;
     }

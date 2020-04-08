@@ -1,7 +1,6 @@
 package be.rommens.hera.providers;
 
 import be.rommens.hera.api.Status;
-import be.rommens.hera.providers.readcomics.mappers.PublisherMapper;
 import be.rommens.hera.providers.readcomics.mappers.StatusMapper;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -32,7 +31,7 @@ public class StatusMapperTest {
 
     @Test
     public void testEmptyOrNull() {
-        assertThat(new PublisherMapper().mapTo(null), is(Matchers.nullValue()));
-        assertThat(new PublisherMapper().mapTo(""), is(Matchers.nullValue()));
+        assertThat(new StatusMapper().mapTo(null), is(Matchers.nullValue()));
+        assertThat(new StatusMapper().mapTo(""), is(Matchers.nullValue()));
     }
 }
