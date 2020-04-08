@@ -1,6 +1,5 @@
 package be.rommens.hera;
 
-import be.rommens.hera.api.Publisher;
 import be.rommens.hera.api.exceptions.ComicNotFoundException;
 import be.rommens.hera.api.models.ScrapedComic;
 import be.rommens.hera.api.models.ScrapedIssue;
@@ -28,7 +27,7 @@ public class ScraperTestFactoryTest {
         ScrapedComic expected = new ScrapedComicBuilder()
             .title("title")
             .author("author")
-            .publisher(Publisher.DC_COMICS)
+            .publisher("DC Comics")
             .cover("cover")
             .dateOfRelease("dateOfRelease")
             .status("status")
