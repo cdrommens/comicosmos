@@ -1,0 +1,38 @@
+comic:
+  - COMIC_ID: -1
+    KEY: "batman-2016"
+    NAME: "Batman (2016-)"
+    PUBLISHER_ID: 1
+    STATUS: "ONGOING"
+    DATE_OF_RELEASE: "2016-01-01"
+    AUTHOR: "Tom King"
+    DESCRIPTION: "\"I AM GOTHAM\" Chapter One No one has ever stopped the Caped Crusader. Not The Joker. Not Two-Face. Not even the entire Justice League. But how does Batman confront a new hero who wants to save the city from the Dark Knight? CAN'T MISS: Superstar artist David Finch returns to Batman alongside writer Tom King for this five-part storyline."
+  - COMIC_ID: -2
+    KEY: "spiderman-2016"
+    NAME: "Spider-Man (2016-)"
+    PUBLISHER_ID: 2
+    STATUS: "ONGOING"
+    DATE_OF_RELEASE: "2016-01-01"
+    AUTHOR: "Brian Michael Bendis"
+    DESCRIPTION: "Miles Morales has been doing the super hero thing for a while, now, but after SECRET WARS, he’ll be a full-fledged member of the Marvel Universe. Swinging next to The Invincible Iron Man, The Mighty Thor and the All-New Captain America as a card-carrying member of the Avengers is an adventure, but it’s not all fun and games for New York City’s main Spider-MAN!"
+issue:
+  - ISSUE_ID: -1
+    COMIC_ID: -1
+    ISSUE_NUMBER: "1"
+    DATE_OF_RELEASE: "2016-01-01"
+    URL: "url1"
+  - ISSUE_ID: -2
+    COMIC_ID: -1
+    ISSUE_NUMBER: "2"
+    DATE_OF_RELEASE: "2016-03-01"
+    URL: "url2"
+  - ISSUE_ID: -3
+    COMIC_ID: -1
+    ISSUE_NUMBER: "Annual-1"
+    DATE_OF_RELEASE: "2016-02-01"
+    URL: "url-annual1"
+  - ISSUE_ID: 1
+    COMIC_ID: -2
+    ISSUE_NUMBER: "1"
+    DATE_OF_RELEASE: "2016-12-11"
+    URL: "urlspider"
