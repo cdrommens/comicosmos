@@ -126,7 +126,7 @@ public class Comic {
         this.description = description;
     }
 
-    @OneToMany(targetEntity = Issue.class, mappedBy = "comic", cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = Issue.class, mappedBy = "comic", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy(value = "DATE_OF_RELEASE")
     public List<Issue> getIssues() {
         return issues;

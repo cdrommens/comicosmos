@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.MapsId;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -29,6 +30,7 @@ public class Publisher {
     @SequenceGenerator(name = "PUBLISHER_ID_GENERATOR", sequenceName = "SEQ_PUBLISHER")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PUBLISHER_ID_GENERATOR")
     @Column(name = "PUBLISHER_ID", unique = true, nullable = false)
+    @MapsId(value = "publisherId")
     public Integer getPublisherId() {
         return publisherId;
     }

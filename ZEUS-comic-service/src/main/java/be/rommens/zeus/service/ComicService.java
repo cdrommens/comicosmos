@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -22,6 +23,11 @@ public class ComicService {
     @Transactional(readOnly = true)
     public Optional<Comic> getComic(Integer id) {
         return comicRepository.findById(id);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Comic> getAllComics() {
+        return comicRepository.findAll();
     }
 
     @Transactional
