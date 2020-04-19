@@ -68,6 +68,11 @@
         <artifactId>unitils-core</artifactId>
         <version>${unitils.core.version}</version>
       </dependency>
+      <dependency>
+        <groupId>com.playtika.testcontainers</groupId>
+        <artifactId>embedded-postgresql</artifactId>
+        <version>1.44</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 

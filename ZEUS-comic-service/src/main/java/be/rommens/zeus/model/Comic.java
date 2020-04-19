@@ -117,7 +117,7 @@ public class Comic {
     }
 
     @Lob
-    @Column(name = "DESCRIPTION", columnDefinition = "CLOB")
+    @Column(name = "DESCRIPTION", columnDefinition = "TEXT")
     public String getDescription() {
         return description;
     }

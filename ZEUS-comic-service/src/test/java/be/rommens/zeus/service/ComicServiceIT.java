@@ -5,12 +5,14 @@ import be.rommens.zeus.model.ComicTestObjectFactory;
 import be.rommens.zeus.model.Issue;
 import be.rommens.zeus.model.builder.IssueBuilder;
 import com.github.database.rider.core.api.configuration.DBUnit;
+import com.github.database.rider.core.api.configuration.Orthography;
 import com.github.database.rider.core.api.dataset.DataSet;
 import com.github.database.rider.core.api.dataset.ExpectedDataSet;
 import com.github.database.rider.junit5.api.DBRider;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,8 +32,9 @@ import static org.hamcrest.Matchers.*;
 @Slf4j
 @SpringBootTest
 @DBRider
-@DBUnit(cacheConnection = false)
+@DBUnit(caseInsensitiveStrategy = Orthography.LOWERCASE, cacheConnection = false)
 @ActiveProfiles("container")
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class ComicServiceIT {
 
     @Autowired
