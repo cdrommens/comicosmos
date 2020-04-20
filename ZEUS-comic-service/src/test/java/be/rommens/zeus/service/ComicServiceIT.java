@@ -35,6 +35,7 @@ import static org.hamcrest.Matchers.*;
 @DBUnit(caseInsensitiveStrategy = Orthography.LOWERCASE, cacheConnection = false)
 @ActiveProfiles("container")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@DataSet(value = "datasets/comicservice/setup.yml")
 public class ComicServiceIT {
 
     @Autowired
@@ -42,7 +43,6 @@ public class ComicServiceIT {
 
     @Test
     @Transactional(readOnly = true)
-    @DataSet(value = "datasets/comicservice/setup.yml")
     public void testGetComic() {
         Comic result = comicService.getComic(-1).orElse(null);
         assertThat(result, is(notNullValue()));
@@ -52,7 +52,6 @@ public class ComicServiceIT {
     }
 
     @Test
-    @DataSet(value = "datasets/comicservice/setup.yml", transactional = true, cleanAfter = true)
     @ExpectedDataSet(value = "datasets/comicservice/add-issue-to-comic-expected.yml", orderBy = "DATE_OF_RELEASE", ignoreCols = "ISSUE_ID")
     public void testAddIssueToExistingComic() {
         Comic comic = ComicTestObjectFactory.getFullDcComic(-1);
@@ -66,7 +65,6 @@ public class ComicServiceIT {
     }
 
     @Test
-    @DataSet(value = "datasets/comicservice/setup.yml", transactional = true, cleanAfter = true)
     @ExpectedDataSet(value = "datasets/comicservice/save-new-comic-expected.yml", orderBy = "DATE_OF_RELEASE", ignoreCols = {"COMIC_ID","ISSUE_ID"})
     public void testSaveNewComic() {
         Comic comic = ComicTestObjectFactory.getFullMarvelComic(null);
@@ -76,7 +74,6 @@ public class ComicServiceIT {
 
     @Test
     @Transactional(readOnly = true)
-    @DataSet(value = "datasets/comicservice/setup.yml")
     public void testGetAllComics() {
         List<Comic> result = comicService.getAllComics();
         result.forEach(c -> log.info(c.toString()));

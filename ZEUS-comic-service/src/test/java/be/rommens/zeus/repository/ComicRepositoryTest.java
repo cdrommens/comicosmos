@@ -6,6 +6,7 @@ import com.github.database.rider.junit5.api.DBRider;
 import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.List;
@@ -17,15 +18,18 @@ import static org.hamcrest.Matchers.hasSize;
  * Date : 16/04/2020
  * Time : 16:03
  */
-@DataJpaTest
+@DataJpaTest(
+    properties = "spring.datasource.url=jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false;MODE=PostgreSQL"
+)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DBRider
+@DataSet(value = "datasets/comicservice/setup.yml")
 public class ComicRepositoryTest {
 
     @Autowired
     private ComicRepository comicRepository;
 
     @Test
-    @DataSet(value = "datasets/comicservice/setup.yml")
     public void testFindAll() {
         List<Comic> result = comicRepository.findAll();
         MatcherAssert.assertThat(result, hasSize(1));

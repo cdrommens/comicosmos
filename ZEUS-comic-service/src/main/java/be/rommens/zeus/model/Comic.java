@@ -13,7 +13,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
@@ -116,8 +115,7 @@ public class Comic {
         this.author = author;
     }
 
-    @Lob
-    @Column(name = "DESCRIPTION", columnDefinition = "TEXT")
+    @Column(name = "DESCRIPTION", columnDefinition = "clob")
     public String getDescription() {
         return description;
     }
