@@ -1,5 +1,6 @@
 package be.rommens.zeus.model.builder;
 
+import be.rommens.hera.api.Provider;
 import be.rommens.hera.api.Status;
 import be.rommens.zeus.model.Comic;
 import be.rommens.zeus.model.Issue;
@@ -17,6 +18,7 @@ import java.util.List;
 public final class ComicBuilder {
 
     private Integer comicId;
+    private Provider provider;
     private String key;
     private String name;
     private Publisher publisher;
@@ -35,6 +37,11 @@ public final class ComicBuilder {
 
     public ComicBuilder comicId(Integer comicId) {
         this.comicId = comicId;
+        return this;
+    }
+
+    public ComicBuilder provider(Provider provider) {
+        this.provider = provider;
         return this;
     }
 
@@ -81,6 +88,7 @@ public final class ComicBuilder {
     public Comic build() {
         Comic comic = new Comic();
         comic.setComicId(comicId);
+        comic.setProvider(provider);
         comic.setKey(key);
         comic.setName(name);
         comic.setPublisher(publisher);

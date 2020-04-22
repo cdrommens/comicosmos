@@ -1,5 +1,6 @@
 package be.rommens.zeus.model;
 
+import be.rommens.hera.api.Provider;
 import be.rommens.hera.api.Status;
 import be.rommens.zeus.model.builder.ComicBuilder;
 import be.rommens.zeus.model.builder.IssueBuilder;
@@ -16,6 +17,7 @@ public class ComicTestObjectFactory {
     public static Comic getFullDcComic(Integer id) {
         return ComicBuilder.aComic()
             .comicId(id)
+            .provider(Provider.READCOMICS)
             .key("batman-2016")
             .name("Batman (2016-)")
             .publisher(PublisherTestObjectFactory.getDcComicsPublisher())
@@ -44,6 +46,7 @@ public class ComicTestObjectFactory {
     public static Comic getFullMarvelComic(Integer id) {
         return ComicBuilder.aComic()
             .comicId(id)
+            .provider(Provider.READCOMICS)
             .key("spiderman-2016")
             .name("Spider-Man (2016-)")
             .publisher(PublisherTestObjectFactory.getMarvelComicsPublisher())

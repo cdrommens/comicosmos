@@ -1,5 +1,6 @@
 package be.rommens.zeus.model;
 
+import be.rommens.hera.api.Provider;
 import be.rommens.hera.api.Status;
 import lombok.ToString;
 
@@ -34,6 +35,7 @@ import java.util.Objects;
 public class Comic {
 
     private Integer comicId;
+    private Provider provider;
     private String key;
     private String name;
     private Publisher publisher;
@@ -53,6 +55,16 @@ public class Comic {
 
     public void setComicId(Integer comicId) {
         this.comicId = comicId;
+    }
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "PROVIDER", nullable = false)
+    public Provider getProvider() {
+        return provider;
+    }
+
+    public void setProvider(Provider provider) {
+        this.provider = provider;
     }
 
     @Basic
