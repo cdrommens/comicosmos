@@ -1,5 +1,6 @@
 comic:
   - COMIC_ID: -1
+    PROVIDER: "READCOMICS"
     KEY: "batman-2016"
     NAME: "Batman (2016-)"
     PUBLISHER_ID: 1

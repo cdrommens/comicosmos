@@ -1,5 +1,6 @@
 comic:
   - COMIC_ID: -1
+    PROVIDER: "READCOMICS"
     KEY: "batman-2016"
     NAME: "Batman (2016-)"
     PUBLISHER_ID: 1
@@ -8,6 +9,7 @@ comic:
     AUTHOR: "Tom King"
     DESCRIPTION: "\"I AM GOTHAM\" Chapter One No one has ever stopped the Caped Crusader. Not The Joker. Not Two-Face. Not even the entire Justice League. But how does Batman confront a new hero who wants to save the city from the Dark Knight? CAN'T MISS: Superstar artist David Finch returns to Batman alongside writer Tom King for this five-part storyline."
   - COMIC_ID: -2
+    PROVIDER: "READCOMICS"
     KEY: "spiderman-2016"
     NAME: "Spider-Man (2016-)"
     PUBLISHER_ID: 2
