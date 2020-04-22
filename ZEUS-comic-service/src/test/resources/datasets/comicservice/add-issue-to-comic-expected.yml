@@ -1,0 +1,30 @@
+comic:
+  - COMIC_ID: -1
+    KEY: "batman-2016"
+    NAME: "Batman (2016-)"
+    PUBLISHER_ID: 1
+    STATUS: "ONGOING"
+    DATE_OF_RELEASE: "2016-01-01"
+    AUTHOR: "Another author"
+    DESCRIPTION: "\"I AM GOTHAM\" Chapter One No one has ever stopped the Caped Crusader. Not The Joker. Not Two-Face. Not even the entire Justice League. But how does Batman confront a new hero who wants to save the city from the Dark Knight? CAN'T MISS: Superstar artist David Finch returns to Batman alongside writer Tom King for this five-part storyline."
+issue:
+  - ISSUE_ID: -1
+    COMIC_ID: -1
+    ISSUE_NUMBER: "1"
+    DATE_OF_RELEASE: "2016-01-01"
+    URL: "url1"
+  - ISSUE_ID: -2
+    COMIC_ID: -1
+    ISSUE_NUMBER: "2"
+    DATE_OF_RELEASE: "2016-03-01"
+    URL: "url2"
+  - ISSUE_ID: -3
+    COMIC_ID: -1
+    ISSUE_NUMBER: "Annual-1"
+    DATE_OF_RELEASE: "2016-02-01"
+    URL: "url-annual1"
+  - ISSUE_ID: 1
+    COMIC_ID: -1
+    ISSUE_NUMBER: "4"
+    DATE_OF_RELEASE: "2020-01-01"
+    URL: "url4"
