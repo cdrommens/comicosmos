@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.time.LocalDate;
 
 /**
@@ -81,6 +82,11 @@ public class Issue {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    @Transient
+    public String getFolder() {
+        return comic.getKey() + "-" + getIssueNumber();
     }
 
 }

@@ -24,6 +24,9 @@
     <jacoco.maven.version>0.8.2</jacoco.maven.version>
     <database.rider.version>1.12.0</database.rider.version>
     <unitils.core.version>3.4.2</unitils.core.version>
+    <commons.io.version>2.6</commons.io.version>
+    <commons.compress.version>1.20</commons.compress.version>
+    <zip4j.version>2.5.2</zip4j.version>
   </properties>
 
   <modules>
@@ -72,6 +75,16 @@
         <groupId>com.playtika.testcontainers</groupId>
         <artifactId>embedded-postgresql</artifactId>
         <version>1.44</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-io</groupId>
+        <artifactId>commons-io</artifactId>
+        <version>${commons.io.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>net.lingala.zip4j</groupId>
+        <artifactId>zip4j</artifactId>
+        <version>${zip4j.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

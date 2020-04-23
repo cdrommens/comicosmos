@@ -1,15 +1,13 @@
 package be.rommens.zeus.poc;
 
+import be.rommens.zeus.model.Issue;
 import lombok.extern.slf4j.Slf4j;
+import net.lingala.zip4j.ZipFile;
+import net.lingala.zip4j.exception.ZipException;
+import net.lingala.zip4j.progress.ProgressMonitor;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
+import java.nio.file.Paths;
 
 /**
  * User : cederik
@@ -17,69 +15,46 @@ import java.util.zip.ZipOutputStream;
  * Time : 20:25
  */
 @Slf4j
-public class ZipFolderCommand extends Command {
+public class ZipFolderCommand extends AbstractCommand {
 
-    private final File folder;
-    private final File cbzFile;
+    private static final String EXTENTION = "cbz";
 
-    public ZipFolderCommand(DownloadAndCreateZip downloadAndCreateZip, File folder, File cbzFile) {
-        super(downloadAndCreateZip);
-        this.folder = folder;
-        this.cbzFile = cbzFile;
+    private final File issueFolder;
+    private final String cbzFilePath;
+
+    public ZipFolderCommand(AssembleIssueContext assembleIssueContext) {
+        super(assembleIssueContext);
+        this.issueFolder = new File(assembleIssueContext.getIssueFolder());
+        this.cbzFilePath = createCbzFilePath(assembleIssueContext.getBaseUrl(), assembleIssueContext.getIssue());
     }
 
     @Override
     public boolean execute() {
-        if (!zipFolder()) {
-            return false;
-        }
-        log.info("   [CreateZip] {} is created", cbzFile);
-        return nextExecute();
-    }
+        try {
+            ZipFile zipFile = new ZipFile(cbzFilePath);
+            ProgressMonitor progressMonitor = zipFile.getProgressMonitor();
+            zipFile.setRunInThread(true);
+            zipFile.addFolder(issueFolder);
+            while (!progressMonitor.getState().equals(ProgressMonitor.State.READY)) {
+                log.info("   [CreateZip] Percentage done: " + progressMonitor.getPercentDone());
+                log.info("   [CreateZip] Current file: " + progressMonitor.getFileName());
+                log.info("   [CreateZip] Current task: " + progressMonitor.getCurrentTask());
 
-    private Boolean zipFolder() {
-        try (FileOutputStream fos = getOutputStream(cbzFile)) {
-            ZipOutputStream zipOut = new ZipOutputStream(fos);
-            zipFolder(zipOut, folder);
-            if(!cbzFile.exists()) {
-                log.error("   [CreateZip] CBZ file is not created");
-                return false;
-            } else {
-                return true;
+                Thread.sleep(100);
             }
-        } catch (IOException e) {
+            if (zipFile.isValidZipFile()) {
+                log.info("   [CreateZip] {} is created", cbzFilePath);
+                return nextExecute();
+            } else {
+                return false;
+            }
+        } catch (ZipException | InterruptedException e) {
             log.error("   [CreateZip] Something went wrong ", e);
             return false;
         }
     }
 
-    private void zipFile(InputStream fis, String fileName, ZipOutputStream zipOut) throws IOException {
-        ZipEntry zipEntry = new ZipEntry(fileName);
-        zipOut.putNextEntry(zipEntry);
-        byte[] bytes = new byte[1024];
-        int length;
-        while ((length = fis.read(bytes)) >= 0) {
-            zipOut.write(bytes, 0, length);
-        }
+    private String createCbzFilePath(String baseUrl, Issue issue) {
+        return Paths.get(baseUrl, issue.getComic().getFolder(), issue.getFolder() + "." + EXTENTION).toString();
     }
-
-    private void zipFolder(ZipOutputStream zipOut, File folder) throws IOException {
-        if (folder.isDirectory()) {
-            File[] children = folder.listFiles();
-            if (children != null) {
-                for (File childFile : children) {
-                    zipFile(getInputStream(childFile), childFile.getName(), zipOut);
-                }
-            }
-        }
-    }
-
-    private InputStream getInputStream(File childFile) throws FileNotFoundException {
-        return new FileInputStream(childFile);
-    }
-
-    private FileOutputStream getOutputStream(File file) throws FileNotFoundException {
-        return new FileOutputStream(file);
-    }
-
 }

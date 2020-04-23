@@ -1,13 +1,10 @@
 package be.rommens.zeus.poc;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Comparator;
-import java.util.stream.Stream;
 
 /**
  * User : cederik
@@ -15,24 +12,24 @@ import java.util.stream.Stream;
  * Time : 20:00
  */
 @Slf4j
-public class CleanUpCommand extends Command {
+public class CleanUpCommand extends AbstractCommand {
 
-    private final File completeFolder;
+    private final File issueFolder;
 
-    public CleanUpCommand(DownloadAndCreateZip downloadAndCreateZip, File completeFolder) {
-        super(downloadAndCreateZip);
-        this.completeFolder = completeFolder;
+    public CleanUpCommand(AssembleIssueContext assembleIssueContext) {
+        super(assembleIssueContext);
+        this.issueFolder = new File(assembleIssueContext.getIssueFolder());
     }
 
     @Override
     public boolean execute() {
-        try (Stream<Path> paths = Files.walk(completeFolder.toPath())) {
-            paths.sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
-            if (completeFolder.exists()) {
+        try {
+            FileUtils.deleteDirectory(issueFolder);
+            if (issueFolder.exists()) {
                 log.error("   [CleanUp] Something went wrong when deleting folder");
                 return false;
             }
-            log.info("   [CleanUp] Folder {} deleted", completeFolder);
+            log.info("   [CleanUp] Folder {} deleted", issueFolder);
             return nextExecute();
         } catch (IOException e) {
             log.error("   [CleanUp] Something went wrong when deleting folder; cause :", e);

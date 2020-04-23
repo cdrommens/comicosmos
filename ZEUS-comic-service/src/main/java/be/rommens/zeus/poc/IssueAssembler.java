@@ -1,5 +1,7 @@
 package be.rommens.zeus.poc;
 
+import be.rommens.zeus.model.Issue;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.LinkedList;
@@ -13,13 +15,21 @@ import java.util.Queue;
 @Component
 public class IssueAssembler {
 
-    Queue<DownloadAndCreateZip> workQueue = new LinkedList<>();
+    @Autowired
+    private AssemblyChainFactory<Issue> issueAssemblyChainFactory;
 
-    public void addToQueue(DownloadAndCreateZip downloadAndCreateZip) {
-        workQueue.add(downloadAndCreateZip);
+    private Queue<Issue> workIssueQueue = new LinkedList<>();
+
+    public void addToQueue(Issue issue) {
+        workIssueQueue.add(issue);
     }
 
-    public void assemble() {
-        workQueue.poll().executeCommand();
+    // moet een aparte scheduled task worden
+    public void scheduledTask() {
+        Issue issue = workIssueQueue.poll();
+
+        // factory aanroepen om een DownloadAndCreateZip
+        issueAssemblyChainFactory.createAssemblyChain(issue).execute();
     }
+
 }
