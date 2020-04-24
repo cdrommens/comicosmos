@@ -7,8 +7,8 @@ package be.rommens.zeus.poc;
  */
 public final class IssueAssemblyChainBuilder {
 
-    private AbstractCommand firstCommand;
-    private AbstractCommand lastCommand;
+    private CommandStep firstCommand;
+    private CommandStep lastCommand;
 
     private IssueAssemblyChainBuilder() {
 
@@ -18,7 +18,7 @@ public final class IssueAssemblyChainBuilder {
         return new IssueAssemblyChainBuilder();
     }
 
-    public IssueAssemblyChainBuilder thenExecute(AbstractCommand command) {
+    public IssueAssemblyChainBuilder thenExecute(CommandStep command) {
         if (firstCommand == null) {
             this.firstCommand = command;
             this.lastCommand = command;
@@ -29,7 +29,7 @@ public final class IssueAssemblyChainBuilder {
         return this;
     }
 
-    public AbstractCommand buildAssemblyChain() {
+    public CommandStep buildAssemblyChain() {
         return firstCommand;
     }
 }

@@ -5,29 +5,27 @@ package be.rommens.zeus.poc;
  * Date : 20/04/2020
  * Time : 19:51
  */
-public abstract class AbstractCommand implements Command {
+public abstract class AbstractCommand implements CommandStep {
 
     public final AssembleIssueContext assembleIssueContext;
-    private AbstractCommand next;
+    private CommandStep next;
 
-    protected AbstractCommand(AssembleIssueContext assembleIssueContext) {
+    AbstractCommand(AssembleIssueContext assembleIssueContext) {
         this.assembleIssueContext = assembleIssueContext;
     }
 
-
-    public AbstractCommand linkWith(AbstractCommand next) {
-        this.next = next;
-        return next;
-    }
-
-    protected boolean nextExecute() {
+    private boolean nextExecute() {
         if (next == null) {
             return false;
         }
         return next.execute();
     }
 
-    protected abstract CommandResult body();
+    @Override
+    public CommandStep linkWith(CommandStep next) {
+        this.next = next;
+        return next;
+    }
 
     @Override
     public boolean execute() {

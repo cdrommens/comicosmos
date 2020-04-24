@@ -30,11 +30,11 @@ public class IssueAssemblyChainFactory implements AssemblyChainFactory<Issue> {
     }
 
     private Command createChain(AssembleIssueContext context) {
-        AbstractCommand create = new CreateFolderCommand(context);
-        AbstractCommand getPages = new ScrapeIssueCommand(context);
-        AbstractCommand downloadPages = new DownloadIssuePagesCommand(context);
-        AbstractCommand zip = new ZipFolderCommand(context);
-        AbstractCommand clean = new CleanUpCommand(context);
+        CommandStep create = new CreateFolderCommand(context);
+        CommandStep getPages = new ScrapeIssueCommand(context);
+        CommandStep downloadPages = new DownloadIssuePagesCommand(context);
+        CommandStep zip = new ZipFolderCommand(context);
+        CommandStep clean = new CleanUpCommand(context);
         // update issue in db command
         // notify mongodb change
 
