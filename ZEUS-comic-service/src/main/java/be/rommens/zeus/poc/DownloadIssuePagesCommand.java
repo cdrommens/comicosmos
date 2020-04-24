@@ -26,7 +26,7 @@ public class DownloadIssuePagesCommand extends AbstractCommand {
     }
 
     @Override
-    public boolean execute() {
+    public CommandResult body() {
         try {
             for (String page : assembleIssueContext.getScrapedIssue().getPages()) {
                 //TODO : https://stackoverflow.com/questions/37410249/wiremock-to-serve-images-stored-on-local-disk
@@ -34,13 +34,13 @@ public class DownloadIssuePagesCommand extends AbstractCommand {
             }
         } catch (IOException e) {
             log.error("   [DownloadPages] Something went wrong ", e);
-            return false;
+            return CommandResult.ERROR;
         }
         if (areAllPagesDownloaded()) {
             log.error("   [DownloadPages] Not all pages downloaded");
-            return false;
+            return CommandResult.ERROR;
         }
-        return nextExecute();
+        return CommandResult.COMPLETED;
     }
 
     private boolean areAllPagesDownloaded() {

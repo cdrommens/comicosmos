@@ -7,12 +7,13 @@ package be.rommens.zeus.poc;
  */
 public abstract class AbstractCommand implements Command {
 
-    public AssembleIssueContext assembleIssueContext;
+    public final AssembleIssueContext assembleIssueContext;
     private AbstractCommand next;
 
-    AbstractCommand(AssembleIssueContext assembleIssueContext) {
+    protected AbstractCommand(AssembleIssueContext assembleIssueContext) {
         this.assembleIssueContext = assembleIssueContext;
     }
+
 
     public AbstractCommand linkWith(AbstractCommand next) {
         this.next = next;
@@ -26,5 +27,14 @@ public abstract class AbstractCommand implements Command {
         return next.execute();
     }
 
-    public abstract boolean execute();
+    protected abstract CommandResult body();
+
+    @Override
+    public boolean execute() {
+        CommandResult result = body();
+        if (CommandResult.COMPLETED == result) {
+            return nextExecute();
+        }
+        return false;
+    }
 }

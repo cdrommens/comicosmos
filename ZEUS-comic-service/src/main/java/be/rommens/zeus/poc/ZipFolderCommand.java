@@ -29,7 +29,7 @@ public class ZipFolderCommand extends AbstractCommand {
     }
 
     @Override
-    public boolean execute() {
+    public CommandResult body() {
         try {
             ZipFile zipFile = new ZipFile(cbzFilePath);
             ProgressMonitor progressMonitor = zipFile.getProgressMonitor();
@@ -44,13 +44,13 @@ public class ZipFolderCommand extends AbstractCommand {
             }
             if (zipFile.isValidZipFile()) {
                 log.info("   [CreateZip] {} is created", cbzFilePath);
-                return nextExecute();
+                return CommandResult.COMPLETED;
             } else {
-                return false;
+                return CommandResult.ERROR;
             }
         } catch (ZipException | InterruptedException e) {
             log.error("   [CreateZip] Something went wrong ", e);
-            return false;
+            return CommandResult.ERROR;
         }
     }
 

@@ -25,15 +25,15 @@ public class CreateFolderCommand extends AbstractCommand {
     }
 
     @Override
-    public boolean execute() {
+    public CommandResult body() {
         try {
             // if the parent folder doesn't exist, it will create it
             FileUtils.forceMkdir(IssueFolder);
             log.info("   [CreateFolderTask] Folder {} created", IssueFolder);
-            return nextExecute();
+            return CommandResult.COMPLETED;
         } catch (IOException e) {
             log.error("   [CreateFolderTask] Folder {} not created", IssueFolder);
-            return false;
+            return CommandResult.ERROR;
         }
     }
 

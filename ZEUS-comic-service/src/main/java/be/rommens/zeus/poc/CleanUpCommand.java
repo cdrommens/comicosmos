@@ -22,18 +22,18 @@ public class CleanUpCommand extends AbstractCommand {
     }
 
     @Override
-    public boolean execute() {
+    public CommandResult body() {
         try {
             FileUtils.deleteDirectory(issueFolder);
             if (issueFolder.exists()) {
                 log.error("   [CleanUp] Something went wrong when deleting folder");
-                return false;
+                return CommandResult.ERROR;
             }
             log.info("   [CleanUp] Folder {} deleted", issueFolder);
-            return nextExecute();
+            return CommandResult.COMPLETED;
         } catch (IOException e) {
             log.error("   [CleanUp] Something went wrong when deleting folder; cause :", e);
-            return false;
+            return CommandResult.ERROR;
         }
     }
 }

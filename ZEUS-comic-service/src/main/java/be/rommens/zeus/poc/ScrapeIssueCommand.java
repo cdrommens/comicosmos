@@ -23,16 +23,15 @@ public class ScrapeIssueCommand extends AbstractCommand {
         this.issue = assembleIssueContext.getIssue();
     }
 
-    //TODO : zorg dat dit stukje altijd in de abstract wordt uitgevoerd (nextExecute()) en dat deze methode enkel de body is
     @Override
-    public boolean execute() {
+    public CommandResult body() {
         try {
             assembleIssueContext.setScrapedIssue(scraper.scrapeIssue(issue.getComic().getKey(), issue.getIssueNumber()));
             log.info("   [GetPages] Pages fetched for {} issue {}", issue.getComic().getName(), issue.getIssueNumber());
-            return nextExecute();
+            return CommandResult.COMPLETED;
         } catch (IOException e) {
             log.info("   [GetPages] something went wrong", e);
-            return false;
+            return CommandResult.ERROR;
         }
     }
 }
