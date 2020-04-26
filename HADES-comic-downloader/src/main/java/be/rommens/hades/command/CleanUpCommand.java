@@ -1,5 +1,7 @@
-package be.rommens.zeus.poc;
+package be.rommens.hades.command;
 
+import be.rommens.hades.assembler.IssueAssemblyContext;
+import be.rommens.hades.core.CommandResult;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 
@@ -16,9 +18,9 @@ public class CleanUpCommand extends AbstractCommand {
 
     private final File issueFolder;
 
-    public CleanUpCommand(AssembleIssueContext assembleIssueContext) {
-        super(assembleIssueContext);
-        this.issueFolder = new File(assembleIssueContext.getIssueFolder());
+    public CleanUpCommand(IssueAssemblyContext issueAssemblyContext) {
+        super(issueAssemblyContext);
+        this.issueFolder = new File(issueAssemblyContext.getIssueFolder());
     }
 
     @Override

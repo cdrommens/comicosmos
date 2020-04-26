@@ -1,6 +1,6 @@
-package be.rommens.zeus.poc;
+package be.rommens.hades.assembler;
 
-import be.rommens.zeus.model.Issue;
+import be.rommens.hades.core.AssemblyChainFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

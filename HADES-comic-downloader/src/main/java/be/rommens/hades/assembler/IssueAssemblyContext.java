@@ -1,15 +1,14 @@
-package be.rommens.zeus.poc;
+package be.rommens.hades.assembler;
 
 import be.rommens.hera.api.models.ScrapedIssue;
 import be.rommens.hera.core.Scraper;
-import be.rommens.zeus.model.Issue;
 
 /**
  * User : cederik
  * Date : 20/04/2020
  * Time : 19:52
  */
-public class AssembleIssueContext {
+public class IssueAssemblyContext {
 
     private final Issue issue;
     private final String baseUrl;
@@ -18,7 +17,7 @@ public class AssembleIssueContext {
     private String issueFolder;
     private ScrapedIssue scrapedIssue;
 
-    public AssembleIssueContext(Issue issue, String baseUrl, Scraper scraper) {
+    public IssueAssemblyContext(Issue issue, String baseUrl, Scraper scraper) {
         this.issue = issue;
         this.baseUrl = baseUrl;
         this.scraper = scraper;

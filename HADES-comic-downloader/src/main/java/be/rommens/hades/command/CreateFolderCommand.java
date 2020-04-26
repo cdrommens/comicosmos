@@ -1,6 +1,8 @@
-package be.rommens.zeus.poc;
+package be.rommens.hades.command;
 
-import be.rommens.zeus.model.Issue;
+import be.rommens.hades.assembler.Issue;
+import be.rommens.hades.assembler.IssueAssemblyContext;
+import be.rommens.hades.core.CommandResult;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 
@@ -18,10 +20,10 @@ public class CreateFolderCommand extends AbstractCommand {
 
     private File IssueFolder;
 
-    public CreateFolderCommand(AssembleIssueContext assembleIssueContext) {
-        super(assembleIssueContext);
-        assembleIssueContext.setIssueFolder(createIssueFolderPath(assembleIssueContext.getBaseUrl(), assembleIssueContext.getIssue()));
-        this.IssueFolder = new File(assembleIssueContext.getIssueFolder());
+    public CreateFolderCommand(IssueAssemblyContext issueAssemblyContext) {
+        super(issueAssemblyContext);
+        issueAssemblyContext.setIssueFolder(createIssueFolderPath(issueAssemblyContext.getBaseUrl(), issueAssemblyContext.getIssue()));
+        this.IssueFolder = new File(issueAssemblyContext.getIssueFolder());
     }
 
     @Override
@@ -38,6 +40,6 @@ public class CreateFolderCommand extends AbstractCommand {
     }
 
     private String createIssueFolderPath(String baseUrl, Issue issue) {
-        return Paths.get(baseUrl, issue.getComic().getFolder(), issue.getFolder()).toString();
+        return Paths.get(baseUrl, issue.getComicFolder(), issue.getIssueFolder()).toString();
     }
 }

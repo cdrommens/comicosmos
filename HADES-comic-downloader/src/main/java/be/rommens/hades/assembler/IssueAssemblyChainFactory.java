@@ -1,8 +1,15 @@
-package be.rommens.zeus.poc;
+package be.rommens.hades.assembler;
 
+import be.rommens.hades.command.CleanUpCommand;
+import be.rommens.hades.command.CreateFolderCommand;
+import be.rommens.hades.command.DownloadIssuePagesCommand;
+import be.rommens.hades.command.ScrapeIssueCommand;
+import be.rommens.hades.command.ZipFolderCommand;
+import be.rommens.hades.core.AssemblyChainFactory;
+import be.rommens.hades.core.Command;
+import be.rommens.hades.core.CommandStep;
 import be.rommens.hera.api.service.ScraperFactory;
 import be.rommens.hera.core.Scraper;
-import be.rommens.zeus.model.Issue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -25,11 +32,11 @@ public class IssueAssemblyChainFactory implements AssemblyChainFactory<Issue> {
 
     @Override
     public Command createAssemblyChain(Issue issue) {
-        AssembleIssueContext context = createContextObject(issue);
+        IssueAssemblyContext context = createContextObject(issue);
         return createChain(context);
     }
 
-    private Command createChain(AssembleIssueContext context) {
+    private Command createChain(IssueAssemblyContext context) {
         CommandStep create = new CreateFolderCommand(context);
         CommandStep getPages = new ScrapeIssueCommand(context);
         CommandStep downloadPages = new DownloadIssuePagesCommand(context);
@@ -47,8 +54,8 @@ public class IssueAssemblyChainFactory implements AssemblyChainFactory<Issue> {
             .buildAssemblyChain();
     }
 
-    private AssembleIssueContext createContextObject(Issue issue) {
-        Scraper scraper = scraperFactory.createScraper(issue.getComic().getProvider());
-        return new AssembleIssueContext(issue, baseUrl, scraper);
+    private IssueAssemblyContext createContextObject(Issue issue) {
+        Scraper scraper = scraperFactory.createScraper(issue.getProvider());
+        return new IssueAssemblyContext(issue, baseUrl, scraper);
     }
 }

@@ -1,4 +1,6 @@
-package be.rommens.zeus.poc;
+package be.rommens.hades.assembler;
+
+import be.rommens.hades.core.CommandStep;
 
 /**
  * User : cederik

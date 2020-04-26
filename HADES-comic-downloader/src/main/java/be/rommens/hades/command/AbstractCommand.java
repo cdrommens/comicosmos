@@ -1,4 +1,8 @@
-package be.rommens.zeus.poc;
+package be.rommens.hades.command;
+
+import be.rommens.hades.assembler.IssueAssemblyContext;
+import be.rommens.hades.core.CommandResult;
+import be.rommens.hades.core.CommandStep;
 
 /**
  * User : cederik
@@ -7,11 +11,11 @@ package be.rommens.zeus.poc;
  */
 public abstract class AbstractCommand implements CommandStep {
 
-    public final AssembleIssueContext assembleIssueContext;
+    public final IssueAssemblyContext issueAssemblyContext;
     private CommandStep next;
 
-    AbstractCommand(AssembleIssueContext assembleIssueContext) {
-        this.assembleIssueContext = assembleIssueContext;
+    AbstractCommand(IssueAssemblyContext issueAssemblyContext) {
+        this.issueAssemblyContext = issueAssemblyContext;
     }
 
     private boolean nextExecute() {

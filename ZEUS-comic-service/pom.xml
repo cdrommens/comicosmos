@@ -69,16 +69,6 @@
     </dependency>
 
     <dependency>
-      <groupId>commons-io</groupId>
-      <artifactId>commons-io</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>net.lingala.zip4j</groupId>
-      <artifactId>zip4j</artifactId>
-    </dependency>
-
-    <dependency>
       <groupId>com.github.database-rider</groupId>
       <artifactId>rider-junit5</artifactId>
       <scope>test</scope>

@@ -1,10 +1,13 @@
-package be.rommens.zeus.poc;
+package be.rommens.hades.command;
 
-import be.rommens.zeus.model.Issue;
+import be.rommens.hades.assembler.Issue;
+import be.rommens.hades.assembler.IssueAssemblyContext;
+import be.rommens.hades.core.CommandResult;
 import lombok.extern.slf4j.Slf4j;
 import net.lingala.zip4j.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 import net.lingala.zip4j.progress.ProgressMonitor;
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.io.File;
 import java.nio.file.Paths;
@@ -17,19 +20,27 @@ import java.nio.file.Paths;
 @Slf4j
 public class ZipFolderCommand extends AbstractCommand {
 
-    private static final String EXTENTION = "cbz";
+    private static final String EXTENSION = "cbz";
 
     private final File issueFolder;
     private final String cbzFilePath;
 
-    public ZipFolderCommand(AssembleIssueContext assembleIssueContext) {
-        super(assembleIssueContext);
-        this.issueFolder = new File(assembleIssueContext.getIssueFolder());
-        this.cbzFilePath = createCbzFilePath(assembleIssueContext.getBaseUrl(), assembleIssueContext.getIssue());
+    public ZipFolderCommand(IssueAssemblyContext issueAssemblyContext) {
+        super(issueAssemblyContext);
+        this.issueFolder = new File(issueAssemblyContext.getIssueFolder());
+        this.cbzFilePath = createCbzFilePath(issueAssemblyContext.getBaseUrl(), issueAssemblyContext.getIssue());
     }
 
     @Override
     public CommandResult body() {
+        if (!issueFolder.isDirectory()) {
+            log.error(issueFolder + " is not a folder!");
+            return CommandResult.ERROR;
+        }
+        if (ArrayUtils.isEmpty(issueFolder.listFiles())) {
+            log.error(issueFolder + " is empty! No files to zip");
+            return CommandResult.ERROR;
+        }
         try {
             ZipFile zipFile = new ZipFile(cbzFilePath);
             ProgressMonitor progressMonitor = zipFile.getProgressMonitor();
@@ -55,6 +66,6 @@ public class ZipFolderCommand extends AbstractCommand {
     }
 
     private String createCbzFilePath(String baseUrl, Issue issue) {
-        return Paths.get(baseUrl, issue.getComic().getFolder(), issue.getFolder() + "." + EXTENTION).toString();
+        return Paths.get(baseUrl, issue.getComicFolder(), issue.getIssueFolder() + "." + EXTENSION).toString();
     }
 }

@@ -1,25 +1,6 @@
-package be.rommens.zeus;
+package be.rommens.hades;
 
-import be.rommens.hera.ScraperTestFactory;
-import be.rommens.hera.api.Provider;
-import be.rommens.hera.api.Status;
-import be.rommens.hera.api.service.ScraperFactory;
-import be.rommens.hera.builders.ScrapedIssueBuilder;
-import be.rommens.zeus.model.Comic;
-import be.rommens.zeus.model.Issue;
-import be.rommens.zeus.model.PublisherTestObjectFactory;
-import be.rommens.zeus.model.builder.ComicBuilder;
-import be.rommens.zeus.model.builder.IssueBuilder;
-import be.rommens.zeus.poc.IssueAssembler;
-import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-
-import java.time.LocalDate;
-
-import static org.mockito.ArgumentMatchers.any;
 
 /**
  * User : cederik
@@ -29,6 +10,7 @@ import static org.mockito.ArgumentMatchers.any;
 @SpringBootTest
 public class AssembleTest {
 
+    /*
     @Autowired
     private IssueAssembler issueAssembler;
 
@@ -67,4 +49,5 @@ public class AssembleTest {
         issueAssembler.addToQueue(issue);
         issueAssembler.scheduledTask();
     }
+    */
 }

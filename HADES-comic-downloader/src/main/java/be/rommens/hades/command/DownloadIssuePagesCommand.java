@@ -1,5 +1,7 @@
-package be.rommens.zeus.poc;
+package be.rommens.hades.command;
 
+import be.rommens.hades.assembler.IssueAssemblyContext;
+import be.rommens.hades.core.CommandResult;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 
@@ -20,15 +22,15 @@ public class DownloadIssuePagesCommand extends AbstractCommand {
     private final String issueFolder;
     private int numberOfDownloadedPages = 0;
 
-    public DownloadIssuePagesCommand(AssembleIssueContext assembleIssueContext) {
-        super(assembleIssueContext);
-        this.issueFolder = assembleIssueContext.getIssueFolder();
+    public DownloadIssuePagesCommand(IssueAssemblyContext issueAssemblyContext) {
+        super(issueAssemblyContext);
+        this.issueFolder = issueAssemblyContext.getIssueFolder();
     }
 
     @Override
     public CommandResult body() {
         try {
-            for (String page : assembleIssueContext.getScrapedIssue().getPages()) {
+            for (String page : issueAssemblyContext.getScrapedIssue().getPages()) {
                 //TODO : https://stackoverflow.com/questions/37410249/wiremock-to-serve-images-stored-on-local-disk
                 downloadFile(page);
             }
@@ -44,7 +46,7 @@ public class DownloadIssuePagesCommand extends AbstractCommand {
     }
 
     private boolean areAllPagesDownloaded() {
-        return numberOfDownloadedPages != assembleIssueContext.getScrapedIssue().getNumberOfPages();
+        return numberOfDownloadedPages != issueAssemblyContext.getScrapedIssue().getNumberOfPages();
     }
 
     //TODO : move to scraper (with header and some delay)
@@ -52,7 +54,7 @@ public class DownloadIssuePagesCommand extends AbstractCommand {
         FileUtils.copyURLToFile(new URL(page), getDestinationFile(page));
         //TODO : check filesize
         numberOfDownloadedPages++;
-        log.info("   [DownloadPages] Downloaded {} / {} pages", numberOfDownloadedPages, assembleIssueContext.getScrapedIssue().getNumberOfPages());
+        log.info("   [DownloadPages] Downloaded {} / {} pages", numberOfDownloadedPages, issueAssemblyContext.getScrapedIssue().getNumberOfPages());
     }
 
     private File getDestinationFile(String page) {

@@ -1,4 +1,4 @@
-package be.rommens.zeus.poc;
+package be.rommens.hades.core;
 
 /**
  * User : cederik

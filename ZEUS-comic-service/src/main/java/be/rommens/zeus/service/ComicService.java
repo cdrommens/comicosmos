@@ -2,7 +2,6 @@ package be.rommens.zeus.service;
 
 import be.rommens.zeus.model.Comic;
 import be.rommens.zeus.model.Issue;
-import be.rommens.zeus.poc.IssueAssembler;
 import be.rommens.zeus.repository.ComicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,8 +21,11 @@ public class ComicService {
     @Autowired
     private ComicRepository comicRepository;
 
+    //TODO : resttemplate call
+    /*
     @Autowired
     private IssueAssembler issueAssembler;
+     */
 
     @Transactional(readOnly = true)
     public Optional<Comic> getComic(Integer id) {
@@ -45,8 +47,8 @@ public class ComicService {
         // for loop
         Issue issue1 = new Issue();
         Issue issue2 = new Issue();
-        issueAssembler.addToQueue(issue1);
-        issueAssembler.addToQueue(issue2);
+        //issueAssembler.addToQueue(issue1);
+        //issueAssembler.addToQueue(issue2);
         // return 2 issues scheduled
 
     }
