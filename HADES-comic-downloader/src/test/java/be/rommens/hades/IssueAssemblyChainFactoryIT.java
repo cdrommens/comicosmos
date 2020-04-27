@@ -3,6 +3,9 @@ package be.rommens.hades;
 import be.rommens.hades.assembler.Issue;
 import be.rommens.hades.core.AssemblyChainFactory;
 import be.rommens.hera.api.Provider;
+import net.lingala.zip4j.ZipFile;
+import net.lingala.zip4j.exception.ZipException;
+import net.lingala.zip4j.model.AbstractFileHeader;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,7 +17,12 @@ import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.stream.Collectors;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 
 /**
  * User : cederik
@@ -23,7 +31,7 @@ import java.nio.file.Paths;
  */
 @SpringBootTest(
     properties = {
-        "providers.url.readcomics=http://localhost:${wiremock.server.port}/"
+        "providers.url.readcomics=http://localhost:${wiremock.server.port}/",
     }
 )
 @AutoConfigureWireMock(port = 8977)
@@ -50,11 +58,18 @@ public class IssueAssemblyChainFactoryIT {
     }
 
     @Test
-    public void testIssueAssemblyChain() {
+    public void testIssueAssemblyChain() throws ZipException {
         Issue issue = new Issue();
         issue.setComicKey("comickey");
         issue.setProvider(Provider.READCOMICS);
         issue.setIssueNumber("1");
         issueAssemblyChainFactory.createAssemblyChain(issue).execute();
+
+        ZipFile expected = new ZipFile(Paths.get(BASE_URL,"comickey","comickey-1.cbz").toFile());
+        assertThat(expected.isValidZipFile(), is(Boolean.TRUE));
+        assertThat(FileUtils.sizeOf(expected.getFile()), is(greaterThan(10L)));
+        assertThat(expected.getFileHeaders().stream().map(AbstractFileHeader::getFileName).collect(Collectors.toList()), hasItem("comickey-1/02.jpg"));
+        assertThat(expected.getFileHeaders().stream().map(AbstractFileHeader::getFileName).collect(Collectors.toList()), hasItem("comickey-1/03.jpg"));
+        assertThat(Files.exists(Paths.get(BASE_URL, "comickey", "comickey-1")), is(Boolean.FALSE));
     }
 }

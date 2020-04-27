@@ -24,6 +24,7 @@ public class IssueAssembler {
         workIssueQueue.add(issue);
     }
 
+    //TODO : rework to MQ or Kafka
     // moet een aparte scheduled task worden
     public void scheduledTask() {
         Issue issue = workIssueQueue.poll();
