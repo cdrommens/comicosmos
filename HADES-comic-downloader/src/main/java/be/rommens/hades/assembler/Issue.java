@@ -18,7 +18,6 @@ public class Issue {
     private Provider provider;
     private String issueNumber;
     private LocalDate dateOfRelease;
-    private String url;
 
     public String getIssueFolder() {
         return comicKey + "-" + issueNumber;
