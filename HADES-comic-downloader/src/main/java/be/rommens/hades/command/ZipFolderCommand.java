@@ -59,8 +59,13 @@ public class ZipFolderCommand extends AbstractCommand {
             } else {
                 return CommandResult.ERROR;
             }
-        } catch (ZipException | InterruptedException e) {
+        } catch (ZipException e) {
             log.error("   [CreateZip] Something went wrong ", e);
+            return CommandResult.ERROR;
+        } catch (InterruptedException e) {
+            log.error("   [CreateZip] Interrupted! ", e);
+            // Restore interrupted state...
+            Thread.currentThread().interrupt();
             return CommandResult.ERROR;
         }
     }

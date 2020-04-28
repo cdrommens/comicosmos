@@ -42,7 +42,7 @@ public class ComicService {
         comicRepository.save(comic);
     }
 
-    public void CheckForNewIssues() {
+    public void checkForNewIssues() {
         // via repo haal de ongedownloade issues op
         // for loop
         Issue issue1 = new Issue();

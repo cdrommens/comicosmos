@@ -149,7 +149,7 @@ public class Comic {
     @Transient
     public void addIssue(Issue issue) {
         Objects.requireNonNull(status);
-        if (Status.SPECIAL == status && issues.size() > 0) {
+        if (Status.SPECIAL == status && !issues.isEmpty()) {
             throw new IllegalStateException("Comic has status SPECIAL and can have only 1 issue");
         }
         issue.setComic(this);
@@ -161,10 +161,4 @@ public class Comic {
         issue.setComic(null);
         this.issues.remove(issue);
     }
-
-    @Transient
-    public String getFolder() {
-        return this.getKey();
-    }
-
 }
