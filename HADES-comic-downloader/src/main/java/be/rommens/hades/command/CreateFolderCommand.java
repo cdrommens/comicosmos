@@ -18,23 +18,23 @@ import java.nio.file.Paths;
 @Slf4j
 public class CreateFolderCommand extends AbstractCommand {
 
-    private File IssueFolder;
+    private File issueFolder;
 
     public CreateFolderCommand(IssueAssemblyContext issueAssemblyContext) {
         super(issueAssemblyContext);
         issueAssemblyContext.setIssueFolder(createIssueFolderPath(issueAssemblyContext.getBaseUrl(), issueAssemblyContext.getIssue()));
-        this.IssueFolder = new File(issueAssemblyContext.getIssueFolder());
+        this.issueFolder = new File(issueAssemblyContext.getIssueFolder());
     }
 
     @Override
     public CommandResult body() {
         try {
             // if the parent folder doesn't exist, it will create it
-            FileUtils.forceMkdir(IssueFolder);
-            log.info("   [CreateFolderTask] Folder {} created", IssueFolder);
+            FileUtils.forceMkdir(issueFolder);
+            log.info("   [CreateFolderTask] Folder {} created", issueFolder);
             return CommandResult.COMPLETED;
         } catch (IOException e) {
-            log.error("   [CreateFolderTask] Folder {} not created", IssueFolder);
+            log.error("   [CreateFolderTask] Folder {} not created", issueFolder);
             return CommandResult.ERROR;
         }
     }
