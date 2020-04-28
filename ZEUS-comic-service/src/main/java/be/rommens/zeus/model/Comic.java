@@ -162,4 +162,9 @@ public class Comic {
         this.issues.remove(issue);
     }
 
+    @Transient
+    public String getFolder() {
+        return this.getKey();
+    }
+
 }
