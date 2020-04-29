@@ -1,0 +1,9 @@
+download :
+  folder :
+    base : /Users/cederik/Documents/
+spring:
+  cloud:
+    stream:
+      bindings:
+        input:
+          desination: hades-download-in

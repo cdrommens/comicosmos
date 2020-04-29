@@ -42,8 +42,8 @@ public class IssueAssemblyChainFactory implements AssemblyChainFactory<Issue> {
         CommandStep downloadPages = new DownloadIssuePagesCommand(context);
         CommandStep zip = new ZipFolderCommand(context);
         CommandStep clean = new CleanUpCommand(context);
-        // update issue in db command
-        // notify mongodb change
+        //TODO: update issue in db command
+        //TODO: notify mongodb change
 
         return IssueAssemblyChainBuilder.builderInstance()
             .thenExecute(create)

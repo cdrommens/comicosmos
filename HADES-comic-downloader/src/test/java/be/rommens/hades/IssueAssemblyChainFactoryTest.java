@@ -35,7 +35,7 @@ import static org.hamcrest.Matchers.*;
     }
 )
 @AutoConfigureWireMock(port = 8977)
-public class IssueAssemblyChainFactoryIT {
+public class IssueAssemblyChainFactoryTest {
 
     private static final String BASE_URL = Paths.get(FileUtils.getTempDirectoryPath(),"junit5/").toString();
 
