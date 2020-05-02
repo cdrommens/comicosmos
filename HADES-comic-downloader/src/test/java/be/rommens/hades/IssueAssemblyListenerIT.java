@@ -2,7 +2,6 @@ package be.rommens.hades;
 
 import be.rommens.hades.assembler.DownloadIssueMessage;
 import be.rommens.hades.core.AssemblyChainFactory;
-import be.rommens.hera.api.Provider;
 import net.lingala.zip4j.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 import net.lingala.zip4j.model.AbstractFileHeader;
@@ -12,6 +11,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cloud.contract.stubrunner.StubTrigger;
+import org.springframework.cloud.contract.stubrunner.spring.AutoConfigureStubRunner;
+import org.springframework.cloud.contract.stubrunner.spring.StubRunnerProperties;
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -26,18 +28,24 @@ import static org.hamcrest.Matchers.*;
 
 /**
  * User : cederik
- * Date : 27/04/2020
- * Time : 09:07
+ * Date : 29/04/2020
+ * Time : 15:42
  */
 @SpringBootTest(
+    webEnvironment = SpringBootTest.WebEnvironment.NONE,
     properties = {
         "providers.url.readcomics=http://localhost:${wiremock.server.port}/",
     }
 )
+@AutoConfigureStubRunner(ids = {
+    "be.rommens:ZEUS-comic-service:+:stubs" }, stubsMode = StubRunnerProperties.StubsMode.LOCAL)
 @AutoConfigureWireMock(port = 8977)
-public class IssueAssemblyChainFactoryTest {
+public class IssueAssemblyListenerIT {
 
     private static final String BASE_URL = Paths.get(FileUtils.getTempDirectoryPath(),"junit5/").toString();
+
+    @Autowired
+    private StubTrigger stubTrigger;
 
     @Autowired
     private AssemblyChainFactory<DownloadIssueMessage> issueAssemblyChainFactory;
@@ -58,12 +66,8 @@ public class IssueAssemblyChainFactoryTest {
     }
 
     @Test
-    public void testIssueAssemblyChain() throws ZipException {
-        DownloadIssueMessage downloadIssueMessage = new DownloadIssueMessage();
-        downloadIssueMessage.setComicKey("comickey");
-        downloadIssueMessage.setProvider(Provider.READCOMICS);
-        downloadIssueMessage.setIssueNumber("1");
-        issueAssemblyChainFactory.createAssemblyChain(downloadIssueMessage).execute();
+    public void processMessageAndExecuteChain() throws ZipException {
+        stubTrigger.trigger("download_issue");
 
         ZipFile expected = new ZipFile(Paths.get(BASE_URL,"comickey","comickey-1.cbz").toFile());
         assertThat(expected.isValidZipFile(), is(Boolean.TRUE));

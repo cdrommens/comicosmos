@@ -1,6 +1,6 @@
 package be.rommens.hades.command;
 
-import be.rommens.hades.assembler.Issue;
+import be.rommens.hades.assembler.DownloadIssueMessage;
 import be.rommens.hades.assembler.IssueAssemblyContext;
 import be.rommens.hades.core.CommandResult;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +22,7 @@ public class CreateFolderCommand extends AbstractCommand {
 
     public CreateFolderCommand(IssueAssemblyContext issueAssemblyContext) {
         super(issueAssemblyContext);
-        issueAssemblyContext.setIssueFolder(createIssueFolderPath(issueAssemblyContext.getBaseUrl(), issueAssemblyContext.getIssue()));
+        issueAssemblyContext.setIssueFolder(createIssueFolderPath(issueAssemblyContext.getBaseUrl(), issueAssemblyContext.getDownloadIssueMessage()));
         this.issueFolder = new File(issueAssemblyContext.getIssueFolder());
     }
 
@@ -39,7 +39,7 @@ public class CreateFolderCommand extends AbstractCommand {
         }
     }
 
-    private String createIssueFolderPath(String baseUrl, Issue issue) {
-        return Paths.get(baseUrl, issue.getComicFolder(), issue.getIssueFolder()).toString();
+    private String createIssueFolderPath(String baseUrl, DownloadIssueMessage downloadIssueMessage) {
+        return Paths.get(baseUrl, downloadIssueMessage.getComicFolder(), downloadIssueMessage.getIssueFolder()).toString();
     }
 }

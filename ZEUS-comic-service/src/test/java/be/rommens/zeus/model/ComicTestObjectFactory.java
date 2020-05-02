@@ -29,17 +29,17 @@ public class ComicTestObjectFactory {
                 .issueId(-1)
                 .issueNumber("1")
                 .dateOfRelease(LocalDate.of(2016,1,1))
-                .url("url1"))
+                .downloaded(true))
             .issue(IssueBuilder.anIssue()
                 .issueId(-3)
                 .issueNumber("Annual-1")
                 .dateOfRelease(LocalDate.of(2016,2,1))
-                .url("url-annual1"))
+                .downloaded(false))
             .issue(IssueBuilder.anIssue()
                 .issueId(-2)
                 .issueNumber("2")
                 .dateOfRelease(LocalDate.of(2016,3,1))
-                .url("url2"))
+                .downloaded(true))
             .build();
     }
 
@@ -58,7 +58,7 @@ public class ComicTestObjectFactory {
                 .issueId(-1)
                 .issueNumber("1")
                 .dateOfRelease(LocalDate.of(2016,12,11))
-                .url("urlspider"))
+                .downloaded(true))
             .build();
     }
 }

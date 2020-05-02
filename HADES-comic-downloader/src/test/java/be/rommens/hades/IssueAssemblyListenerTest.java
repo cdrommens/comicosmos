@@ -1,10 +1,9 @@
 package be.rommens.hades;
 
-import be.rommens.hades.assembler.Issue;
+import be.rommens.hades.assembler.DownloadIssueMessage;
 import be.rommens.hades.command.MockCommand;
 import be.rommens.hades.core.AssemblyChainFactory;
 import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -14,6 +13,7 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 
 /**
  * User : cederik
@@ -21,7 +21,7 @@ import static org.mockito.ArgumentMatchers.any;
  * Time : 15:32
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class IssueAssemblyHandlerTest {
+public class IssueAssemblyListenerTest {
 
     @Autowired
     private Sink sink;
@@ -30,16 +30,16 @@ public class IssueAssemblyHandlerTest {
     private MessageCollector messageCollector;
 
     @MockBean
-    private AssemblyChainFactory<Issue> issueAssemblyChainFactory;
+    private AssemblyChainFactory<DownloadIssueMessage> issueAssemblyChainFactory;
 
     @Test
     public void testWiring() {
-        Issue issue = new Issue();
-        issue.setComicKey("comickey");
-        issue.setIssueNumber("1");
-        Message<Issue> message = new GenericMessage<>(issue);
+        DownloadIssueMessage downloadIssueMessage = new DownloadIssueMessage();
+        downloadIssueMessage.setComicKey("comickey");
+        downloadIssueMessage.setIssueNumber("1");
+        Message<DownloadIssueMessage> message = new GenericMessage<>(downloadIssueMessage);
 
-        BDDMockito.given(issueAssemblyChainFactory.createAssemblyChain(any())).willReturn(new MockCommand());
+        given(issueAssemblyChainFactory.createAssemblyChain(any())).willReturn(new MockCommand());
 
         sink.input().send(message);
     }

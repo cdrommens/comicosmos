@@ -1,6 +1,6 @@
 package be.rommens.hades.command;
 
-import be.rommens.hades.assembler.Issue;
+import be.rommens.hades.assembler.DownloadIssueMessage;
 import be.rommens.hades.assembler.IssueAssemblyContext;
 import be.rommens.hades.core.CommandResult;
 import be.rommens.hera.core.Scraper;
@@ -15,19 +15,19 @@ import lombok.extern.slf4j.Slf4j;
 public class ScrapeIssueCommand extends AbstractCommand {
 
     private final Scraper scraper;
-    private final Issue issue;
+    private final DownloadIssueMessage downloadIssueMessage;
 
     public ScrapeIssueCommand(IssueAssemblyContext issueAssemblyContext) {
         super(issueAssemblyContext);
         this.scraper = issueAssemblyContext.getScraper();
-        this.issue = issueAssemblyContext.getIssue();
+        this.downloadIssueMessage = issueAssemblyContext.getDownloadIssueMessage();
     }
 
     @Override
     public CommandResult body() {
         try {
-            issueAssemblyContext.setScrapedIssue(scraper.scrapeIssue(issue.getComicKey(), issue.getIssueNumber()));
-            log.info("   [GetPages] Pages fetched for {} issue {}", issue.getComicKey(), issue.getIssueNumber());
+            issueAssemblyContext.setScrapedIssue(scraper.scrapeIssue(downloadIssueMessage.getComicKey(), downloadIssueMessage.getIssueNumber()));
+            log.info("   [GetPages] Pages fetched for {} issue {}", downloadIssueMessage.getComicKey(), downloadIssueMessage.getIssueNumber());
             return CommandResult.COMPLETED;
         } catch (Exception e) {
             log.info("   [GetPages] something went wrong", e);

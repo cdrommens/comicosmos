@@ -1,6 +1,6 @@
 package be.rommens.hades.command;
 
-import be.rommens.hades.assembler.Issue;
+import be.rommens.hades.assembler.DownloadIssueMessage;
 import be.rommens.hades.assembler.IssueAssemblyContext;
 import be.rommens.hades.core.CommandResult;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +28,7 @@ public class ZipFolderCommand extends AbstractCommand {
     public ZipFolderCommand(IssueAssemblyContext issueAssemblyContext) {
         super(issueAssemblyContext);
         this.issueFolder = new File(issueAssemblyContext.getIssueFolder());
-        this.cbzFilePath = createCbzFilePath(issueAssemblyContext.getBaseUrl(), issueAssemblyContext.getIssue());
+        this.cbzFilePath = createCbzFilePath(issueAssemblyContext.getBaseUrl(), issueAssemblyContext.getDownloadIssueMessage());
     }
 
     @Override
@@ -70,7 +70,7 @@ public class ZipFolderCommand extends AbstractCommand {
         }
     }
 
-    private String createCbzFilePath(String baseUrl, Issue issue) {
-        return Paths.get(baseUrl, issue.getComicFolder(), issue.getIssueFolder() + "." + EXTENSION).toString();
+    private String createCbzFilePath(String baseUrl, DownloadIssueMessage downloadIssueMessage) {
+        return Paths.get(baseUrl, downloadIssueMessage.getComicFolder(), downloadIssueMessage.getIssueFolder() + "." + EXTENSION).toString();
     }
 }

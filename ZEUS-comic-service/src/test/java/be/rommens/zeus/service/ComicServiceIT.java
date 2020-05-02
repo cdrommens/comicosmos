@@ -58,7 +58,7 @@ public class ComicServiceIT {
         Issue newIssue = IssueBuilder.anIssue()
             .issueNumber("4")
             .dateOfRelease(LocalDate.of(2020, 1, 1))
-            .url("url4").build();
+            .downloaded(false).build();
         comic.addIssue(newIssue);
         comic.setAuthor("Another author");
         comicService.save(comic);

@@ -15,7 +15,7 @@ public final class IssueBuilder {
     private Comic comic;
     private String issueNumber;
     private LocalDate dateOfRelease;
-    private String url;
+    private Boolean downloaded;
 
     private IssueBuilder() {
     }
@@ -44,8 +44,8 @@ public final class IssueBuilder {
         return this;
     }
 
-    public IssueBuilder url(String url) {
-        this.url = url;
+    public IssueBuilder downloaded(Boolean downloaded) {
+        this.downloaded = downloaded;
         return this;
     }
 
@@ -55,7 +55,7 @@ public final class IssueBuilder {
         issue.setComic(comic);
         issue.setIssueNumber(issueNumber);
         issue.setDateOfRelease(dateOfRelease);
-        issue.setUrl(url);
+        issue.setDownloaded(downloaded);
         return issue;
     }
 }

@@ -13,14 +13,14 @@ issue:
     COMIC_ID: -1
     ISSUE_NUMBER: "1"
     DATE_OF_RELEASE: "2016-01-01"
-    URL: "url1"
+    DOWNLOADED: true
   - ISSUE_ID: -2
     COMIC_ID: -1
     ISSUE_NUMBER: "2"
     DATE_OF_RELEASE: "2016-03-01"
-    URL: "url2"
+    DOWNLOADED: true
   - ISSUE_ID: -3
     COMIC_ID: -1
     ISSUE_NUMBER: "Annual-1"
     DATE_OF_RELEASE: "2016-02-01"
-    URL: "url-annual1"
+    DOWNLOADED: false

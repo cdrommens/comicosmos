@@ -22,7 +22,7 @@ import org.springframework.stereotype.Component;
  * Time : 15:24
  */
 @Component
-public class IssueAssemblyChainFactory implements AssemblyChainFactory<Issue> {
+public class IssueAssemblyChainFactory implements AssemblyChainFactory<DownloadIssueMessage> {
 
     @Value("${download.folder.base}")
     private String baseUrl;
@@ -31,8 +31,8 @@ public class IssueAssemblyChainFactory implements AssemblyChainFactory<Issue> {
     private ScraperFactory scraperFactory;
 
     @Override
-    public Command createAssemblyChain(Issue issue) {
-        IssueAssemblyContext context = createContextObject(issue);
+    public Command createAssemblyChain(DownloadIssueMessage downloadIssueMessage) {
+        IssueAssemblyContext context = createContextObject(downloadIssueMessage);
         return createChain(context);
     }
 
@@ -54,8 +54,8 @@ public class IssueAssemblyChainFactory implements AssemblyChainFactory<Issue> {
             .buildAssemblyChain();
     }
 
-    private IssueAssemblyContext createContextObject(Issue issue) {
-        Scraper scraper = scraperFactory.createScraper(issue.getProvider());
-        return new IssueAssemblyContext(issue, baseUrl, scraper);
+    private IssueAssemblyContext createContextObject(DownloadIssueMessage downloadIssueMessage) {
+        Scraper scraper = scraperFactory.createScraper(downloadIssueMessage.getProvider());
+        return new IssueAssemblyContext(downloadIssueMessage, baseUrl, scraper);
     }
 }

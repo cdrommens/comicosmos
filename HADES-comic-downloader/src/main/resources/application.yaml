@@ -6,4 +6,4 @@ spring:
     stream:
       bindings:
         input:
-          desination: hades-download-in
+          destination: downloader-in

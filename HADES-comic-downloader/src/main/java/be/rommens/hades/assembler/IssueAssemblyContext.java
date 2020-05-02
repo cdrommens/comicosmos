@@ -10,21 +10,21 @@ import be.rommens.hera.core.Scraper;
  */
 public class IssueAssemblyContext {
 
-    private final Issue issue;
+    private final DownloadIssueMessage downloadIssueMessage;
     private final String baseUrl;
     private final Scraper scraper;
 
     private String issueFolder;
     private ScrapedIssue scrapedIssue;
 
-    public IssueAssemblyContext(Issue issue, String baseUrl, Scraper scraper) {
-        this.issue = issue;
+    public IssueAssemblyContext(DownloadIssueMessage downloadIssueMessage, String baseUrl, Scraper scraper) {
+        this.downloadIssueMessage = downloadIssueMessage;
         this.baseUrl = baseUrl;
         this.scraper = scraper;
     }
 
-    public Issue getIssue() {
-        return issue;
+    public DownloadIssueMessage getDownloadIssueMessage() {
+        return downloadIssueMessage;
     }
 
     public String getBaseUrl() {

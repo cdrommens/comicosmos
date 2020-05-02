@@ -58,15 +58,15 @@ public class IndexController {
             .issue(IssueBuilder.anIssue()
                 .issueNumber("1")
                 .dateOfRelease(LocalDate.of(2016,1,1))
-                .url("url1"))
+                .downloaded(true))
             .issue(IssueBuilder.anIssue()
                 .issueNumber("Annual-1")
                 .dateOfRelease(LocalDate.of(2016,2,1))
-                .url("url-annual1"))
+                .downloaded(false))
             .issue(IssueBuilder.anIssue()
                 .issueNumber("2")
                 .dateOfRelease(LocalDate.of(2016,3,1))
-                .url("url2"))
+                .downloaded(true))
             .build();
 
         comicService.save(c);
