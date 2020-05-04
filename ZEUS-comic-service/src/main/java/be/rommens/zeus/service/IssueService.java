@@ -20,6 +20,7 @@ import java.util.List;
 public class IssueService {
 
     private final IssueRepository issueRepository;
+    //TODO : make spring event publisher
     private final DomainEventPublisher domainEventsPublisher;
 
     public IssueService(IssueRepository issueRepository, DomainEventPublisher domainEventsPublisher) {
