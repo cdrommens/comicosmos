@@ -10,7 +10,7 @@ import be.rommens.hades.core.Command;
 import be.rommens.hades.core.CommandStep;
 import be.rommens.hera.api.service.ScraperFactory;
 import be.rommens.hera.core.Scraper;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -22,13 +22,13 @@ import org.springframework.stereotype.Component;
  * Time : 15:24
  */
 @Component
+@RequiredArgsConstructor
 public class IssueAssemblyChainFactory implements AssemblyChainFactory<DownloadIssueMessage> {
 
     @Value("${download.folder.base}")
     private String baseUrl;
 
-    @Autowired
-    private ScraperFactory scraperFactory;
+    private final ScraperFactory scraperFactory;
 
     @Override
     public Command createAssemblyChain(DownloadIssueMessage downloadIssueMessage) {

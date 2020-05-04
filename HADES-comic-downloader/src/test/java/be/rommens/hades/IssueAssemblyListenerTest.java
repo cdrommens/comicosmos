@@ -1,8 +1,8 @@
 package be.rommens.hades;
 
 import be.rommens.hades.assembler.DownloadIssueMessage;
-import be.rommens.hades.command.MockCommand;
 import be.rommens.hades.core.AssemblyChainFactory;
+import be.rommens.hades.core.Command;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -42,5 +42,13 @@ public class IssueAssemblyListenerTest {
         given(issueAssemblyChainFactory.createAssemblyChain(any())).willReturn(new MockCommand());
 
         sink.input().send(message);
+    }
+
+    public static class MockCommand implements Command {
+
+        @Override
+        public boolean execute() {
+            return true;
+        }
     }
 }

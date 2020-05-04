@@ -3,6 +3,7 @@ package be.rommens.zeus.service;
 import be.rommens.zeus.model.DownloadIssueConverter;
 import be.rommens.zeus.model.Issue;
 import be.rommens.zeus.repository.IssueRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,16 +18,12 @@ import java.util.List;
  */
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class IssueService {
 
     private final IssueRepository issueRepository;
     //TODO : make spring event publisher
     private final DomainEventPublisher domainEventsPublisher;
-
-    public IssueService(IssueRepository issueRepository, DomainEventPublisher domainEventsPublisher) {
-        this.issueRepository = issueRepository;
-        this.domainEventsPublisher = domainEventsPublisher;
-    }
 
     @Transactional(readOnly = true)
     public void downloadNewIssues() {

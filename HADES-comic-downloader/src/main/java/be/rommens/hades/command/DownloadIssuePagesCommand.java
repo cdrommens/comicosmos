@@ -20,6 +20,7 @@ import java.nio.file.Paths;
 public class DownloadIssuePagesCommand extends AbstractCommand {
 
     private final String issueFolder;
+
     private int numberOfDownloadedPages = 0;
 
     public DownloadIssuePagesCommand(IssueAssemblyContext issueAssemblyContext) {

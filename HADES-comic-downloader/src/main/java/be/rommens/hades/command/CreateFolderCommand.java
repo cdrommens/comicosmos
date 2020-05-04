@@ -7,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Paths;
 
 /**
@@ -18,7 +17,7 @@ import java.nio.file.Paths;
 @Slf4j
 public class CreateFolderCommand extends AbstractCommand {
 
-    private File issueFolder;
+    private final File issueFolder;
 
     public CreateFolderCommand(IssueAssemblyContext issueAssemblyContext) {
         super(issueAssemblyContext);
@@ -33,7 +32,7 @@ public class CreateFolderCommand extends AbstractCommand {
             FileUtils.forceMkdir(issueFolder);
             log.info("   [CreateFolderTask] Folder {} created", issueFolder);
             return CommandResult.COMPLETED;
-        } catch (IOException e) {
+        } catch (Exception e) {
             log.error("   [CreateFolderTask] Folder {} not created", issueFolder);
             return CommandResult.ERROR;
         }

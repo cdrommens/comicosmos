@@ -4,6 +4,7 @@ import be.rommens.hera.api.Provider;
 import be.rommens.hera.core.Scraper;
 import be.rommens.hera.providers.example.ExampleScraper;
 import be.rommens.hera.providers.readcomics.ReadComicsScraper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
@@ -12,14 +13,11 @@ import org.springframework.stereotype.Service;
  * Date : 04/04/2020
  * Time : 14:03
  */
+@RequiredArgsConstructor
 @Service
 public class ScraperFactory {
 
     private final ApplicationContext applicationContext;
-
-    public ScraperFactory(ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
-    }
 
     public Scraper createScraper(Provider provider) {
         if (provider == null) {

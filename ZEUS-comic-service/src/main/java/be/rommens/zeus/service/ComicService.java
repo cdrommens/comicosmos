@@ -3,6 +3,7 @@ package be.rommens.zeus.service;
 import be.rommens.zeus.model.Comic;
 import be.rommens.zeus.model.Issue;
 import be.rommens.zeus.repository.ComicRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,13 +16,10 @@ import java.util.Optional;
  * Time : 09:42
  */
 @Service
+@RequiredArgsConstructor
 public class ComicService {
 
     private final ComicRepository comicRepository;
-
-    public ComicService(ComicRepository comicRepository) {
-        this.comicRepository = comicRepository;
-    }
 
     //TODO : resttemplate call
     /*

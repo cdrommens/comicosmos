@@ -43,7 +43,7 @@ public class ComicServiceIT {
 
     @Test
     @Transactional(readOnly = true)
-    public void testGetComic() {
+    public void whenGetComicById_thenReturnComic() {
         Comic result = comicService.getComic(-1).orElse(null);
         assertThat(result, is(notNullValue()));
         assertThat(result.getIssues(), hasSize(3));
@@ -53,7 +53,7 @@ public class ComicServiceIT {
 
     @Test
     @ExpectedDataSet(value = "datasets/comicservice/add-issue-to-comic-expected.yml", orderBy = "DATE_OF_RELEASE", ignoreCols = "ISSUE_ID")
-    public void testAddIssueToExistingComic() {
+    public void whenAddIssueToExistingComic_thenComicMustBeUpdated() {
         Comic comic = ComicTestObjectFactory.getFullDcComic(-1);
         Issue newIssue = IssueBuilder.anIssue()
             .issueNumber("4")
@@ -66,7 +66,7 @@ public class ComicServiceIT {
 
     @Test
     @ExpectedDataSet(value = "datasets/comicservice/save-new-comic-expected.yml", orderBy = "DATE_OF_RELEASE", ignoreCols = {"COMIC_ID","ISSUE_ID"})
-    public void testSaveNewComic() {
+    public void whenSaveNewComic_thenComicMustBeSaved() {
         Comic comic = ComicTestObjectFactory.getFullMarvelComic(null);
         comic.getIssues().forEach(issue -> issue.setIssueId(null));
         comicService.save(comic);
@@ -74,7 +74,7 @@ public class ComicServiceIT {
 
     @Test
     @Transactional(readOnly = true)
-    public void testGetAllComics() {
+    public void whenGetAllComics_thenReturnAllComics() {
         List<Comic> result = comicService.getAllComics();
         result.forEach(c -> log.info(c.toString()));
         assertThat(result, is(notNullValue()));

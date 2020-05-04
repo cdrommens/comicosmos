@@ -30,7 +30,19 @@ public class ZipFolderCommandTest {
     Path tempDir;
 
     @Test
-    public void testCreateZipEmptyFolder() throws IOException {
+    public void whenNotDir_thenReturnErrorAndZipNotExist() throws IOException {
+        File newDir = Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1").toFile();
+        FileUtils.touch(newDir);
+        assertThat(Files.exists(Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1")), is(Boolean.TRUE));
+
+        ZipFolderCommand command = new ZipFolderCommand(IssueAssemblyContextTestObjectFactory.createTestContext(tempDir.toString(), null));
+        CommandResult result = command.body();
+        assertThat(result, is(CommandResult.ERROR));
+        assertThat(Files.exists(Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1.cbz")), is(Boolean.FALSE));
+    }
+
+    @Test
+    public void whenEmptyDir_thenReturnErrorAndZipNotExist() throws IOException {
         File newDir = Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1").toFile();
         FileUtils.forceMkdir(newDir);
         assertThat(Files.exists(Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1")), is(Boolean.TRUE));
@@ -38,10 +50,11 @@ public class ZipFolderCommandTest {
         ZipFolderCommand command = new ZipFolderCommand(IssueAssemblyContextTestObjectFactory.createTestContext(tempDir.toString(), null));
         CommandResult result = command.body();
         assertThat(result, is(CommandResult.ERROR));
+        assertThat(Files.exists(Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1.cbz")), is(Boolean.FALSE));
     }
 
     @Test
-    public void testCreateZip() throws IOException {
+    public void whenIsDir_thenReturnCompletedAndZipExists() throws IOException {
         File newDir = Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1").toFile();
         FileUtils.forceMkdir(newDir);
         assertThat(Files.exists(Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1")), is(Boolean.TRUE));

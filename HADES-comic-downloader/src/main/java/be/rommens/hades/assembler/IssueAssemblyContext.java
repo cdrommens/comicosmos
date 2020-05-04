@@ -2,12 +2,14 @@ package be.rommens.hades.assembler;
 
 import be.rommens.hera.api.models.ScrapedIssue;
 import be.rommens.hera.core.Scraper;
+import lombok.RequiredArgsConstructor;
 
 /**
  * User : cederik
  * Date : 20/04/2020
  * Time : 19:52
  */
+@RequiredArgsConstructor
 public class IssueAssemblyContext {
 
     private final DownloadIssueMessage downloadIssueMessage;
@@ -16,12 +18,6 @@ public class IssueAssemblyContext {
 
     private String issueFolder;
     private ScrapedIssue scrapedIssue;
-
-    public IssueAssemblyContext(DownloadIssueMessage downloadIssueMessage, String baseUrl, Scraper scraper) {
-        this.downloadIssueMessage = downloadIssueMessage;
-        this.baseUrl = baseUrl;
-        this.scraper = scraper;
-    }
 
     public DownloadIssueMessage getDownloadIssueMessage() {
         return downloadIssueMessage;

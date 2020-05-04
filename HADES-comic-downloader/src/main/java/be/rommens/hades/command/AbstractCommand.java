@@ -3,20 +3,19 @@ package be.rommens.hades.command;
 import be.rommens.hades.assembler.IssueAssemblyContext;
 import be.rommens.hades.core.CommandResult;
 import be.rommens.hades.core.CommandStep;
+import lombok.RequiredArgsConstructor;
 
 /**
  * User : cederik
  * Date : 20/04/2020
  * Time : 19:51
  */
+@RequiredArgsConstructor
 public abstract class AbstractCommand implements CommandStep {
 
     public final IssueAssemblyContext issueAssemblyContext;
-    private CommandStep next;
 
-    AbstractCommand(IssueAssemblyContext issueAssemblyContext) {
-        this.issueAssemblyContext = issueAssemblyContext;
-    }
+    private CommandStep next;
 
     private boolean nextExecute() {
         if (next == null) {

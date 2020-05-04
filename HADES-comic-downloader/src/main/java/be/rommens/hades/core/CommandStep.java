@@ -6,6 +6,7 @@ package be.rommens.hades.core;
  * Time : 20:10
  */
 public interface CommandStep extends Command {
+
     CommandStep linkWith(CommandStep next);
 
     CommandResult body();

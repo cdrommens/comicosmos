@@ -1,6 +1,7 @@
 package be.rommens.hades.assembler;
 
 import be.rommens.hades.core.AssemblyChainFactory;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.cloud.stream.messaging.Sink;
@@ -12,14 +13,11 @@ import org.springframework.stereotype.Component;
  * Time : 15:25
  */
 @Slf4j
+@RequiredArgsConstructor
 @Component
 public class IssueAssemblyListener {
 
     private final AssemblyChainFactory<DownloadIssueMessage> issueAssemblyChainFactory;
-
-    public IssueAssemblyListener(AssemblyChainFactory<DownloadIssueMessage> issueAssemblyChainFactory) {
-        this.issueAssemblyChainFactory = issueAssemblyChainFactory;
-    }
 
     @StreamListener(Sink.INPUT)
     public void processIssue(DownloadIssueMessage downloadIssueMessage) {
