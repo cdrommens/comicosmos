@@ -1,7 +1,7 @@
 package be.rommens.zeus.service;
 
-import be.rommens.zeus.model.Comic;
-import be.rommens.zeus.model.Issue;
+import be.rommens.zeus.model.entity.Comic;
+import be.rommens.zeus.model.entity.Issue;
 import be.rommens.zeus.repository.ComicRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

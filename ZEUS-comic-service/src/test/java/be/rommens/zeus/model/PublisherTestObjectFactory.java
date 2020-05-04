@@ -1,5 +1,7 @@
 package be.rommens.zeus.model;
 
+import be.rommens.zeus.model.entity.Publisher;
+
 /**
  * User : cederik
  * Date : 17/04/2020

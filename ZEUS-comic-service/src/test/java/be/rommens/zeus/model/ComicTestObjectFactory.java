@@ -4,6 +4,7 @@ import be.rommens.hera.api.Provider;
 import be.rommens.hera.api.Status;
 import be.rommens.zeus.model.builder.ComicBuilder;
 import be.rommens.zeus.model.builder.IssueBuilder;
+import be.rommens.zeus.model.entity.Comic;
 
 import java.time.LocalDate;
 

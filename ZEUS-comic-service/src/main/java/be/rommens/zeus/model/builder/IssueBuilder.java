@@ -1,7 +1,7 @@
 package be.rommens.zeus.model.builder;
 
-import be.rommens.zeus.model.Comic;
-import be.rommens.zeus.model.Issue;
+import be.rommens.zeus.model.entity.Comic;
+import be.rommens.zeus.model.entity.Issue;
 
 import java.time.LocalDate;
 

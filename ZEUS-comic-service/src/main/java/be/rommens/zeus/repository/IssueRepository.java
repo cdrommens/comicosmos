@@ -1,6 +1,6 @@
 package be.rommens.zeus.repository;
 
-import be.rommens.zeus.model.Issue;
+import be.rommens.zeus.model.entity.Issue;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,6 +14,7 @@ import java.util.List;
 @Repository
 public interface IssueRepository extends JpaRepository<Issue, Integer> {
 
+    //TODO : custom query met join voor performantie
     List<Issue> findAllByDownloadedFalse();
 
 }

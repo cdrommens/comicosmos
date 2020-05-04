@@ -1,4 +1,4 @@
-package be.rommens.zeus.model;
+package be.rommens.zeus.model.event;
 
 import be.rommens.hera.api.Provider;
 import lombok.Data;

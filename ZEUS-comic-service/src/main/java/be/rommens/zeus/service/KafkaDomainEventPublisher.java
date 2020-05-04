@@ -1,6 +1,6 @@
 package be.rommens.zeus.service;
 
-import be.rommens.zeus.model.DomainEvent;
+import be.rommens.zeus.model.event.DomainEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.messaging.support.GenericMessage;

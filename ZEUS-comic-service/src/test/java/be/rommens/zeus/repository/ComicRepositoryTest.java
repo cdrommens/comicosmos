@@ -1,6 +1,6 @@
 package be.rommens.zeus.repository;
 
-import be.rommens.zeus.model.Comic;
+import be.rommens.zeus.model.entity.Comic;
 import com.github.database.rider.core.api.dataset.DataSet;
 import com.github.database.rider.junit5.api.DBRider;
 import org.hamcrest.MatcherAssert;

@@ -1,4 +1,4 @@
-package be.rommens.zeus.model;
+package be.rommens.zeus.model.entity;
 
 import be.rommens.hera.api.Provider;
 import be.rommens.hera.api.Status;

@@ -1,6 +1,6 @@
 package be.rommens.zeus.repository;
 
-import be.rommens.zeus.model.Issue;
+import be.rommens.zeus.model.entity.Issue;
 import com.github.database.rider.core.api.dataset.DataSet;
 import com.github.database.rider.junit5.api.DBRider;
 import org.junit.jupiter.api.Test;

@@ -1,5 +1,6 @@
-package be.rommens.zeus.model;
+package be.rommens.zeus.model.event;
 
+import be.rommens.zeus.model.entity.Issue;
 import org.springframework.core.convert.converter.Converter;
 
 /**

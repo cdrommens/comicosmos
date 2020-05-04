@@ -1,7 +1,7 @@
 package be.rommens.zeus.service;
 
-import be.rommens.zeus.model.DownloadIssueConverter;
-import be.rommens.zeus.model.Issue;
+import be.rommens.zeus.model.entity.Issue;
+import be.rommens.zeus.model.event.DownloadIssueConverter;
 import be.rommens.zeus.repository.IssueRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,11 +26,16 @@ public class IssueService {
     private final DomainEventPublisher domainEventsPublisher;
 
     @Transactional(readOnly = true)
-    public void downloadNewIssues() {
+    public Integer downloadNewIssues() {
+        int numberOfScheduledComics = 0;
         List<Issue> issuesToDownload = issueRepository.findAllByDownloadedFalse();
         if (CollectionUtils.isEmpty(issuesToDownload)) {
-            //TODO : what to return?
+            return numberOfScheduledComics;
         }
-        issuesToDownload.forEach(issue -> domainEventsPublisher.publish(new DownloadIssueConverter().convert(issue)));
+        for (Issue issue : issuesToDownload) {
+            domainEventsPublisher.publish(new DownloadIssueConverter().convert(issue));
+            numberOfScheduledComics++;
+        }
+        return numberOfScheduledComics;
     }
 }

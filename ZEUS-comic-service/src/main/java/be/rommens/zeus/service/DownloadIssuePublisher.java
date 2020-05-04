@@ -1,6 +1,6 @@
 package be.rommens.zeus.service;
 
-import be.rommens.zeus.model.DownloadIssue;
+import be.rommens.zeus.model.event.DownloadIssue;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.stream.messaging.Source;

@@ -1,6 +1,6 @@
 package be.rommens.zeus.repository;
 
-import be.rommens.zeus.model.Comic;
+import be.rommens.zeus.model.entity.Comic;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,9 +1,9 @@
 package be.rommens.zeus.service;
 
-import be.rommens.zeus.model.Comic;
 import be.rommens.zeus.model.ComicTestObjectFactory;
-import be.rommens.zeus.model.Issue;
 import be.rommens.zeus.model.builder.IssueBuilder;
+import be.rommens.zeus.model.entity.Comic;
+import be.rommens.zeus.model.entity.Issue;
 import com.github.database.rider.core.api.configuration.DBUnit;
 import com.github.database.rider.core.api.configuration.Orthography;
 import com.github.database.rider.core.api.dataset.DataSet;
