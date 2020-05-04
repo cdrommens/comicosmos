@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
-import java.io.IOException;
 
 /**
  * User : cederik
@@ -33,7 +32,7 @@ public class CleanUpCommand extends AbstractCommand {
             }
             log.info("   [CleanUp] Folder {} deleted", issueFolder);
             return CommandResult.COMPLETED;
-        } catch (IOException e) {
+        } catch (Exception e) {
             log.error("   [CleanUp] Something went wrong when deleting folder; cause :", e);
             return CommandResult.ERROR;
         }

@@ -1,4 +1,4 @@
-package be.rommens.zeus.model;
+package be.rommens.zeus.model.entity;
 
 import lombok.ToString;
 
@@ -29,7 +29,7 @@ public class Issue {
     private Comic comic;
     private String issueNumber;
     private LocalDate dateOfRelease;
-    private String url;
+    private Boolean downloaded;
 
     @Id
     @SequenceGenerator(name = "ISSUE_ID_GENERATOR", sequenceName = "SEQ_ISSUE")
@@ -74,12 +74,12 @@ public class Issue {
     }
 
     @Basic
-    @Column(name = "URL", nullable = false)
-    public String getUrl() {
-        return url;
+    @Column(name = "DOWNLOADED", nullable = false)
+    public Boolean getDownloaded() {
+        return downloaded;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setDownloaded(Boolean downloaded) {
+        this.downloaded = downloaded;
     }
 }

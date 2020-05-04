@@ -2,9 +2,9 @@ package be.rommens.zeus.model.builder;
 
 import be.rommens.hera.api.Provider;
 import be.rommens.hera.api.Status;
-import be.rommens.zeus.model.Comic;
-import be.rommens.zeus.model.Issue;
-import be.rommens.zeus.model.Publisher;
+import be.rommens.zeus.model.entity.Comic;
+import be.rommens.zeus.model.entity.Issue;
+import be.rommens.zeus.model.entity.Publisher;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

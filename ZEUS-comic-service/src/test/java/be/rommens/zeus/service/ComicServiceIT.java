@@ -1,9 +1,9 @@
 package be.rommens.zeus.service;
 
-import be.rommens.zeus.model.Comic;
 import be.rommens.zeus.model.ComicTestObjectFactory;
-import be.rommens.zeus.model.Issue;
 import be.rommens.zeus.model.builder.IssueBuilder;
+import be.rommens.zeus.model.entity.Comic;
+import be.rommens.zeus.model.entity.Issue;
 import com.github.database.rider.core.api.configuration.DBUnit;
 import com.github.database.rider.core.api.configuration.Orthography;
 import com.github.database.rider.core.api.dataset.DataSet;
@@ -43,7 +43,7 @@ public class ComicServiceIT {
 
     @Test
     @Transactional(readOnly = true)
-    public void testGetComic() {
+    public void whenGetComicById_thenReturnComic() {
         Comic result = comicService.getComic(-1).orElse(null);
         assertThat(result, is(notNullValue()));
         assertThat(result.getIssues(), hasSize(3));
@@ -53,12 +53,12 @@ public class ComicServiceIT {
 
     @Test
     @ExpectedDataSet(value = "datasets/comicservice/add-issue-to-comic-expected.yml", orderBy = "DATE_OF_RELEASE", ignoreCols = "ISSUE_ID")
-    public void testAddIssueToExistingComic() {
+    public void whenAddIssueToExistingComic_thenComicMustBeUpdated() {
         Comic comic = ComicTestObjectFactory.getFullDcComic(-1);
         Issue newIssue = IssueBuilder.anIssue()
             .issueNumber("4")
             .dateOfRelease(LocalDate.of(2020, 1, 1))
-            .url("url4").build();
+            .downloaded(false).build();
         comic.addIssue(newIssue);
         comic.setAuthor("Another author");
         comicService.save(comic);
@@ -66,7 +66,7 @@ public class ComicServiceIT {
 
     @Test
     @ExpectedDataSet(value = "datasets/comicservice/save-new-comic-expected.yml", orderBy = "DATE_OF_RELEASE", ignoreCols = {"COMIC_ID","ISSUE_ID"})
-    public void testSaveNewComic() {
+    public void whenSaveNewComic_thenComicMustBeSaved() {
         Comic comic = ComicTestObjectFactory.getFullMarvelComic(null);
         comic.getIssues().forEach(issue -> issue.setIssueId(null));
         comicService.save(comic);
@@ -74,7 +74,7 @@ public class ComicServiceIT {
 
     @Test
     @Transactional(readOnly = true)
-    public void testGetAllComics() {
+    public void whenGetAllComics_thenReturnAllComics() {
         List<Comic> result = comicService.getAllComics();
         result.forEach(c -> log.info(c.toString()));
         assertThat(result, is(notNullValue()));

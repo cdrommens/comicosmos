@@ -10,7 +10,7 @@ import be.rommens.hades.core.Command;
 import be.rommens.hades.core.CommandStep;
 import be.rommens.hera.api.service.ScraperFactory;
 import be.rommens.hera.core.Scraper;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -22,17 +22,17 @@ import org.springframework.stereotype.Component;
  * Time : 15:24
  */
 @Component
-public class IssueAssemblyChainFactory implements AssemblyChainFactory<Issue> {
+@RequiredArgsConstructor
+public class IssueAssemblyChainFactory implements AssemblyChainFactory<DownloadIssueMessage> {
 
     @Value("${download.folder.base}")
     private String baseUrl;
 
-    @Autowired
-    private ScraperFactory scraperFactory;
+    private final ScraperFactory scraperFactory;
 
     @Override
-    public Command createAssemblyChain(Issue issue) {
-        IssueAssemblyContext context = createContextObject(issue);
+    public Command createAssemblyChain(DownloadIssueMessage downloadIssueMessage) {
+        IssueAssemblyContext context = createContextObject(downloadIssueMessage);
         return createChain(context);
     }
 
@@ -42,8 +42,8 @@ public class IssueAssemblyChainFactory implements AssemblyChainFactory<Issue> {
         CommandStep downloadPages = new DownloadIssuePagesCommand(context);
         CommandStep zip = new ZipFolderCommand(context);
         CommandStep clean = new CleanUpCommand(context);
-        // update issue in db command
-        // notify mongodb change
+        //TODO: update issue in db command
+        //TODO: notify mongodb change
 
         return IssueAssemblyChainBuilder.builderInstance()
             .thenExecute(create)
@@ -54,8 +54,8 @@ public class IssueAssemblyChainFactory implements AssemblyChainFactory<Issue> {
             .buildAssemblyChain();
     }
 
-    private IssueAssemblyContext createContextObject(Issue issue) {
-        Scraper scraper = scraperFactory.createScraper(issue.getProvider());
-        return new IssueAssemblyContext(issue, baseUrl, scraper);
+    private IssueAssemblyContext createContextObject(DownloadIssueMessage downloadIssueMessage) {
+        Scraper scraper = scraperFactory.createScraper(downloadIssueMessage.getProvider());
+        return new IssueAssemblyContext(downloadIssueMessage, baseUrl, scraper);
     }
 }

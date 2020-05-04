@@ -5,10 +5,10 @@ import be.rommens.hera.api.Status;
 import be.rommens.hera.api.models.ScrapedComic;
 import be.rommens.hera.api.service.ScraperFactory;
 import be.rommens.hera.core.Scraper;
-import be.rommens.zeus.model.Comic;
-import be.rommens.zeus.model.Publisher;
 import be.rommens.zeus.model.builder.ComicBuilder;
 import be.rommens.zeus.model.builder.IssueBuilder;
+import be.rommens.zeus.model.entity.Comic;
+import be.rommens.zeus.model.entity.Publisher;
 import be.rommens.zeus.repository.PublisherRepository;
 import be.rommens.zeus.service.ComicService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -58,15 +58,15 @@ public class IndexController {
             .issue(IssueBuilder.anIssue()
                 .issueNumber("1")
                 .dateOfRelease(LocalDate.of(2016,1,1))
-                .url("url1"))
+                .downloaded(true))
             .issue(IssueBuilder.anIssue()
                 .issueNumber("Annual-1")
                 .dateOfRelease(LocalDate.of(2016,2,1))
-                .url("url-annual1"))
+                .downloaded(false))
             .issue(IssueBuilder.anIssue()
                 .issueNumber("2")
                 .dateOfRelease(LocalDate.of(2016,3,1))
-                .url("url2"))
+                .downloaded(true))
             .build();
 
         comicService.save(c);

@@ -1,6 +1,6 @@
 package be.rommens.zeus.repository;
 
-import be.rommens.zeus.model.Publisher;
+import be.rommens.zeus.model.entity.Publisher;
 import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -26,12 +26,22 @@ public class CleanUpCommandTest {
     Path tempDir;
 
     @Test
-    public void testDeleteDir() throws IOException {
+    public void whenIsDir_thenReturnCompleteAndDirDeleted() throws IOException {
         File newDir = Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1").toFile();
         FileUtils.forceMkdir(newDir);
         CleanUpCommand command = new CleanUpCommand(IssueAssemblyContextTestObjectFactory.createTestContext(tempDir.toString(), null));
         CommandResult result = command.body();
         assertThat(result, is(CommandResult.COMPLETED));
         assertThat(Files.exists(Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1")), is(Boolean.FALSE));
+    }
+
+    @Test
+    public void whenIsNotDir_thenReturnErrorAndDirNotCleanUp() throws IOException {
+        File newDir = Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1").toFile();
+        FileUtils.touch(newDir);
+        CleanUpCommand command = new CleanUpCommand(IssueAssemblyContextTestObjectFactory.createTestContext(tempDir.toString(), null));
+        CommandResult result = command.body();
+        assertThat(result, is(CommandResult.ERROR));
+        assertThat(Files.exists(Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1")), is(Boolean.TRUE));
     }
 }

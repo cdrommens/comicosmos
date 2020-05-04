@@ -51,7 +51,7 @@ public class DownloadIssuePagesCommandTest {
     }
 
     @Test
-    public void testIfFilesAreDownloaded() throws IOException {
+    public void whenIssueExists_thenReturnCompletedAndDownloadAllPages() throws IOException {
         File newDir = Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1").toFile();
         FileUtils.forceMkdir(newDir);
         assertThat(Files.exists(Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1")), is(Boolean.TRUE));
@@ -75,7 +75,7 @@ public class DownloadIssuePagesCommandTest {
     }
 
     @Test
-    public void testIfFilesAreDownloadedWithUnknownPage() throws IOException {
+    public void whenIssueNotExists_thenReturnErrorAndFilesNotDownloaded() throws IOException {
         File newDir = Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1").toFile();
         FileUtils.forceMkdir(newDir);
         assertThat(Files.exists(Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1")), is(Boolean.TRUE));

@@ -21,7 +21,7 @@ import static org.hamcrest.Matchers.nullValue;
 public class ScrapeIssueCommandTest {
 
     @Test
-    public void testScrapeIssue() {
+    public void whenIssueExists_thenReturnCompletedAndScrapedIssue() {
         ScrapedIssue scrapedIssue = new ScrapedIssueBuilder()
             .comic("comickey")
             .issueNumber("1")
@@ -38,7 +38,7 @@ public class ScrapeIssueCommandTest {
     }
 
     @Test
-    public void testScrapeIssueWithError() {
+    public void whenIssueNotExists_thenReturnErrorAndNoScrapedIssue() {
         Scraper scraper = ScraperTestFactory.willThrowComicNotFound("comickey");
         IssueAssemblyContext context = IssueAssemblyContextTestObjectFactory.createTestContext(null, scraper);
         ScrapeIssueCommand command = new ScrapeIssueCommand(context);
