@@ -33,10 +33,6 @@ public class ZipFolderCommand extends AbstractCommand {
 
     @Override
     public CommandResult body() {
-        if (!issueFolder.isDirectory()) {
-            log.error(issueFolder + " is not a folder!");
-            return CommandResult.ERROR;
-        }
         if (ArrayUtils.isEmpty(issueFolder.listFiles())) {
             log.error(issueFolder + " is empty! No files to zip");
             return CommandResult.ERROR;

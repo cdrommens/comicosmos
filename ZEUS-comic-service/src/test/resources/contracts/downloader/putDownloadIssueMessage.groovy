@@ -1,6 +1,8 @@
 package contracts.downloader
 
-org.springframework.cloud.contract.spec.Contract.make {
+import org.springframework.cloud.contract.spec.Contract
+
+Contract.make {
     description("""
         the issue to download
     """)
