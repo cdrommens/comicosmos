@@ -1,14 +1,13 @@
 package be.rommens.zeus.repository;
 
 import be.rommens.zeus.model.entity.Publisher;
-import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.List;
 
-import static org.hamcrest.Matchers.hasSize;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * User : cederik
@@ -24,6 +23,6 @@ public class PublisherRepositoryTest {
     @Test
     public void testFindAll() {
         List<Publisher> result = repository.findAll();
-        MatcherAssert.assertThat(result, hasSize(2));
+        assertThat(result).hasSize(2);
     }
 }

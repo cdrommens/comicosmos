@@ -24,8 +24,7 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.concurrent.BlockingQueue;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -61,6 +60,7 @@ public class DomainEventPublisherTest {
 
     @Test
     public void whenDownloadNewIssues_thenDownloadIssueIsPublished() throws Exception {
+        //given
         Comic comic = ComicBuilder.aComic()
             .comicId(1)
             .key("comickey")
@@ -75,25 +75,28 @@ public class DomainEventPublisherTest {
 
         DownloadIssueOutput expected = new DownloadIssueOutput(1);
 
+        //when/then
         this.mockMvc.perform(get("/issue/download"))
             .andExpect(status().isOk())
             .andExpect(content().json(mapper.writeValueAsString(expected)))
             .andDo(print());
 
-        assertThat(events.poll().getPayload().toString(), containsString("download-issue"));
+        assertThat(events.poll().getPayload().toString()).contains("download-issue");
     }
 
     @Test
     public void whenNoIssues_thenPublisherIsNotTriggered() throws Exception {
+        //given
         given(issueRepository.findAllByDownloadedFalse()).willReturn(Collections.emptyList());
 
         DownloadIssueOutput expected = new DownloadIssueOutput(0);
 
+        //when / then
         this.mockMvc.perform(get("/issue/download"))
             .andExpect(status().isOk())
             .andExpect(content().json(mapper.writeValueAsString(expected)))
             .andDo(print());
 
-        assertThat(events.poll(), is(nullValue()));
+        assertThat(events.poll()).isNull();
     }
 }

@@ -16,8 +16,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.times;
 
@@ -43,21 +42,29 @@ public class IssueServiceIT {
     @Test
     @DataSet(value = "datasets/comicservice/setup.yml")
     public void whenIssuesFound_thenPublisherIsCalledOneTime() {
+        //given
         DownloadIssue expected = new DownloadIssue();
         expected.setComicKey("batman-2016");
         expected.setProvider(Provider.READCOMICS);
         expected.setIssueId(-3);
         expected.setIssueNumber("Annual-1");
         expected.setDateOfRelease(LocalDate.of(2016, 2, 1));
+
+        //when
         Integer result = issueService.downloadNewIssues();
-        assertThat(result, is(1));
+
+        //then
+        assertThat(result).isEqualTo(1);
         then(publisher).should(times(1)).publish(expected);
     }
 
     @Test
     public void whenNoIssuesFound_thenPublisherIsNotCalled() {
+        //when
         Integer result = issueService.downloadNewIssues();
-        assertThat(result, is(0));
+
+        //then
+        assertThat(result).isEqualTo(0);
         then(publisher).shouldHaveNoInteractions();
     }
 }

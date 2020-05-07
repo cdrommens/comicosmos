@@ -5,8 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
 /**
@@ -22,15 +21,25 @@ public class IssueControllerTest {
 
     @Test
     public void whenIssuesFound_returnNumberOfScheduledIssues() {
+        //given
         given(issueService.downloadNewIssues()).willReturn(2);
+
+        //when
         int result = issueService.downloadNewIssues();
-        assertThat(result, is(2));
+
+        //then
+        assertThat(result).isEqualTo(2);
     }
 
     @Test
     public void whenNoIssuesFound_returnZero() {
+        //given
         given(issueService.downloadNewIssues()).willReturn(0);
+
+        //when
         int result = issueService.downloadNewIssues();
-        assertThat(result, is(0));
+
+        //then
+        assertThat(result).isEqualTo(0);
     }
 }
