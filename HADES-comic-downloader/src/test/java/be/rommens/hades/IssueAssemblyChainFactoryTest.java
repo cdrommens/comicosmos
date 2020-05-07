@@ -30,6 +30,7 @@ import static org.hamcrest.Matchers.*;
  * Time : 09:07
  */
 @SpringBootTest(
+    webEnvironment = SpringBootTest.WebEnvironment.NONE,
     properties = {
         "providers.url.readcomics=http://localhost:${wiremock.server.port}/",
     }
