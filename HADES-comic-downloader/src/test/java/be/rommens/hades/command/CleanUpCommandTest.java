@@ -12,8 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * User : cederik
@@ -27,21 +26,27 @@ public class CleanUpCommandTest {
 
     @Test
     public void whenIsDir_thenReturnCompleteAndDirDeleted() throws IOException {
+        //given
         File newDir = Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1").toFile();
         FileUtils.forceMkdir(newDir);
         CleanUpCommand command = new CleanUpCommand(IssueAssemblyContextTestObjectFactory.createTestContext(tempDir.toString(), null));
+        //when
         CommandResult result = command.body();
-        assertThat(result, is(CommandResult.COMPLETED));
-        assertThat(Files.exists(Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1")), is(Boolean.FALSE));
+        //then
+        assertThat(result).isEqualTo(CommandResult.COMPLETED);
+        assertThat(Files.exists(Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1"))).isFalse();
     }
 
     @Test
     public void whenIsNotDir_thenReturnErrorAndDirNotCleanUp() throws IOException {
+        //given
         File newDir = Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1").toFile();
         FileUtils.touch(newDir);
         CleanUpCommand command = new CleanUpCommand(IssueAssemblyContextTestObjectFactory.createTestContext(tempDir.toString(), null));
+        //when
         CommandResult result = command.body();
-        assertThat(result, is(CommandResult.ERROR));
-        assertThat(Files.exists(Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1")), is(Boolean.TRUE));
+        //then
+        assertThat(result).isEqualTo(CommandResult.ERROR);
+        assertThat(Files.exists(Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1"))).isTrue();
     }
 }

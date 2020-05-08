@@ -7,7 +7,6 @@ import com.github.database.rider.core.api.configuration.Orthography;
 import com.github.database.rider.core.api.dataset.DataSet;
 import com.github.database.rider.junit5.api.DBRider;
 import lombok.extern.slf4j.Slf4j;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -17,7 +16,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
 
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.times;
 
@@ -32,7 +31,6 @@ import static org.mockito.Mockito.times;
 @DBUnit(caseInsensitiveStrategy = Orthography.LOWERCASE, cacheConnection = false)
 @ActiveProfiles("container")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@DataSet(value = "datasets/comicservice/setup.yml")
 public class IssueServiceIT {
 
     @Autowired
@@ -42,15 +40,31 @@ public class IssueServiceIT {
     private DomainEventPublisher publisher;
 
     @Test
-    public void whenDownloadNewIssue_thenPublisherIsCalledOneTime() {
+    @DataSet(value = "datasets/comicservice/setup.yml")
+    public void whenIssuesFound_thenPublisherIsCalledOneTime() {
+        //given
         DownloadIssue expected = new DownloadIssue();
         expected.setComicKey("batman-2016");
         expected.setProvider(Provider.READCOMICS);
         expected.setIssueId(-3);
         expected.setIssueNumber("Annual-1");
         expected.setDateOfRelease(LocalDate.of(2016, 2, 1));
+
+        //when
         Integer result = issueService.downloadNewIssues();
-        assertThat(result, Matchers.<Integer>is(1));
+
+        //then
+        assertThat(result).isEqualTo(1);
         then(publisher).should(times(1)).publish(expected);
+    }
+
+    @Test
+    public void whenNoIssuesFound_thenPublisherIsNotCalled() {
+        //when
+        Integer result = issueService.downloadNewIssues();
+
+        //then
+        assertThat(result).isEqualTo(0);
+        then(publisher).shouldHaveNoInteractions();
     }
 }

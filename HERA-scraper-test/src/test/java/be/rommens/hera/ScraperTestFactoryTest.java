@@ -11,9 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.*;
 
 /**
  * User : cederik
@@ -24,6 +22,7 @@ public class ScraperTestFactoryTest {
 
     @Test
     public void testWillReturnScrapedComic() throws IOException {
+        //given
         ScrapedComic expected = new ScrapedComicBuilder()
             .title("title")
             .author("author")
@@ -38,20 +37,17 @@ public class ScraperTestFactoryTest {
         scraperMock.setExpectedScrapedComic(expected);
 
         Scraper scraper = ScraperTestFactory.willReturnScrapedComic(expected);
+
+        //when
         ScrapedComic result = scraper.scrapeComic("name");
 
-        assertThat(result.getTitle(), is(expected.getTitle()));
-        assertThat(result.getAuthor(), is(expected.getAuthor()));
-        assertThat(result.getPublisher(), is(expected.getPublisher()));
-        assertThat(result.getCover(), is(expected.getCover()));
-        assertThat(result.getDateOfRelease(), is(expected.getDateOfRelease()));
-        assertThat(result.getStatus(), is(expected.getStatus()));
-        assertThat(result.getSummary(), is(expected.getSummary()));
-        assertThat(result.getIssues(), is(expected.getIssues()));
+        //then
+        assertThat(result).isEqualToComparingFieldByField(expected);
     }
 
     @Test
     public void testWillReturnScrapedIssue() throws IOException {
+        //given
         ScrapedIssue expected = new ScrapedIssueBuilder()
             .comic("comic")
             .issueNumber("issueNumber")
@@ -62,46 +58,60 @@ public class ScraperTestFactoryTest {
 
         ScraperMock scraperMock = new ScraperMock(null);
         scraperMock.setExpectedScrapedIssue(expected);
-
         Scraper scraper = ScraperTestFactory.willReturnScrapedIssue(expected);
+
+        //when
         ScrapedIssue result = scraper.scrapeIssue("name", "issue");
 
-        assertThat(result.getComic(), is(expected.getComic()));
-        assertThat(result.getIssueNumber(), is(expected.getIssueNumber()));
-        assertThat(result.getNumberOfPages(), is(expected.getNumberOfPages()));
-        assertThat(result.getPages(), is(expected.getPages()));
-
+        //then
+        assertThat(result).isEqualToComparingFieldByField(expected);
     }
 
     @Test
     public void testWillThrowComicNotFoundFromComic() {
+        //given
         ScraperMock scraperMock = new ScraperMock(null);
         scraperMock.setExpectedException("name");
 
         Scraper scraper = ScraperTestFactory.willThrowComicNotFound("name");
-        assertThrows(ComicNotFoundException.class, () -> scraper.scrapeComic("unknown"));
+
+        //then
+        assertThatThrownBy(() -> scraper.scrapeComic("unknown"))
+            .isInstanceOf(ComicNotFoundException.class);
     }
 
     @Test
     public void testWillThrowComicNotFoundFromIssue() {
+        //given
         ScraperMock scraperMock = new ScraperMock(null);
         scraperMock.setExpectedException("name");
 
         Scraper scraper = ScraperTestFactory.willThrowComicNotFound("name");
-        assertThrows(ComicNotFoundException.class, () -> scraper.scrapeIssue("unknown", "issue"));
+
+        //then
+        assertThatThrownBy(() -> scraper.scrapeIssue("unknown", "issue"))
+            .isInstanceOf(ComicNotFoundException.class);
     }
 
     @Test
     public void testWillThrowUnsupportedOperationException() {
+        //given
         ScraperMock scraperMock = new ScraperMock(null);
-        assertThrows(UnsupportedOperationException.class, () -> scraperMock.buildUrlForComic("unknown"));
-        assertThrows(UnsupportedOperationException.class, () -> scraperMock.buildUrlForIssue("unknown", "issue"));
+
+        //then
+        assertThatThrownBy(() -> scraperMock.buildUrlForComic("unknown"))
+            .isInstanceOf(UnsupportedOperationException.class);
+        assertThatThrownBy(() -> scraperMock.buildUrlForIssue("unknown", "issue"))
+            .isInstanceOf(UnsupportedOperationException.class);
     }
 
     @Test
     public void testWillThrowIllegalStateException() {
+        //given
         Scraper scraper = ScraperTestFactory.willReturnScrapedComic(null);
-        assertThrows(IllegalStateException.class, () -> scraper.scrapeComic("name"));
-        assertThrows(IllegalStateException.class, () -> scraper.scrapeIssue("unknown", "issue"));
+
+        //when
+        assertThatIllegalStateException().isThrownBy(() -> scraper.scrapeComic("name"));
+        assertThatIllegalStateException().isThrownBy(() -> scraper.scrapeIssue("unknown", "issue"));
     }
 }

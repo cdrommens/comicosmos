@@ -4,25 +4,32 @@ import be.rommens.hera.api.Status;
 import be.rommens.zeus.model.builder.ComicBuilder;
 import be.rommens.zeus.model.builder.IssueBuilder;
 import be.rommens.zeus.model.entity.Comic;
-import be.rommens.zeus.model.entity.Issue;
+import be.rommens.zeus.model.output.DownloadIssueOutput;
 import be.rommens.zeus.repository.IssueRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Iterables;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.cloud.stream.test.binder.MessageCollector;
 import org.springframework.messaging.Message;
+import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.shaded.com.google.common.collect.ImmutableList;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.concurrent.BlockingQueue;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.is;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * User : cederik
@@ -30,6 +37,7 @@ import static org.hamcrest.Matchers.is;
  * Time : 21:33
  */
 @SpringBootTest
+@AutoConfigureMockMvc
 public class DomainEventPublisherTest {
 
     @Autowired
@@ -37,7 +45,9 @@ public class DomainEventPublisherTest {
     @Autowired
     private MessageCollector messageCollector;
     @Autowired
-    private IssueService issueService;
+    private MockMvc mockMvc;
+    @Autowired
+    private ObjectMapper mapper;
     @MockBean
     private IssueRepository issueRepository;
 
@@ -49,18 +59,44 @@ public class DomainEventPublisherTest {
     }
 
     @Test
-    public void whenDownloadNewIssues_thenDownloadIssueIsPublished() {
-        Issue issue = IssueBuilder.anIssue()
-            .issueId(1)
-            .issueNumber("1")
-            .dateOfRelease(LocalDate.of(2020,1,1))
-            .downloaded(Boolean.FALSE)
+    public void whenDownloadNewIssues_thenDownloadIssueIsPublished() throws Exception {
+        //given
+        Comic comic = ComicBuilder.aComic()
+            .comicId(1)
+            .key("comickey")
+            .status(Status.ONGOING)
+            .issue(IssueBuilder.anIssue()
+                .issueId(1)
+                .issueNumber("1")
+                .dateOfRelease(LocalDate.of(2020,1,1))
+                .downloaded(Boolean.FALSE))
             .build();
-        Comic comic = ComicBuilder.aComic().comicId(1).key("comickey").status(Status.ONGOING).build();
-        comic.addIssue(issue);
-        BDDMockito.when(issueRepository.findAllByDownloadedFalse()).thenReturn(ImmutableList.of(issue));
-        int result = issueService.downloadNewIssues();
-        assertThat(result, is(1));
-        assertThat(events.poll().getPayload().toString(), containsString("download-issue"));
+        given(issueRepository.findAllByDownloadedFalse()).willReturn(ImmutableList.of(Iterables.getOnlyElement(comic.getIssues())));
+
+        DownloadIssueOutput expected = new DownloadIssueOutput(1);
+
+        //when/then
+        this.mockMvc.perform(get("/issue/download"))
+            .andExpect(status().isOk())
+            .andExpect(content().json(mapper.writeValueAsString(expected)))
+            .andDo(print());
+
+        assertThat(events.poll().getPayload().toString()).contains("download-issue");
+    }
+
+    @Test
+    public void whenNoIssues_thenPublisherIsNotTriggered() throws Exception {
+        //given
+        given(issueRepository.findAllByDownloadedFalse()).willReturn(Collections.emptyList());
+
+        DownloadIssueOutput expected = new DownloadIssueOutput(0);
+
+        //when / then
+        this.mockMvc.perform(get("/issue/download"))
+            .andExpect(status().isOk())
+            .andExpect(content().json(mapper.writeValueAsString(expected)))
+            .andDo(print());
+
+        assertThat(events.poll()).isNull();
     }
 }

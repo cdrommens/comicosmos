@@ -12,8 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * User : cederik
@@ -27,19 +26,24 @@ public class CreateFolderCommandTest {
 
     @Test
     public void whenIsFolder_returnCompletedAndFolderCreated() {
+        //when
         CreateFolderCommand command = new CreateFolderCommand(IssueAssemblyContextTestObjectFactory.createTestContext(tempDir.toString(), null));
         CommandResult result = command.body();
-        assertThat(result, is(CommandResult.COMPLETED));
-        assertThat(Files.exists(Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1")), is(Boolean.TRUE));
+        //then
+        assertThat(result).isEqualTo(CommandResult.COMPLETED);
+        assertThat(Files.exists(Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1"))).isTrue();
     }
 
     @Test
     public void whenIsNotFolder_returnErrorAndDirNotCreated() throws IOException {
+        //given
         File newDir = Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1").toFile();
         FileUtils.touch(newDir);
         CreateFolderCommand command = new CreateFolderCommand(IssueAssemblyContextTestObjectFactory.createTestContext(tempDir.toString(), null));
+        //when
         CommandResult result = command.body();
-        assertThat(result, is(CommandResult.ERROR));
-        assertThat(Files.isDirectory(Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1")), is(Boolean.FALSE));
+        //then
+        assertThat(result).isEqualTo(CommandResult.ERROR);
+        assertThat(Files.isDirectory(Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1"))).isFalse();
     }
 }
