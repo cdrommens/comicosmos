@@ -1,7 +1,8 @@
 package be.rommens.hades.command;
 
-import be.rommens.hades.assembler.DownloadIssueMessage;
 import be.rommens.hades.assembler.IssueAssemblyContext;
+import be.rommens.hades.connectivity.DownloadIssueMessage;
+import be.rommens.hades.core.AbstractCommand;
 import be.rommens.hades.core.CommandResult;
 import lombok.extern.slf4j.Slf4j;
 import net.lingala.zip4j.ZipFile;
@@ -64,6 +65,12 @@ public class ZipFolderCommand extends AbstractCommand {
             Thread.currentThread().interrupt();
             return CommandResult.ERROR;
         }
+    }
+
+    @Override
+    public boolean rollback() {
+        log.info("ZipFolderCommand rolled back");
+        return true;
     }
 
     private String createCbzFilePath(String baseUrl, DownloadIssueMessage downloadIssueMessage) {

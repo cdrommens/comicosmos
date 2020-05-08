@@ -1,7 +1,6 @@
-package be.rommens.hades.probeersel;
+package be.rommens.hades.core;
 
 import be.rommens.hades.assembler.IssueAssemblyContext;
-import be.rommens.hades.core.CommandResult;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -10,9 +9,15 @@ import lombok.RequiredArgsConstructor;
  * Time : 19:51
  */
 @RequiredArgsConstructor
-public abstract class AbstractCommand implements CommandStep {
+public abstract class AbstractCommand implements Command {
 
-    public final IssueAssemblyContext issueAssemblyContext;
+    private final IssueAssemblyContext issueAssemblyContext;
+
+    protected abstract CommandResult body();
+
+    protected IssueAssemblyContext getIssueAssemblyContext() {
+        return issueAssemblyContext;
+    }
 
     @Override
     public boolean execute() {

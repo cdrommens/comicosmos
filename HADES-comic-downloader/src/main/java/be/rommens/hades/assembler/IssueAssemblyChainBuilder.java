@@ -1,37 +1,78 @@
 package be.rommens.hades.assembler;
 
-import be.rommens.hades.core.CommandStep;
+import be.rommens.hades.core.Command;
+import be.rommens.hades.core.IssueAssemblyDsl;
+import lombok.extern.slf4j.Slf4j;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * User : cederik
- * Date : 22/04/2020
- * Time : 15:18
+ * Date : 08/05/2020
+ * Time : 09:45
  */
-public final class IssueAssemblyChainBuilder {
+@Slf4j
+public final class IssueAssemblyChainBuilder
+    implements IssueAssemblyDsl, IssueAssemblyDsl.Context, IssueAssemblyDsl.Precondition, IssueAssemblyDsl.PreconditionOrElse, IssueAssemblyDsl.StartChain, IssueAssemblyDsl.InterChain, IssueAssemblyDsl.End {
 
-    private CommandStep firstCommand;
-    private CommandStep lastCommand;
+    private IssueAssemblyContext context;
+    private Class<? extends Command> precondition;
+    private Class<? extends Command> preconditionOnFailed;
+    private final List<Class<? extends Command>> commandQueue = new ArrayList<>();
+    private Class<? extends Command> onError;
 
     private IssueAssemblyChainBuilder() {
-
+        // force to use builder
     }
 
-    public static IssueAssemblyChainBuilder builderInstance() {
+    public static IssueAssemblyDsl createInstance() {
         return new IssueAssemblyChainBuilder();
     }
 
-    public IssueAssemblyChainBuilder thenExecute(CommandStep command) {
-        if (firstCommand == null) {
-            this.firstCommand = command;
-            this.lastCommand = command;
-            return this;
-        }
-        lastCommand.linkWith(command);
-        lastCommand = command;
+    @Override
+    public StartChain withContext(IssueAssemblyContext context) {
+        this.context = context;
         return this;
     }
 
-    public CommandStep buildAssemblyChain() {
-        return firstCommand;
+    @Override
+    public Precondition withPrecondition(Class<? extends Command> commandClass) {
+        this.precondition = commandClass;
+        return this;
+    }
+
+    @Override
+    public PreconditionOrElse onFailed(Class<? extends Command> commandClass) {
+        this.preconditionOnFailed = commandClass;
+        return this;
+    }
+
+    @Override
+    public Context orElse() {
+        return this;
+    }
+
+    @Override
+    public InterChain startChain(Class<? extends Command> commandClass) {
+        commandQueue.add(commandClass);
+        return this;
+    }
+
+    @Override
+    public InterChain next(Class<? extends Command> commandClass) {
+        commandQueue.add(commandClass);
+        return this;
+    }
+
+    @Override
+    public End onError(Class<? extends Command> commandClass) {
+        this.onError = commandClass;
+        return this;
+    }
+
+    @Override
+    public IssueAssemblyChain build() {
+        return new IssueAssemblyChain(context, precondition, preconditionOnFailed, commandQueue, onError);
     }
 }

@@ -1,4 +1,4 @@
-package be.rommens.hades.assembler;
+package be.rommens.hades.connectivity;
 
 import be.rommens.hera.api.Provider;
 import lombok.Data;

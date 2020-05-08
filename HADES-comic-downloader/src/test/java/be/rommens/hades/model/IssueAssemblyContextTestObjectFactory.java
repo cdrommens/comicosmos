@@ -1,7 +1,7 @@
 package be.rommens.hades.model;
 
-import be.rommens.hades.assembler.DownloadIssueMessage;
 import be.rommens.hades.assembler.IssueAssemblyContext;
+import be.rommens.hades.connectivity.DownloadIssueMessage;
 import be.rommens.hera.core.Scraper;
 import org.apache.commons.lang3.StringUtils;
 

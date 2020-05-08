@@ -1,6 +1,6 @@
 package be.rommens.hades;
 
-import be.rommens.hades.assembler.DownloadIssueMessage;
+import be.rommens.hades.connectivity.DownloadIssueMessage;
 import be.rommens.hades.core.AssemblyChainFactory;
 import be.rommens.hera.api.Provider;
 import net.lingala.zip4j.ZipFile;
@@ -71,8 +71,6 @@ public class IssueAssemblyChainFactoryTest {
         assertThat(expected.isValidZipFile()).isTrue();
         assertThat(FileUtils.sizeOf(expected.getFile())).isGreaterThan(10L);
         assertThat(expected.getFileHeaders()).extracting("fileName").containsAnyOf("comickey-1/02.jpg", "comickey-1/03.jpg");
-        //assertThat(expected.getFileHeaders().stream().map(AbstractFileHeader::getFileName).collect(Collectors.toList()), hasItem("comickey-1/02.jpg"));
-        //assertThat(expected.getFileHeaders().stream().map(AbstractFileHeader::getFileName).collect(Collectors.toList()), hasItem("comickey-1/03.jpg"));
         assertThat(Files.exists(Paths.get(BASE_URL, "comickey", "comickey-1"))).isFalse();
     }
 }

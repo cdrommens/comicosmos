@@ -1,7 +1,8 @@
 package be.rommens.hades.command;
 
-import be.rommens.hades.assembler.DownloadIssueMessage;
 import be.rommens.hades.assembler.IssueAssemblyContext;
+import be.rommens.hades.connectivity.DownloadIssueMessage;
+import be.rommens.hades.core.AbstractCommand;
 import be.rommens.hades.core.CommandResult;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
@@ -36,6 +37,12 @@ public class CreateFolderCommand extends AbstractCommand {
             log.error("   [CreateFolderTask] Folder {} not created", issueFolder);
             return CommandResult.ERROR;
         }
+    }
+
+    @Override
+    public boolean rollback() {
+        log.info("CreateFolderCommand rolled back");
+        return true;
     }
 
     private String createIssueFolderPath(String baseUrl, DownloadIssueMessage downloadIssueMessage) {

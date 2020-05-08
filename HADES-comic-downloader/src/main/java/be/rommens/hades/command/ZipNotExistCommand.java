@@ -1,7 +1,8 @@
 package be.rommens.hades.command;
 
-import be.rommens.hades.assembler.DownloadIssueMessage;
 import be.rommens.hades.assembler.IssueAssemblyContext;
+import be.rommens.hades.connectivity.DownloadIssueMessage;
+import be.rommens.hades.core.AbstractCommand;
 import be.rommens.hades.core.CommandResult;
 import lombok.extern.slf4j.Slf4j;
 
@@ -15,12 +16,12 @@ import java.nio.file.Paths;
  */
 //TODO : to much duplication
 @Slf4j
-public class ZipExistCommand extends AbstractCommand {
+public class ZipNotExistCommand extends AbstractCommand {
 
     private static final String EXTENSION = "cbz";
     private final String cbzFilePath;
 
-    public ZipExistCommand(IssueAssemblyContext issueAssemblyContext) {
+    public ZipNotExistCommand(IssueAssemblyContext issueAssemblyContext) {
         super(issueAssemblyContext);
         this.cbzFilePath = createCbzFilePath(issueAssemblyContext.getBaseUrl(), issueAssemblyContext.getDownloadIssueMessage());
     }
@@ -31,6 +32,12 @@ public class ZipExistCommand extends AbstractCommand {
             return CommandResult.ERROR;
         }
         return CommandResult.COMPLETED;
+    }
+
+    @Override
+    public boolean rollback() {
+        log.info("ZipNotExistCommand rolled back");
+        return false;
     }
 
     private String createCbzFilePath(String baseUrl, DownloadIssueMessage downloadIssueMessage) {

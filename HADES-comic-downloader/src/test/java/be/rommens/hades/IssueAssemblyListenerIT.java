@@ -1,6 +1,6 @@
 package be.rommens.hades;
 
-import be.rommens.hades.assembler.DownloadIssueMessage;
+import be.rommens.hades.connectivity.DownloadIssueMessage;
 import be.rommens.hades.core.AssemblyChainFactory;
 import net.lingala.zip4j.ZipFile;
 import net.lingala.zip4j.exception.ZipException;

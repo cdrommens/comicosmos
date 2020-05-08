@@ -1,5 +1,6 @@
 package be.rommens.hades.assembler;
 
+import be.rommens.hades.connectivity.DownloadIssueMessage;
 import be.rommens.hera.api.models.ScrapedIssue;
 import be.rommens.hera.core.Scraper;
 import lombok.RequiredArgsConstructor;

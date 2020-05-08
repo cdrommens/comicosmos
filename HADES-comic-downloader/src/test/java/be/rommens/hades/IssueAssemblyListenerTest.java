@@ -1,8 +1,8 @@
 package be.rommens.hades;
 
-import be.rommens.hades.assembler.DownloadIssueMessage;
+import be.rommens.hades.assembler.IssueAssemblyChain;
+import be.rommens.hades.connectivity.DownloadIssueMessage;
 import be.rommens.hades.core.AssemblyChainFactory;
-import be.rommens.hades.core.Command;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +38,7 @@ public class IssueAssemblyListenerTest {
         downloadIssueMessage.setIssueNumber("1");
         Message<DownloadIssueMessage> message = new GenericMessage<>(downloadIssueMessage);
 
-        Command mock = Mockito.mock(Command.class);
+        IssueAssemblyChain mock = Mockito.mock(IssueAssemblyChain.class);
         given(mock.execute()).willReturn(Boolean.TRUE);
         given(issueAssemblyChainFactory.createAssemblyChain(downloadIssueMessage)).willReturn(mock);
 
