@@ -20,8 +20,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * User : cederik
@@ -52,9 +51,9 @@ public class DownloadIssuePagesCommandTest {
 
     @Test
     public void whenIssueExists_thenReturnCompletedAndDownloadAllPages() throws IOException {
+        //given
         File newDir = Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1").toFile();
         FileUtils.forceMkdir(newDir);
-        assertThat(Files.exists(Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1")), is(Boolean.TRUE));
 
         ScrapedIssue scrapedIssue = new ScrapedIssueBuilder()
             .comic("comickey")
@@ -66,19 +65,22 @@ public class DownloadIssuePagesCommandTest {
         IssueAssemblyContext context = IssueAssemblyContextTestObjectFactory.createTestContext(tempDir.toString(), null);
         context.setScrapedIssue(scrapedIssue);
         DownloadIssuePagesCommand command = new DownloadIssuePagesCommand(context);
+
+        //when
         CommandResult result = command.body();
 
-        assertThat(result, is(CommandResult.COMPLETED));
-
-        assertThat(Files.exists(Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1", "page1.txt")), is(Boolean.TRUE));
-        assertThat(Files.exists(Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1", "page2.txt")), is(Boolean.TRUE));
+        //then
+        assertThat(Files.exists(Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1"))).isTrue();
+        assertThat(result).isEqualTo(CommandResult.COMPLETED);
+        assertThat(Files.exists(Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1", "page1.txt"))).isTrue();
+        assertThat(Files.exists(Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1", "page2.txt"))).isTrue();
     }
 
     @Test
     public void whenIssueNotExists_thenReturnErrorAndFilesNotDownloaded() throws IOException {
+        //given
         File newDir = Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1").toFile();
         FileUtils.forceMkdir(newDir);
-        assertThat(Files.exists(Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1")), is(Boolean.TRUE));
 
         ScrapedIssue scrapedIssue = new ScrapedIssueBuilder()
             .comic("comickey")
@@ -91,8 +93,12 @@ public class DownloadIssuePagesCommandTest {
         IssueAssemblyContext context = IssueAssemblyContextTestObjectFactory.createTestContext(tempDir.toString(), null);
         context.setScrapedIssue(scrapedIssue);
         DownloadIssuePagesCommand command = new DownloadIssuePagesCommand(context);
+
+        //when
         CommandResult result = command.body();
 
-        assertThat(result, is(CommandResult.ERROR));
+        //then
+        assertThat(Files.exists(Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1"))).isTrue();
+        assertThat(result).isEqualTo(CommandResult.ERROR);
     }
 }

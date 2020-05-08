@@ -10,8 +10,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.List;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * User : cederik
@@ -32,7 +31,7 @@ public class IssueRepositoryTest {
     @Test
     public void findAllIssuesToDownloaded() {
         List<Issue> result = issueRepository.findAllByDownloadedFalse();
-        assertThat(result, is(notNullValue()));
-        assertThat(result, hasSize(1));
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
     }
 }

@@ -10,6 +10,7 @@ import java.time.LocalDate;
  * Date : 26/04/2020
  * Time : 13:46
  */
+//TODO : javax.validation
 @Data
 public class DownloadIssueMessage {
 

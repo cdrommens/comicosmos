@@ -7,6 +7,8 @@ import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.cloud.stream.messaging.Sink;
 import org.springframework.stereotype.Component;
 
+import javax.validation.Valid;
+
 /**
  * User : cederik
  * Date : 28/04/2020
@@ -20,7 +22,7 @@ public class IssueAssemblyListener {
     private final AssemblyChainFactory<DownloadIssueMessage> issueAssemblyChainFactory;
 
     @StreamListener(Sink.INPUT)
-    public void processIssue(DownloadIssueMessage downloadIssueMessage) {
+    public void processIssue(@Valid DownloadIssueMessage downloadIssueMessage) {
         log.info("message received {} - {}", downloadIssueMessage.getComicKey(), downloadIssueMessage.getIssueNumber());
         issueAssemblyChainFactory.createAssemblyChain(downloadIssueMessage).execute();
     }

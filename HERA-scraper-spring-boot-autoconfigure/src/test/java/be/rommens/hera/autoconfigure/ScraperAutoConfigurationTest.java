@@ -6,9 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * User : cederik
@@ -23,9 +21,9 @@ public class ScraperAutoConfigurationTest {
 
     @Test
     public void whenSpringContextIsBootstrapped_thenNoExceptions() {
-        assertThat(scraperFactory, is(notNullValue()));
-        assertThat(scraperFactory.createScraper(Provider.READCOMICS), is(notNullValue()));
-        assertThat(scraperFactory.createScraper(Provider.EXAMPLE), is(notNullValue()));
+        assertThat(scraperFactory).isNotNull();
+        assertThat(scraperFactory.createScraper(Provider.READCOMICS)).isNotNull();
+        assertThat(scraperFactory.createScraper(Provider.EXAMPLE)).isNotNull();
 
     }
 }

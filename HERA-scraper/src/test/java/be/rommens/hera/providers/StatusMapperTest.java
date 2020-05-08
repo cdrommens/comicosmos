@@ -2,11 +2,9 @@ package be.rommens.hera.providers;
 
 import be.rommens.hera.api.Status;
 import be.rommens.hera.providers.readcomics.mappers.StatusMapper;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * User : cederik
@@ -17,21 +15,21 @@ public class StatusMapperTest {
 
     @Test
     public void testMapToOngoing() {
-        assertThat(new StatusMapper().mapTo("Ongoing"), is(Status.ONGOING));
-        assertThat(new StatusMapper().mapTo("ongoing"), is(Status.ONGOING));
-        assertThat(new StatusMapper().mapTo("ONGOING"), is(Status.ONGOING));
+        assertThat(new StatusMapper().mapTo("Ongoing")).isEqualTo(Status.ONGOING);
+        assertThat(new StatusMapper().mapTo("ongoing")).isEqualTo(Status.ONGOING);
+        assertThat(new StatusMapper().mapTo("ONGOING")).isEqualTo(Status.ONGOING);
     }
 
     @Test
     public void testMapToFinished() {
-        assertThat(new StatusMapper().mapTo("Complete"), is(Status.FINISHED));
-        assertThat(new StatusMapper().mapTo("complete"), is(Status.FINISHED));
-        assertThat(new StatusMapper().mapTo("COMPLETE"), is(Status.FINISHED));
+        assertThat(new StatusMapper().mapTo("Complete")).isEqualTo(Status.FINISHED);
+        assertThat(new StatusMapper().mapTo("complete")).isEqualTo(Status.FINISHED);
+        assertThat(new StatusMapper().mapTo("COMPLETE")).isEqualTo(Status.FINISHED);
     }
 
     @Test
     public void testEmptyOrNull() {
-        assertThat(new StatusMapper().mapTo(null), is(Matchers.nullValue()));
-        assertThat(new StatusMapper().mapTo(""), is(Matchers.nullValue()));
+        assertThat(new StatusMapper().mapTo(null)).isNull();
+        assertThat(new StatusMapper().mapTo("")).isNull();
     }
 }

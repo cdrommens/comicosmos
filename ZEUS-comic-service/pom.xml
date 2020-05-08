@@ -138,6 +138,10 @@
               <contractPackageRegex>.*downloader.*</contractPackageRegex>
               <baseClassFQN>be.rommens.zeus.downloader.DownloaderBaseClass</baseClassFQN>
             </baseClassMapping>
+            <baseClassMapping>
+              <contractPackageRegex>.*controller.*</contractPackageRegex>
+              <baseClassFQN>be.rommens.zeus.controller.ControllerBaseClass</baseClassFQN>
+            </baseClassMapping>
           </baseClassMappings>
         </configuration>
       </plugin>

@@ -16,13 +16,11 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
-import org.unitils.reflectionassert.ReflectionAssert;
 
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * User : cederik
@@ -44,16 +42,20 @@ public class ComicServiceIT {
     @Test
     @Transactional(readOnly = true)
     public void whenGetComicById_thenReturnComic() {
+        //when
         Comic result = comicService.getComic(-1).orElse(null);
-        assertThat(result, is(notNullValue()));
-        assertThat(result.getIssues(), hasSize(3));
-        assertThat(result.getIssues().get(2).getIssueNumber(), is("2"));
-        ReflectionAssert.assertReflectionEquals(ComicTestObjectFactory.getFullDcComic(-1), result);
+
+        //then
+        assertThat(result).isNotNull();
+        assertThat(result.getIssues()).hasSize(3);
+        assertThat(result.getIssues()).extracting("issueNumber").containsExactly("1", "Annual-1", "2");
+        assertThat(result).usingRecursiveComparison().isEqualTo(ComicTestObjectFactory.getFullDcComic(-1));
     }
 
     @Test
     @ExpectedDataSet(value = "datasets/comicservice/add-issue-to-comic-expected.yml", orderBy = "DATE_OF_RELEASE", ignoreCols = "ISSUE_ID")
     public void whenAddIssueToExistingComic_thenComicMustBeUpdated() {
+        //given
         Comic comic = ComicTestObjectFactory.getFullDcComic(-1);
         Issue newIssue = IssueBuilder.anIssue()
             .issueNumber("4")
@@ -61,23 +63,31 @@ public class ComicServiceIT {
             .downloaded(false).build();
         comic.addIssue(newIssue);
         comic.setAuthor("Another author");
+
+        //when
         comicService.save(comic);
     }
 
     @Test
     @ExpectedDataSet(value = "datasets/comicservice/save-new-comic-expected.yml", orderBy = "DATE_OF_RELEASE", ignoreCols = {"COMIC_ID","ISSUE_ID"})
     public void whenSaveNewComic_thenComicMustBeSaved() {
+        //given
         Comic comic = ComicTestObjectFactory.getFullMarvelComic(null);
         comic.getIssues().forEach(issue -> issue.setIssueId(null));
+
+        //when
         comicService.save(comic);
     }
 
     @Test
     @Transactional(readOnly = true)
     public void whenGetAllComics_thenReturnAllComics() {
+        //when
         List<Comic> result = comicService.getAllComics();
-        result.forEach(c -> log.info(c.toString()));
-        assertThat(result, is(notNullValue()));
-        assertThat(result, hasSize(1));
+
+        //then
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0)).usingRecursiveComparison().isEqualTo(ComicTestObjectFactory.getFullDcComic(-1));
     }
 }

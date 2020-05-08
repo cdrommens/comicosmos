@@ -12,10 +12,8 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
 /**
  * User : cederik
@@ -51,17 +49,17 @@ public class ScraperFactoryTest {
 
     @Test
     public void testGetReadComicsScraper() {
-        assertThat(scraperFactory.createScraper(Provider.READCOMICS), is(instanceOf(ReadComicsScraper.class)));
+        assertThat(scraperFactory.createScraper(Provider.READCOMICS)).isInstanceOf(ReadComicsScraper.class);
     }
 
     @Test
     public void testGetExampleScraper() {
-        assertThat(scraperFactory.createScraper(Provider.EXAMPLE), is(instanceOf(ExampleScraper.class)));
+        assertThat(scraperFactory.createScraper(Provider.EXAMPLE)).isInstanceOf(ExampleScraper.class);
     }
 
     @Test
     public void testWillThrowErrorWithNoProvider() {
-        assertThrows(IllegalStateException.class, () -> scraperFactory.createScraper(null));
+        assertThatIllegalStateException().isThrownBy(() -> scraperFactory.createScraper(null));
     }
 
 }
