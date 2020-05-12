@@ -59,10 +59,7 @@ public class IssueAssemblyChainFactoryTest {
     public void testIssueAssemblyChain_withZipAlreadyExists() throws IOException {
         //given
         FileUtils.forceMkdir(Paths.get(BASE_URL, "comickey", "comickey-1.cbz").toFile());
-        DownloadIssueMessage downloadIssueMessage = new DownloadIssueMessage();
-        downloadIssueMessage.setComicKey("comickey");
-        downloadIssueMessage.setProvider(Provider.READCOMICS);
-        downloadIssueMessage.setIssueNumber("1");
+        DownloadIssueMessage downloadIssueMessage = new DownloadIssueMessage(1, "comickey", Provider.READCOMICS, "1");
 
         //when
         issueAssemblyChainFactory.createAssemblyChain(downloadIssueMessage).execute();
@@ -75,10 +72,7 @@ public class IssueAssemblyChainFactoryTest {
     @Test
     public void testIssueAssemblyChain_withNoErrors() throws ZipException {
         //given
-        DownloadIssueMessage downloadIssueMessage = new DownloadIssueMessage();
-        downloadIssueMessage.setComicKey("comickey");
-        downloadIssueMessage.setProvider(Provider.READCOMICS);
-        downloadIssueMessage.setIssueNumber("1");
+        DownloadIssueMessage downloadIssueMessage = new DownloadIssueMessage(1, "comickey", Provider.READCOMICS, "1");
 
         //when
         issueAssemblyChainFactory.createAssemblyChain(downloadIssueMessage).execute();
@@ -95,10 +89,7 @@ public class IssueAssemblyChainFactoryTest {
     public void testIssueAssemblyChain_withErrorsDuringCreateFolder() throws IOException {
         //given
         FileUtils.touch(Paths.get(BASE_URL, "comickey", "comickey-1").toFile());
-        DownloadIssueMessage downloadIssueMessage = new DownloadIssueMessage();
-        downloadIssueMessage.setComicKey("comickey");
-        downloadIssueMessage.setProvider(Provider.READCOMICS);
-        downloadIssueMessage.setIssueNumber("1");
+        DownloadIssueMessage downloadIssueMessage = new DownloadIssueMessage(1, "comickey", Provider.READCOMICS, "1");
 
         //when
         issueAssemblyChainFactory.createAssemblyChain(downloadIssueMessage).execute();
@@ -111,10 +102,7 @@ public class IssueAssemblyChainFactoryTest {
     @Test
     public void testIssueAssemblyChain_withErrorsDuringScrapeIssue() throws IOException {
         //given
-        DownloadIssueMessage downloadIssueMessage = new DownloadIssueMessage();
-        downloadIssueMessage.setComicKey("nonexistent");
-        downloadIssueMessage.setProvider(Provider.READCOMICS);
-        downloadIssueMessage.setIssueNumber("1");
+        DownloadIssueMessage downloadIssueMessage = new DownloadIssueMessage(1, "comickey", Provider.READCOMICS, "1");
 
         //when
         issueAssemblyChainFactory.createAssemblyChain(downloadIssueMessage).execute();
@@ -127,10 +115,7 @@ public class IssueAssemblyChainFactoryTest {
     public void testIssueAssemblyChain_withErrorsDuringDownloadPages() throws IOException {
         //given
         FileUtils.forceMkdir(Paths.get(BASE_URL, "comickey", "comickey-1","02.jpg").toFile());
-        DownloadIssueMessage downloadIssueMessage = new DownloadIssueMessage();
-        downloadIssueMessage.setComicKey("comickey");
-        downloadIssueMessage.setProvider(Provider.READCOMICS);
-        downloadIssueMessage.setIssueNumber("1");
+        DownloadIssueMessage downloadIssueMessage = new DownloadIssueMessage(1, "comickey", Provider.READCOMICS, "1");
 
         //when
         issueAssemblyChainFactory.createAssemblyChain(downloadIssueMessage).execute();

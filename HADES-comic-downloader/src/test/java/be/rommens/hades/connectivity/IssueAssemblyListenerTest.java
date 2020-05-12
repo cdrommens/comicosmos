@@ -2,6 +2,7 @@ package be.rommens.hades.connectivity;
 
 import be.rommens.hades.assembler.IssueAssemblyChain;
 import be.rommens.hades.core.AssemblyChainFactory;
+import be.rommens.hera.api.Provider;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,9 +33,7 @@ public class IssueAssemblyListenerTest {
     @Test
     public void testWiring() {
         //given
-        DownloadIssueMessage downloadIssueMessage = new DownloadIssueMessage();
-        downloadIssueMessage.setComicKey("comickey");
-        downloadIssueMessage.setIssueNumber("1");
+        DownloadIssueMessage downloadIssueMessage = new DownloadIssueMessage(1, "comickey", Provider.READCOMICS, "1");
         Message<DownloadIssueMessage> message = new GenericMessage<>(downloadIssueMessage);
 
         IssueAssemblyChain mock = Mockito.mock(IssueAssemblyChain.class);

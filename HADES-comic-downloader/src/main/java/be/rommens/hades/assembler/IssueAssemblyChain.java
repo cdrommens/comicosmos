@@ -77,22 +77,22 @@ public class IssueAssemblyChain {
         if (context == null) {
             Constructor<? extends Command> constructor = ClassUtils.getConstructorIfAvailable(commandClass);
             if (constructor == null) {
-                throw new RuntimeException("No constructor found for object " + commandClass.getCanonicalName());
+                throw new IllegalStateException("No constructor found for object " + commandClass.getCanonicalName());
             }
             try {
                 return Optional.of(constructor.newInstance());
             } catch (Exception e) {
-                throw new RuntimeException("Can't create object " + commandClass.getCanonicalName(), e);
+                throw new IllegalStateException("Can't create object " + commandClass.getCanonicalName(), e);
             }
         }
         Constructor<? extends Command> constructor = ClassUtils.getConstructorIfAvailable(commandClass, IssueAssemblyContext.class);
         if (constructor == null) {
-            throw new RuntimeException("No constructor found for object " + commandClass.getCanonicalName());
+            throw new IllegalStateException("No constructor found for object " + commandClass.getCanonicalName());
         }
         try {
             return Optional.of(constructor.newInstance(context));
         } catch (Exception e) {
-            throw new RuntimeException("Can't create object with context constructor " + commandClass.getCanonicalName(), e);
+            throw new IllegalStateException("Can't create object with context constructor " + commandClass.getCanonicalName(), e);
         }
     }
 }
