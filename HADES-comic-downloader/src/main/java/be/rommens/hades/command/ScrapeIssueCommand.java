@@ -6,6 +6,10 @@ import be.rommens.hades.core.AbstractCommand;
 import be.rommens.hades.core.CommandResult;
 import be.rommens.hera.core.Scraper;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * User : cederik
@@ -38,6 +42,11 @@ public class ScrapeIssueCommand extends AbstractCommand {
 
     @Override
     public boolean rollback() {
+        try {
+            FileUtils.deleteDirectory(new File(getIssueAssemblyContext().getIssueFolder()));
+        } catch (IOException e) {
+            log.error("ScrapeIssueCommand not rolled back", e);
+        }
         log.info("ScrapeIssueCommand rolled back");
         return true;
     }

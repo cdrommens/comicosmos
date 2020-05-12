@@ -4,6 +4,10 @@ import be.rommens.hades.assembler.IssueAssemblyContext;
 import be.rommens.hades.core.AbstractCommand;
 import be.rommens.hades.core.CommandResult;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * User : cederik
@@ -26,6 +30,11 @@ public class PublishIssueDownloadedMessage extends AbstractCommand {
 
     @Override
     public boolean rollback() {
+        try {
+            FileUtils.deleteDirectory(new File(getIssueAssemblyContext().getIssueFolder()));
+        } catch (IOException e) {
+            log.error("PublishIssueDownloadedMessage not rolled back", e);
+        }
         log.info("PublishIssueDownloadedMessage rolled back");
         return true;
     }

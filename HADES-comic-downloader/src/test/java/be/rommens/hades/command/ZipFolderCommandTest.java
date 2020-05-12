@@ -87,4 +87,17 @@ public class ZipFolderCommandTest {
         //assertThat(expected.getFileHeaders().stream().map(AbstractFileHeader::getFileName).collect(Collectors.toList()), hasItem("comickey-1/page1"));
         //assertThat(expected.getFileHeaders().stream().map(AbstractFileHeader::getFileName).collect(Collectors.toList()), hasItem("comickey-1/page2"));
     }
+
+    @Test
+    public void testRollback() throws IOException {
+        //given
+        File newDir = Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1").toFile();
+        FileUtils.forceMkdir(newDir);
+        ZipFolderCommand command = new ZipFolderCommand(IssueAssemblyContextTestObjectFactory.createTestContext(tempDir.toString(), null));
+        //when
+        boolean result = command.rollback();
+        //then
+        assertThat(result).isTrue();
+        assertThat(Files.exists(newDir.toPath())).isFalse();
+    }
 }

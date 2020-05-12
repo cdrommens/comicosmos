@@ -6,9 +6,11 @@ import lombok.extern.slf4j.Slf4j;
 import net.lingala.zip4j.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 import net.lingala.zip4j.progress.ProgressMonitor;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.io.File;
+import java.io.IOException;
 
 /**
  * User : cederik
@@ -62,6 +64,11 @@ public class ZipFolderCommand extends AbstractZipCommand {
 
     @Override
     public boolean rollback() {
+        try {
+            FileUtils.deleteDirectory(issueFolder);
+        } catch (IOException e) {
+            log.error("ZipFolderCommand not rolled back", e);
+        }
         log.info("ZipFolderCommand rolled back");
         return true;
     }

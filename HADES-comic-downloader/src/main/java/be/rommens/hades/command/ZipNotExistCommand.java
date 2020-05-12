@@ -12,7 +12,6 @@ import java.nio.file.Paths;
  * Date : 07/05/2020
  * Time : 14:02
  */
-//TODO : to much duplication
 @Slf4j
 public class ZipNotExistCommand extends AbstractZipCommand {
 

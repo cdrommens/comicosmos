@@ -1,7 +1,6 @@
-package be.rommens.hades;
+package be.rommens.hades.connectivity;
 
 import be.rommens.hades.assembler.IssueAssemblyChain;
-import be.rommens.hades.connectivity.DownloadIssueMessage;
 import be.rommens.hades.core.AssemblyChainFactory;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

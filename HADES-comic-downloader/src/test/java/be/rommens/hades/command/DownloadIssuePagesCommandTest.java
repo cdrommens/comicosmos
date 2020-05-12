@@ -101,4 +101,17 @@ public class DownloadIssuePagesCommandTest {
         assertThat(Files.exists(Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1"))).isTrue();
         assertThat(result).isEqualTo(CommandResult.ERROR);
     }
+
+    @Test
+    public void testRollback() throws IOException {
+        //given
+        File newDir = Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1").toFile();
+        FileUtils.forceMkdir(newDir);
+        DownloadIssuePagesCommand command = new DownloadIssuePagesCommand(IssueAssemblyContextTestObjectFactory.createTestContext(tempDir.toString(), null));
+        //when
+        boolean result = command.rollback();
+        //then
+        assertThat(result).isTrue();
+        assertThat(Files.exists(newDir.toPath())).isFalse();
+    }
 }

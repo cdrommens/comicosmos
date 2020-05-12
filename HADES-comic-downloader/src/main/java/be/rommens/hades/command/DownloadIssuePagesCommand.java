@@ -37,11 +37,11 @@ public class DownloadIssuePagesCommand extends AbstractCommand {
                 downloadFile(page);
             }
         } catch (IOException e) {
-            log.error("   [DownloadPages] Something went wrong ", e);
+            log.error("   [DownloadIssuePagesCommand] Something went wrong ", e);
             return CommandResult.ERROR;
         }
         if (areAllPagesDownloaded()) {
-            log.error("   [DownloadPages] Not all pages downloaded");
+            log.error("   [DownloadIssuePagesCommand] Not all pages downloaded");
             return CommandResult.ERROR;
         }
         return CommandResult.COMPLETED;
@@ -49,6 +49,11 @@ public class DownloadIssuePagesCommand extends AbstractCommand {
 
     @Override
     public boolean rollback() {
+        try {
+            FileUtils.deleteDirectory(new File(issueFolder));
+        } catch (IOException e) {
+            log.error("DownloadIssuePagesCommand not rolled back", e);
+        }
         log.info("DownloadIssuePagesCommand rolled back");
         return true;
     }
@@ -62,7 +67,7 @@ public class DownloadIssuePagesCommand extends AbstractCommand {
         FileUtils.copyURLToFile(new URL(page), getDestinationFile(page));
         //TODO : check filesize
         numberOfDownloadedPages++;
-        log.info("   [DownloadPages] Downloaded {} / {} pages", numberOfDownloadedPages, getIssueAssemblyContext().getScrapedIssue().getNumberOfPages());
+        log.info("   [DownloadIssuePagesCommand] Downloaded {} / {} pages", numberOfDownloadedPages, getIssueAssemblyContext().getScrapedIssue().getNumberOfPages());
     }
 
     private File getDestinationFile(String page) {

@@ -49,4 +49,14 @@ public class CleanUpCommandTest {
         assertThat(result).isEqualTo(CommandResult.ERROR);
         assertThat(Files.exists(Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1"))).isTrue();
     }
+
+    @Test
+    public void testRollback() {
+        //given
+        CleanUpCommand command = new CleanUpCommand(IssueAssemblyContextTestObjectFactory.createTestContext(tempDir.toString(), null));
+        //when
+        boolean result = command.rollback();
+        //then
+        assertThat(result).isTrue();
+    }
 }

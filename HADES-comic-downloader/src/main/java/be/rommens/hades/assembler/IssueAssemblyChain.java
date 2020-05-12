@@ -37,20 +37,21 @@ public class IssueAssemblyChain {
 
     public Boolean execute() {
         boolean resultPrecondition = executePrecondition();
-        if (resultPrecondition) {
-            // loop over all commands untill one is in error, then reverse back
-            for (Optional<Command> command : commandStack) {
-                command.ifPresent(command1 -> {
-                    boolean resultOfCommand = command.get().execute();
-                    if (!resultOfCommand) {
-                        int index = commandStack.indexOf(command);
-                        for (int i = index; i == 0; i--) {
-                            command.get().rollback();
-                            log.info("command {} rolled back", command.getClass());
-                        }
-                        onError.ifPresent(Command::execute);
+        if (!resultPrecondition) {
+            return true;
+        }
+        for (Optional<Command> command : commandStack) {
+            if (command.isPresent()) {
+                boolean resultOfCommand = command.get().execute();
+                if (!resultOfCommand) {
+                    int index = commandStack.indexOf(command);
+                    for (int i = index; i >= 0; i--) {
+                        command.get().rollback();
+                        log.info("command {} rolled back", command.get().getClass().getSimpleName());
                     }
-                });
+                    onError.ifPresent(Command::execute);
+                    return true;
+                }
             }
         }
         return true;

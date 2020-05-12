@@ -7,7 +7,15 @@ import be.rommens.hera.ScraperTestFactory;
 import be.rommens.hera.api.models.ScrapedIssue;
 import be.rommens.hera.builders.ScrapedIssueBuilder;
 import be.rommens.hera.core.Scraper;
+import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -17,6 +25,9 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Time : 14:35
  */
 public class ScrapeIssueCommandTest {
+
+    @TempDir
+    Path tempDir;
 
     @Test
     public void whenIssueExists_thenReturnCompletedAndScrapedIssue() {
@@ -53,5 +64,18 @@ public class ScrapeIssueCommandTest {
         //then
         assertThat(result).isEqualTo(CommandResult.ERROR);
         assertThat(context.getScrapedIssue()).isNull();
+    }
+
+    @Test
+    public void testRollback() throws IOException {
+        //given
+        File newDir = Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1").toFile();
+        FileUtils.forceMkdir(newDir);
+        ScrapeIssueCommand command = new ScrapeIssueCommand(IssueAssemblyContextTestObjectFactory.createTestContext(tempDir.toString(), null));
+        //when
+        boolean result = command.rollback();
+        //then
+        assertThat(result).isTrue();
+        assertThat(Files.exists(newDir.toPath())).isFalse();
     }
 }
