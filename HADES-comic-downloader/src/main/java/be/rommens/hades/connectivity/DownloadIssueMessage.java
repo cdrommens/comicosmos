@@ -1,8 +1,9 @@
-package be.rommens.hades.assembler;
+package be.rommens.hades.connectivity;
 
 import be.rommens.hera.api.Provider;
 import lombok.Data;
 
+import javax.annotation.Nonnull;
 import java.time.LocalDate;
 
 /**
@@ -10,13 +11,16 @@ import java.time.LocalDate;
  * Date : 26/04/2020
  * Time : 13:46
  */
-//TODO : javax.validation
 @Data
 public class DownloadIssueMessage {
 
+    @Nonnull
     private Integer issueId;
+    @Nonnull
     private String comicKey;
+    @Nonnull
     private Provider provider;
+    @Nonnull
     private String issueNumber;
     private LocalDate dateOfRelease;
 

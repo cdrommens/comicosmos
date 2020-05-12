@@ -1,6 +1,7 @@
 package be.rommens.hades.command;
 
 import be.rommens.hades.assembler.IssueAssemblyContext;
+import be.rommens.hades.core.AbstractCommand;
 import be.rommens.hades.core.CommandResult;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
@@ -31,23 +32,34 @@ public class DownloadIssuePagesCommand extends AbstractCommand {
     @Override
     public CommandResult body() {
         try {
-            for (String page : issueAssemblyContext.getScrapedIssue().getPages()) {
+            for (String page : getIssueAssemblyContext().getScrapedIssue().getPages()) {
                 //TODO : https://stackoverflow.com/questions/37410249/wiremock-to-serve-images-stored-on-local-disk
                 downloadFile(page);
             }
         } catch (IOException e) {
-            log.error("   [DownloadPages] Something went wrong ", e);
+            log.error("   [DownloadIssuePagesCommand] Something went wrong ", e);
             return CommandResult.ERROR;
         }
         if (areAllPagesDownloaded()) {
-            log.error("   [DownloadPages] Not all pages downloaded");
+            log.error("   [DownloadIssuePagesCommand] Not all pages downloaded");
             return CommandResult.ERROR;
         }
         return CommandResult.COMPLETED;
     }
 
+    @Override
+    public boolean rollback() {
+        try {
+            FileUtils.deleteDirectory(new File(issueFolder));
+        } catch (IOException e) {
+            log.error("DownloadIssuePagesCommand not rolled back", e);
+        }
+        log.info("DownloadIssuePagesCommand rolled back");
+        return true;
+    }
+
     private boolean areAllPagesDownloaded() {
-        return numberOfDownloadedPages != issueAssemblyContext.getScrapedIssue().getNumberOfPages();
+        return numberOfDownloadedPages != getIssueAssemblyContext().getScrapedIssue().getNumberOfPages();
     }
 
     //TODO : move to scraper (with header and some delay)
@@ -55,7 +67,7 @@ public class DownloadIssuePagesCommand extends AbstractCommand {
         FileUtils.copyURLToFile(new URL(page), getDestinationFile(page));
         //TODO : check filesize
         numberOfDownloadedPages++;
-        log.info("   [DownloadPages] Downloaded {} / {} pages", numberOfDownloadedPages, issueAssemblyContext.getScrapedIssue().getNumberOfPages());
+        log.info("   [DownloadIssuePagesCommand] Downloaded {} / {} pages", numberOfDownloadedPages, getIssueAssemblyContext().getScrapedIssue().getNumberOfPages());
     }
 
     private File getDestinationFile(String page) {

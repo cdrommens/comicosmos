@@ -46,4 +46,14 @@ public class CreateFolderCommandTest {
         assertThat(result).isEqualTo(CommandResult.ERROR);
         assertThat(Files.isDirectory(Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1"))).isFalse();
     }
+
+    @Test
+    public void testRollback() {
+        //given
+        CreateFolderCommand command = new CreateFolderCommand(IssueAssemblyContextTestObjectFactory.createTestContext(tempDir.toString(), null));
+        //when
+        boolean result = command.rollback();
+        //then
+        assertThat(result).isTrue();
+    }
 }

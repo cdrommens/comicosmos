@@ -1,5 +1,7 @@
 package be.rommens.hades.core;
 
+import be.rommens.hades.assembler.IssueAssemblyChain;
+
 /**
  * User : cederik
  * Date : 23/04/2020
@@ -7,5 +9,5 @@ package be.rommens.hades.core;
  */
 public interface AssemblyChainFactory<I> {
 
-    Command createAssemblyChain(I input);
+    IssueAssemblyChain createAssemblyChain(I input);
 }

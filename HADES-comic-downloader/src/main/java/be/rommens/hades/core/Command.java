@@ -8,4 +8,5 @@ package be.rommens.hades.core;
 public interface Command {
 
     boolean execute();
+    boolean rollback();
 }

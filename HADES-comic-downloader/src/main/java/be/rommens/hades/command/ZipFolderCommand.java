@@ -1,16 +1,16 @@
 package be.rommens.hades.command;
 
-import be.rommens.hades.assembler.DownloadIssueMessage;
 import be.rommens.hades.assembler.IssueAssemblyContext;
 import be.rommens.hades.core.CommandResult;
 import lombok.extern.slf4j.Slf4j;
 import net.lingala.zip4j.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 import net.lingala.zip4j.progress.ProgressMonitor;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.io.File;
-import java.nio.file.Paths;
+import java.io.IOException;
 
 /**
  * User : cederik
@@ -18,17 +18,13 @@ import java.nio.file.Paths;
  * Time : 20:25
  */
 @Slf4j
-public class ZipFolderCommand extends AbstractCommand {
-
-    private static final String EXTENSION = "cbz";
+public class ZipFolderCommand extends AbstractZipCommand {
 
     private final File issueFolder;
-    private final String cbzFilePath;
 
     public ZipFolderCommand(IssueAssemblyContext issueAssemblyContext) {
         super(issueAssemblyContext);
         this.issueFolder = new File(issueAssemblyContext.getIssueFolder());
-        this.cbzFilePath = createCbzFilePath(issueAssemblyContext.getBaseUrl(), issueAssemblyContext.getDownloadIssueMessage());
     }
 
     @Override
@@ -38,7 +34,7 @@ public class ZipFolderCommand extends AbstractCommand {
             return CommandResult.ERROR;
         }
         try {
-            ZipFile zipFile = new ZipFile(cbzFilePath);
+            ZipFile zipFile = new ZipFile(getCbzFilePath());
             ProgressMonitor progressMonitor = zipFile.getProgressMonitor();
             zipFile.setRunInThread(true);
             zipFile.addFolder(issueFolder);
@@ -50,7 +46,7 @@ public class ZipFolderCommand extends AbstractCommand {
                 Thread.sleep(100);
             }
             if (zipFile.isValidZipFile()) {
-                log.info("   [CreateZip] {} is created", cbzFilePath);
+                log.info("   [CreateZip] {} is created", getCbzFilePath());
                 return CommandResult.COMPLETED;
             } else {
                 return CommandResult.ERROR;
@@ -66,7 +62,14 @@ public class ZipFolderCommand extends AbstractCommand {
         }
     }
 
-    private String createCbzFilePath(String baseUrl, DownloadIssueMessage downloadIssueMessage) {
-        return Paths.get(baseUrl, downloadIssueMessage.getComicFolder(), downloadIssueMessage.getIssueFolder() + "." + EXTENSION).toString();
+    @Override
+    public boolean rollback() {
+        try {
+            FileUtils.deleteDirectory(issueFolder);
+        } catch (IOException e) {
+            log.error("ZipFolderCommand not rolled back", e);
+        }
+        log.info("ZipFolderCommand rolled back");
+        return true;
     }
 }
