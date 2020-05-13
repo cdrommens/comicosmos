@@ -1,26 +1,23 @@
-package be.rommens.zeus.model.event;
+package be.rommens.hermes.model.input;
 
 import be.rommens.hera.api.Provider;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 /**
  * User : cederik
- * Date : 30/04/2020
- * Time : 15:49
+ * Date : 12/05/2020
+ * Time : 15:18
  */
 @Data
-public class DownloadIssue implements DomainEvent {
+@NoArgsConstructor
+public class IssueToDownload {
 
     private Integer issueId;
     private String comicKey;
     private Provider provider;
     private String issueNumber;
     private LocalDate dateOfRelease;
-
-    @Override
-    public String getType() {
-        return "download-issue";
-    }
 }

@@ -13,7 +13,10 @@ Contract.make {
     outputMessage {
         sentTo "downloader-in"
         body(
-                issueId: 1, comicKey: "comickey", provider: "READCOMICS", issueNumber: "1"
+                issueId: $(regex('-{0,1}[0-9]{1,}')),
+                comicKey: "batman-2016",
+                provider: "READCOMICS",
+                issueNumber: "Annual-1"
         )
         headers {
             header("type", "download-issue")

@@ -1,24 +1,27 @@
 package be.rommens.zeus.service;
 
 import be.rommens.hera.api.Provider;
-import be.rommens.zeus.model.event.DownloadIssue;
+import be.rommens.hera.api.Status;
+import be.rommens.zeus.model.builder.ComicBuilder;
+import be.rommens.zeus.model.builder.IssueBuilder;
+import be.rommens.zeus.model.entity.Comic;
+import be.rommens.zeus.model.entity.Issue;
 import com.github.database.rider.core.api.configuration.DBUnit;
 import com.github.database.rider.core.api.configuration.Orthography;
 import com.github.database.rider.core.api.dataset.DataSet;
 import com.github.database.rider.junit5.api.DBRider;
+import com.google.common.collect.Iterables;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.BDDMockito.then;
-import static org.mockito.Mockito.times;
 
 /**
  * User : cederik
@@ -36,35 +39,34 @@ public class IssueServiceIT {
     @Autowired
     private IssueService issueService;
 
-    @MockBean
-    private DomainEventPublisher publisher;
-
     @Test
     @DataSet(value = "datasets/comicservice/setup.yml")
-    public void whenIssuesFound_thenPublisherIsCalledOneTime() {
+    public void whenIssuesFound_thenListIsReturned() {
         //given
-        DownloadIssue expected = new DownloadIssue();
-        expected.setComicKey("batman-2016");
-        expected.setProvider(Provider.READCOMICS);
-        expected.setIssueId(-3);
-        expected.setIssueNumber("Annual-1");
-        expected.setDateOfRelease(LocalDate.of(2016, 2, 1));
+        Comic comic = ComicBuilder.aComic()
+            .key("batman-2016")
+            .provider(Provider.READCOMICS)
+            .status(Status.ONGOING)
+            .issue(IssueBuilder.anIssue()
+                .issueId(-3)
+                .issueNumber("Annual-1"))
+                .dateOfRelease(LocalDate.of(2016, 2, 1))
+            .build();
 
         //when
-        Integer result = issueService.downloadNewIssues();
+        List<Issue> result = issueService.downloadNewIssues();
 
         //then
-        assertThat(result).isEqualTo(1);
-        then(publisher).should(times(1)).publish(expected);
+        assertThat(result).hasSize(1);
+        assertThat(result).contains(Iterables.getOnlyElement(comic.getIssues()));
     }
 
     @Test
-    public void whenNoIssuesFound_thenPublisherIsNotCalled() {
+    public void whenNoIssuesFound_thenEmptyListIsReturned() {
         //when
-        Integer result = issueService.downloadNewIssues();
+        List<Issue> result = issueService.downloadNewIssues();
 
         //then
-        assertThat(result).isEqualTo(0);
-        then(publisher).shouldHaveNoInteractions();
+        assertThat(result).hasSize(0);
     }
 }

@@ -1,13 +1,15 @@
 package be.rommens.zeus.web;
 
-import be.rommens.zeus.model.output.DownloadIssueOutput;
+import be.rommens.zeus.model.entity.Issue;
+import be.rommens.zeus.model.output.IssueToDownloadConverter;
+import be.rommens.zeus.model.output.IssueToDownloadList;
 import be.rommens.zeus.service.IssueService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * User : cederik
@@ -21,9 +23,11 @@ public class IssueController {
 
     private final IssueService issueService;
 
-    @GetMapping("/download")
-    public ResponseEntity<DownloadIssueOutput> downloadIssues() {
-        int result = issueService.downloadNewIssues();
-        return new ResponseEntity<>(new DownloadIssueOutput(result), HttpStatus.OK);
+    @GetMapping("/todownload")
+    public IssueToDownloadList downloadIssues() {
+        List<Issue> issues = issueService.downloadNewIssues();
+        IssueToDownloadList result = new IssueToDownloadList();
+        issues.stream().map(issue -> new IssueToDownloadConverter().convert(issue)).forEach(result::add);
+        return result;
     }
 }

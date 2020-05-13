@@ -24,7 +24,6 @@
     <guava.version>28.2-jre</guava.version>
     <jacoco.maven.version>0.8.2</jacoco.maven.version>
     <database.rider.version>1.12.0</database.rider.version>
-    <unitils.core.version>3.4.2</unitils.core.version>
     <commons.io.version>2.6</commons.io.version>
     <commons.compress.version>1.20</commons.compress.version>
     <zip4j.version>2.5.2</zip4j.version>
@@ -38,6 +37,7 @@
     <module>HERA-scraper-test</module>
     <module>ZEUS-comic-service</module>
     <module>HADES-comic-downloader</module>
+    <module>HERMES-comic-administration-service</module>
   </modules>
 
   <dependencyManagement>
@@ -68,11 +68,6 @@
         <groupId>com.github.database-rider</groupId>
         <artifactId>rider-junit5</artifactId>
         <version>${database.rider.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.unitils</groupId>
-        <artifactId>unitils-core</artifactId>
-        <version>${unitils.core.version}</version>
       </dependency>
       <dependency>
         <groupId>com.playtika.testcontainers</groupId>
