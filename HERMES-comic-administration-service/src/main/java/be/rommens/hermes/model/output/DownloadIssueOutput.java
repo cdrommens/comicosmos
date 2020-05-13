@@ -1,4 +1,4 @@
-package be.rommens.zeus.model.output;
+package be.rommens.hermes.model.output;
 
 import lombok.Data;
 

@@ -1,6 +1,6 @@
-package be.rommens.zeus.model.event;
+package be.rommens.hermes.model.event;
 
-import be.rommens.zeus.model.entity.Issue;
+import be.rommens.hermes.model.input.IssueToDownload;
 import org.springframework.core.convert.converter.Converter;
 
 /**
@@ -8,14 +8,14 @@ import org.springframework.core.convert.converter.Converter;
  * Date : 02/05/2020
  * Time : 14:09
  */
-public class DownloadIssueConverter implements Converter<Issue, DownloadIssue> {
+public class DownloadIssueConverter implements Converter<IssueToDownload, DownloadIssue> {
 
     @Override
-    public DownloadIssue convert(Issue issue) {
+    public DownloadIssue convert(IssueToDownload issue) {
         DownloadIssue downloadIssue = new DownloadIssue();
-        downloadIssue.setComicKey(issue.getComic().getKey());
+        downloadIssue.setComicKey(issue.getComicKey());
         downloadIssue.setIssueId(issue.getIssueId());
-        downloadIssue.setProvider(issue.getComic().getProvider());
+        downloadIssue.setProvider(issue.getProvider());
         downloadIssue.setDateOfRelease(issue.getDateOfRelease());
         downloadIssue.setIssueNumber(issue.getIssueNumber());
         return downloadIssue;

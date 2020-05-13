@@ -1,6 +1,6 @@
-package be.rommens.zeus.service;
+package be.rommens.hermes.service;
 
-import be.rommens.zeus.model.event.DomainEvent;
+import be.rommens.hermes.model.event.DomainEvent;
 
 /**
  * User : cederik

@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "service.zeus.hostname",
+      "type": "java.lang.String",
+      "description": "Description for service.zeus.hostname."
+  }
+] }

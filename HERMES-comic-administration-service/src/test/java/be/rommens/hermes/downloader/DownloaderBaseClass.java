@@ -1,15 +1,8 @@
-package be.rommens.zeus.downloader;
+package be.rommens.hermes.downloader;
 
-import be.rommens.hera.api.Provider;
-import be.rommens.hera.api.Status;
-import be.rommens.zeus.ZeusApplication;
-import be.rommens.zeus.model.builder.ComicBuilder;
-import be.rommens.zeus.model.builder.IssueBuilder;
-import be.rommens.zeus.model.entity.Comic;
-import be.rommens.zeus.repository.IssueRepository;
-import be.rommens.zeus.service.IssueService;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
+import be.rommens.hermes.HermesApplication;
+import be.rommens.hermes.connectivity.ZeusConnectorService;
+import be.rommens.hermes.service.IssueService;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,6 +12,7 @@ import org.springframework.cloud.contract.verifier.messaging.boot.AutoConfigureM
 
 import java.util.concurrent.TimeUnit;
 
+import static be.rommens.hermes.model.IssueToDownloadListTestObjectFactory.getIssueToDownloadListWithSingleIssue;
 import static org.mockito.BDDMockito.given;
 
 /**
@@ -26,7 +20,7 @@ import static org.mockito.BDDMockito.given;
  * Date : 30/04/2020
  * Time : 15:36
  */
-@SpringBootTest(classes = ZeusApplication.class,
+@SpringBootTest(classes = HermesApplication.class,
     webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @AutoConfigureMessageVerifier
 public class DownloaderBaseClass {
@@ -35,7 +29,7 @@ public class DownloaderBaseClass {
     private MessageVerifier messaging;
 
     @MockBean
-    private IssueRepository issueRepository;
+    private ZeusConnectorService zeusConnectorService;
 
     @Autowired
     private IssueService issueService;
@@ -45,16 +39,7 @@ public class DownloaderBaseClass {
         // let's clear any remaining messages
         // output == destination or channel name
         this.messaging.receive("downloader-in", 100, TimeUnit.MILLISECONDS);
-        Comic comic = ComicBuilder.aComic()
-            .key("comickey")
-            .provider(Provider.READCOMICS)
-            .status(Status.ONGOING)
-            .issue(IssueBuilder.anIssue()
-                .issueId(1)
-                .issueNumber("1"))
-            .build();
-        given(this.issueRepository.findAllByDownloadedFalse())
-            .willReturn(ImmutableList.of(Iterables.getOnlyElement(comic.getIssues())));
+        given(this.zeusConnectorService.getIssuesToDownload()).willReturn(getIssueToDownloadListWithSingleIssue());
     }
 
     public void downloadIssue() {

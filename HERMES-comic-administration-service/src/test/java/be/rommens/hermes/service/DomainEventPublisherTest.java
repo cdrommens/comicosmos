@@ -1,13 +1,8 @@
-package be.rommens.zeus.service;
+package be.rommens.hermes.service;
 
-import be.rommens.hera.api.Status;
-import be.rommens.zeus.model.builder.ComicBuilder;
-import be.rommens.zeus.model.builder.IssueBuilder;
-import be.rommens.zeus.model.entity.Comic;
-import be.rommens.zeus.model.output.DownloadIssueOutput;
-import be.rommens.zeus.repository.IssueRepository;
+import be.rommens.hermes.connectivity.ZeusConnectorService;
+import be.rommens.hermes.model.output.DownloadIssueOutput;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.Iterables;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +13,11 @@ import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.cloud.stream.test.binder.MessageCollector;
 import org.springframework.messaging.Message;
 import org.springframework.test.web.servlet.MockMvc;
-import org.testcontainers.shaded.com.google.common.collect.ImmutableList;
 
-import java.time.LocalDate;
-import java.util.Collections;
 import java.util.concurrent.BlockingQueue;
 
+import static be.rommens.hermes.model.IssueToDownloadListTestObjectFactory.getEmptyIssueToDownloadList;
+import static be.rommens.hermes.model.IssueToDownloadListTestObjectFactory.getIssueToDownloadListWithSingleIssue;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -49,7 +43,7 @@ public class DomainEventPublisherTest {
     @Autowired
     private ObjectMapper mapper;
     @MockBean
-    private IssueRepository issueRepository;
+    private ZeusConnectorService zeusConnectorService;
 
     private BlockingQueue<Message<?>> events;
 
@@ -61,17 +55,7 @@ public class DomainEventPublisherTest {
     @Test
     public void whenDownloadNewIssues_thenDownloadIssueIsPublished() throws Exception {
         //given
-        Comic comic = ComicBuilder.aComic()
-            .comicId(1)
-            .key("comickey")
-            .status(Status.ONGOING)
-            .issue(IssueBuilder.anIssue()
-                .issueId(1)
-                .issueNumber("1")
-                .dateOfRelease(LocalDate.of(2020,1,1))
-                .downloaded(Boolean.FALSE))
-            .build();
-        given(issueRepository.findAllByDownloadedFalse()).willReturn(ImmutableList.of(Iterables.getOnlyElement(comic.getIssues())));
+        given(zeusConnectorService.getIssuesToDownload()).willReturn(getIssueToDownloadListWithSingleIssue());
 
         DownloadIssueOutput expected = new DownloadIssueOutput(1);
 
@@ -87,7 +71,7 @@ public class DomainEventPublisherTest {
     @Test
     public void whenNoIssues_thenPublisherIsNotTriggered() throws Exception {
         //given
-        given(issueRepository.findAllByDownloadedFalse()).willReturn(Collections.emptyList());
+        given(zeusConnectorService.getIssuesToDownload()).willReturn(getEmptyIssueToDownloadList());
 
         DownloadIssueOutput expected = new DownloadIssueOutput(0);
 

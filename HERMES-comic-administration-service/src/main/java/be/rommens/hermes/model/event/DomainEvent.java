@@ -1,4 +1,4 @@
-package be.rommens.zeus.model.event;
+package be.rommens.hermes.model.event;
 
 /**
  * User : cederik
