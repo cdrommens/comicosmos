@@ -52,12 +52,12 @@ public class IssueControllerTest {
             .status(Status.ONGOING)
             .issue(IssueBuilder.anIssue()
                 .issueId(-3)
-                .issueNumber("Annual-1"))
-                .dateOfRelease(LocalDate.of(2016, 2, 1))
+                .issueNumber("Annual-1")
+                .dateOfRelease(LocalDate.of(2016, 2, 1)))
             .issue(IssueBuilder.anIssue()
                 .issueId(-4)
-                .issueNumber("1"))
-            .dateOfRelease(LocalDate.of(2018, 2, 1))
+                .issueNumber("1")
+                .dateOfRelease(LocalDate.of(2018, 2, 1)))
             .build();
         given(issueService.downloadNewIssues()).willReturn(comic.getIssues());
 

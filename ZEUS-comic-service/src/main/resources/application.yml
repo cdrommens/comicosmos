@@ -1,0 +1,15 @@
+server:
+  port: 8610
+spring:
+  h2:
+    console:
+      enabled: true
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 20
