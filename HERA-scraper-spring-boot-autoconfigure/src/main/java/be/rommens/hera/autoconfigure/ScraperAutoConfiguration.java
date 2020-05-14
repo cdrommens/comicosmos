@@ -2,6 +2,7 @@ package be.rommens.hera.autoconfigure;
 
 import be.rommens.hera.api.Provider;
 import be.rommens.hera.api.service.ScraperFactory;
+import be.rommens.hera.api.service.ScraperFactoryImpl;
 import be.rommens.hera.core.Scraper;
 import be.rommens.hera.core.ScrapingConfig;
 import be.rommens.hera.core.ScrapingConfigParams;
@@ -53,6 +54,6 @@ public class ScraperAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public ScraperFactory scraperFactory() {
-        return new ScraperFactory(applicationContext);
+        return new ScraperFactoryImpl(applicationContext);
     }
 }
