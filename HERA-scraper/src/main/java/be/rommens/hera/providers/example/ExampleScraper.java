@@ -7,6 +7,7 @@ import be.rommens.hera.core.ScrapingConfig;
 import be.rommens.hera.core.ScrapingConfigParams;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
@@ -41,5 +42,10 @@ public class ExampleScraper extends AbstractScraper {
     @Override
     public ScrapedIssue scrapeIssue(String technicalComicName, String issue) throws IOException {
         return null;
+    }
+
+    @Override
+    public byte[] downloadPage(String url) throws FileNotFoundException {
+        return new byte[0];
     }
 }

@@ -8,7 +8,6 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -64,7 +63,8 @@ public class DownloadIssuePagesCommand extends AbstractCommand {
 
     //TODO : move to scraper (with header and some delay)
     private void downloadFile(String page) throws IOException {
-        FileUtils.copyURLToFile(new URL(page), getDestinationFile(page));
+        byte[] contentOfPage = getIssueAssemblyContext().getScraper().downloadPage(page);
+        FileUtils.writeByteArrayToFile(getDestinationFile(page), contentOfPage);
         //TODO : check filesize
         numberOfDownloadedPages++;
         log.info("   [DownloadIssuePagesCommand] Downloaded {} / {} pages", numberOfDownloadedPages, getIssueAssemblyContext().getScrapedIssue().getNumberOfPages());

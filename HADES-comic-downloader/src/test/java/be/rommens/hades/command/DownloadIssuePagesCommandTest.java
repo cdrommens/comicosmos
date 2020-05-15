@@ -3,8 +3,10 @@ package be.rommens.hades.command;
 import be.rommens.hades.assembler.IssueAssemblyContext;
 import be.rommens.hades.core.CommandResult;
 import be.rommens.hades.model.IssueAssemblyContextTestObjectFactory;
+import be.rommens.hera.ScraperTestFactory;
 import be.rommens.hera.api.models.ScrapedIssue;
 import be.rommens.hera.builders.ScrapedIssueBuilder;
+import be.rommens.hera.core.Scraper;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.AfterAll;
@@ -62,7 +64,8 @@ public class DownloadIssuePagesCommandTest {
             .addPage("http://localhost:" + wiremock.port() + "/page1.txt")
             .addPage("http://localhost:" + wiremock.port() + "/page2.txt")
             .build();
-        IssueAssemblyContext context = IssueAssemblyContextTestObjectFactory.createTestContext(tempDir.toString(), null);
+        Scraper scraper = ScraperTestFactory.willReturnScrapedIssue(scrapedIssue);
+        IssueAssemblyContext context = IssueAssemblyContextTestObjectFactory.createTestContext(tempDir.toString(), scraper);
         context.setScrapedIssue(scrapedIssue);
         DownloadIssuePagesCommand command = new DownloadIssuePagesCommand(context);
 
@@ -90,7 +93,8 @@ public class DownloadIssuePagesCommandTest {
             .addPage("http://localhost:" + wiremock.port() + "/page2.txt")
             .addPage("http://localhost:" + wiremock.port() + "/unknownpage.txt")
             .build();
-        IssueAssemblyContext context = IssueAssemblyContextTestObjectFactory.createTestContext(tempDir.toString(), null);
+        Scraper scraper = ScraperTestFactory.willReturnScrapedIssue(scrapedIssue);
+        IssueAssemblyContext context = IssueAssemblyContextTestObjectFactory.createTestContext(tempDir.toString(), scraper);
         context.setScrapedIssue(scrapedIssue);
         DownloadIssuePagesCommand command = new DownloadIssuePagesCommand(context);
 

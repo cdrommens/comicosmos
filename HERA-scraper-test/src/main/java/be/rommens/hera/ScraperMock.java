@@ -6,6 +6,7 @@ import be.rommens.hera.api.models.ScrapedIssue;
 import be.rommens.hera.core.AbstractScraper;
 import be.rommens.hera.core.ScrapingConfig;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
@@ -53,6 +54,11 @@ public class ScraperMock extends AbstractScraper {
             throw comicNotFoundException;
         }
         throw new IllegalStateException("no returned mock objects defined");
+    }
+
+    @Override
+    public byte[] downloadPage(String url) throws FileNotFoundException {
+        return new byte[0];
     }
 
     public void setExpectedScrapedComic(ScrapedComic scrapedComic) {
