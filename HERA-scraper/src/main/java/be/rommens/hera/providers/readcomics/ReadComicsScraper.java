@@ -9,12 +9,14 @@ import be.rommens.hera.core.ScrapingConfig;
 import be.rommens.hera.core.ScrapingConfigParams;
 import com.google.common.collect.Iterables;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.HttpStatusException;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -95,6 +97,15 @@ public class ReadComicsScraper extends AbstractScraper {
         }
         catch(HttpStatusException ex) {
             throw new ComicNotFoundException("URL for " + technicalComicName + " with issue " + issue + " is not found", ex);
+        }
+    }
+
+    @Override
+    public byte[] downloadPage(String url) throws FileNotFoundException {
+        try {
+            return IOUtils.toByteArray(getUrlConnection(url));
+        } catch (Exception e) {
+            throw new FileNotFoundException("Resource on " + url + " is not found");
         }
     }
 

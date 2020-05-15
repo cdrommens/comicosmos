@@ -17,6 +17,7 @@ import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collections;
 
@@ -43,6 +44,9 @@ public class ReadComicsScraperTest {
 
     @Autowired
     private Scraper readComicsScraper;
+
+    @Autowired
+    private ScrapingConfig scrapingConfig;
 
     @TestConfiguration
     static class TestConfig {
@@ -109,6 +113,21 @@ public class ReadComicsScraperTest {
         assertThatThrownBy(() -> readComicsScraper.scrapeIssue("unknown", "999"))
             .isInstanceOf(ComicNotFoundException.class)
             .hasMessageContaining("URL for unknown with issue 999 is not found");
+    }
+
+    @Test
+    public void testDownloadPage_whenFound() throws IOException {
+        String url = scrapingConfig.get(ScrapingConfigParams.BASE_URL).toString();
+        byte[] result = readComicsScraper.downloadPage(url.replace("readcomics/", "") + "page1.txt");
+        assertThat(result).isNotNull();
+        assertThat(new String(result)).isEqualTo("page1");
+    }
+
+    @Test
+    public void testDownloadPage_whenNotFound() {
+        String url = scrapingConfig.get(ScrapingConfigParams.BASE_URL).toString();
+        assertThatThrownBy(() -> readComicsScraper.downloadPage(url + "page1.txt"))
+            .isInstanceOf(FileNotFoundException.class);
     }
 
 }
