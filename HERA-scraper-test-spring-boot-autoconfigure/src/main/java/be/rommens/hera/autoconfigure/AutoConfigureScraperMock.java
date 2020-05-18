@@ -1,6 +1,7 @@
 package be.rommens.hera.autoconfigure;
 
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.test.autoconfigure.properties.PropertyMapping;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -17,7 +18,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @ImportAutoConfiguration(classes = MockScraperAutoConfiguration.class)
-//@PropertyMapping("spring.test.mockmvc")
+@PropertyMapping("hera.test.scrapermock")
 public @interface AutoConfigureScraperMock {
 
     String value() default "";

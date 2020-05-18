@@ -1,12 +1,23 @@
 package be.rommens.hera;
 
-import be.rommens.hera.api.exceptions.ComicNotFoundException;
 import be.rommens.hera.api.models.ScrapedComic;
 import be.rommens.hera.api.models.ScrapedIssue;
+import be.rommens.hera.api.models.ScrapedIssueDetails;
+import be.rommens.hera.builders.ScrapedComicBuilder;
+import be.rommens.hera.builders.ScrapedIssueBuilder;
+import be.rommens.hera.builders.ScrapedIssueDetailsBuilder;
 import be.rommens.hera.core.AbstractScraper;
 import be.rommens.hera.core.ScrapingConfig;
+import be.rommens.hera.dataset.Comic;
+import be.rommens.hera.dataset.Issue;
+import org.apache.commons.io.IOUtils;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * User : cederik
@@ -15,12 +26,44 @@ import java.io.IOException;
  */
 public class ScraperMock extends AbstractScraper {
 
-    private ScrapedComic scrapedComic;
-    private ScrapedIssue scrapedIssue;
-    private ComicNotFoundException comicNotFoundException;
+    private final Map<String, ScrapedComic> scrapedComics = new HashMap<>();
+    private final Map<String, ScrapedIssue> scrapedIssues = new HashMap<>();
 
-    public ScraperMock(ScrapingConfig scrapingConfig) {
+    public ScraperMock(ScrapingConfig scrapingConfig, List<Comic> givenResults) {
         super(scrapingConfig);
+        transformGivenResults(givenResults);
+    }
+
+    private void transformGivenResults(List<Comic> givenResults) {
+        for (Comic comic : givenResults) {
+            ScrapedComic scrapedComic = new ScrapedComicBuilder()
+                .title(comic.getTitle())
+                .cover(comic.getCover())
+                .publisher(comic.getPublisher())
+                .dateOfRelease(comic.getDateOfRelease())
+                .status(comic.getStatus())
+                .author(comic.getAuthor())
+                .summary(comic.getSummary())
+                .build();
+
+            for (Issue issue : comic.getIssues()) {
+                ScrapedIssueDetails scrapedIssueDetails = new ScrapedIssueDetailsBuilder()
+                    .issue(issue.getIssue())
+                    .date(issue.getDate())
+                    .url(issue.getUrl())
+                    .build();
+                scrapedComic.addIssue(scrapedIssueDetails);
+
+                ScrapedIssue scrapedIssue = new ScrapedIssueBuilder()
+                    .comic(comic.getKey())
+                    .issueNumber(issue.getIssue())
+                    .numberOfPages(issue.getPages().size())
+                    .addPages(issue.getPages())
+                    .build();
+                scrapedIssues.putIfAbsent(composeKey(comic.getKey(), issue.getIssue()), scrapedIssue);
+            }
+            scrapedComics.putIfAbsent(comic.getKey(), scrapedComic);
+        }
     }
 
     @Override
@@ -35,35 +78,36 @@ public class ScraperMock extends AbstractScraper {
 
     @Override
     public ScrapedComic scrapeComic(String technicalComicName) throws IOException {
-        if (scrapedComic != null) {
-            return scrapedComic;
+        if (scrapedComics.containsKey(technicalComicName)) {
+            return scrapedComics.get(technicalComicName);
         }
-        if (comicNotFoundException != null) {
-            throw comicNotFoundException;
-        }
-        throw new IllegalStateException("no returned mock objects defined");
+        throw throwComicNotFound(technicalComicName, null);
     }
 
     @Override
     public ScrapedIssue scrapeIssue(String technicalComicName, String issue) throws IOException {
-        if (scrapedIssue != null) {
-            return scrapedIssue;
+        String key = composeKey(technicalComicName, issue);
+        if (scrapedIssues.containsKey(key)) {
+            return scrapedIssues.get(key);
         }
-        if (comicNotFoundException != null) {
-            throw comicNotFoundException;
+        throw throwComicNotFound(technicalComicName, null);
+    }
+
+    @Override
+    public byte[] downloadPage(String url) throws FileNotFoundException {
+        InputStream inputStream = this.getClass().getResourceAsStream("/__files/" + url);
+        if (inputStream == null) {
+            throw throwPageNotFound(url);
         }
-        throw new IllegalStateException("no returned mock objects defined");
+        try {
+            return IOUtils.toByteArray(inputStream);
+        } catch (IOException e) {
+            throw throwPageNotFound(url);
+        }
     }
 
-    public void setExpectedScrapedComic(ScrapedComic scrapedComic) {
-        this.scrapedComic = scrapedComic;
-    }
 
-    public void setExpectedScrapedIssue(ScrapedIssue scrapedIssue) {
-        this.scrapedIssue = scrapedIssue;
-    }
-
-    public void setExpectedException(String technicalName) {
-        this.comicNotFoundException = new ComicNotFoundException(technicalName, null);
+    private String composeKey(String technicalComicName, String issueNumber) {
+        return technicalComicName + "-" + issueNumber;
     }
 }

@@ -37,6 +37,11 @@ public final class ScrapedIssueBuilder {
         return this;
     }
 
+    public ScrapedIssueBuilder addPages(List<String> pages) {
+        this.pages.addAll(pages);
+        return this;
+    }
+
     public ScrapedIssue build() {
         return new ScrapedIssue(comic, issueNumber, numberOfPages, pages);
     }

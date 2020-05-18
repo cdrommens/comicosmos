@@ -3,7 +3,6 @@ package be.rommens.hades.assembler;
 import be.rommens.hades.connectivity.DownloadIssueMessage;
 import be.rommens.hades.core.AssemblyChainFactory;
 import be.rommens.hera.api.Provider;
-import be.rommens.hera.autoconfigure.AutoConfigureScraperMock;
 import net.lingala.zip4j.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 import org.apache.commons.io.FileUtils;
@@ -30,7 +29,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 // used for autoconfigure test
 @Disabled
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
-@AutoConfigureScraperMock
 public class IssueAssemblyChainFactoryTest {
 
     private static final String BASE_URL = Paths.get(FileUtils.getTempDirectoryPath(),"junit5/").toString();

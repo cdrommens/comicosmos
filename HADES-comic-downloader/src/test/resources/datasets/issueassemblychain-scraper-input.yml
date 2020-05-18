@@ -1,0 +1,17 @@
+comic:
+  - title: ""
+    cover: ""
+    publisher: ""
+    dateOfRelease: ""
+    status: ""
+    author: ""
+    summary: ""
+    issues:
+      - issue: ""
+        url: ""
+        date: ""
+        pages:
+          - ""
+          - ""
+          - ""
+          - ""
