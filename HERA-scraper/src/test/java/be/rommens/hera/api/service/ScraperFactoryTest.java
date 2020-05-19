@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
  * Date : 07/04/2020
  * Time : 15:11
  */
-@SpringBootTest(classes = {ScraperFactory.class, ScraperFactoryTest.TestConfig.class})
+@SpringBootTest(classes = {ScraperFactoryImpl.class, ScraperFactoryTest.TestConfig.class})
 public class ScraperFactoryTest {
 
     @Autowired

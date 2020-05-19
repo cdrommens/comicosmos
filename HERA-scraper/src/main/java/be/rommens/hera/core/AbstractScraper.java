@@ -1,8 +1,10 @@
 package be.rommens.hera.core;
 
+import be.rommens.hera.api.exceptions.ComicNotFoundException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -43,6 +45,18 @@ public abstract class AbstractScraper implements Scraper {
         myURLConnection.setRequestProperty("Pragma", "no-cache");
         myURLConnection.setRequestProperty("Host", "google.com");
         return myURLConnection;
+    }
+
+    protected ComicNotFoundException throwComicNotFound(String technicalComicName, Exception ex) {
+        return new ComicNotFoundException("URL for " + technicalComicName + " is not found", ex);
+    }
+
+    protected ComicNotFoundException throwIssueNotFound(String technicalComicName, String issue, Exception ex) {
+        return new ComicNotFoundException("URL for " + technicalComicName + " with issue " + issue + " is not found", ex);
+    }
+
+    protected FileNotFoundException throwPageNotFound(String url) {
+        return new FileNotFoundException("Resource on " + url + " is not found");
     }
 
     protected abstract String buildUrlForComic(String technicalComicName);

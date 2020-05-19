@@ -3,13 +3,15 @@ package be.rommens.hades.command;
 import be.rommens.hades.assembler.IssueAssemblyContext;
 import be.rommens.hades.core.CommandResult;
 import be.rommens.hades.model.IssueAssemblyContextTestObjectFactory;
-import be.rommens.hera.ScraperTestFactory;
+import be.rommens.hera.api.Provider;
 import be.rommens.hera.api.models.ScrapedIssue;
+import be.rommens.hera.api.service.ScraperFactory;
+import be.rommens.hera.autoconfigure.AutoConfigureScraperMock;
 import be.rommens.hera.builders.ScrapedIssueBuilder;
-import be.rommens.hera.core.Scraper;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,10 +26,14 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Date : 26/04/2020
  * Time : 14:35
  */
+@AutoConfigureScraperMock(value = "/datasets/scrape-issue-command-test-input.yml")
 public class ScrapeIssueCommandTest {
 
     @TempDir
     Path tempDir;
+
+    @Autowired
+    private ScraperFactory scraperFactory;
 
     @Test
     public void whenIssueExists_thenReturnCompletedAndScrapedIssue() {
@@ -39,8 +45,7 @@ public class ScrapeIssueCommandTest {
             .addPage("page1")
             .addPage("page2")
             .build();
-        Scraper scraper = ScraperTestFactory.willReturnScrapedIssue(scrapedIssue);
-        IssueAssemblyContext context = IssueAssemblyContextTestObjectFactory.createTestContext(null, scraper);
+        IssueAssemblyContext context = IssueAssemblyContextTestObjectFactory.createTestContext(null, scraperFactory.createScraper(Provider.READCOMICS));
         ScrapeIssueCommand command = new ScrapeIssueCommand(context);
 
         //when
@@ -54,8 +59,8 @@ public class ScrapeIssueCommandTest {
     @Test
     public void whenIssueNotExists_thenReturnErrorAndNoScrapedIssue() {
         //given
-        Scraper scraper = ScraperTestFactory.willThrowComicNotFound("comickey");
-        IssueAssemblyContext context = IssueAssemblyContextTestObjectFactory.createTestContext(null, scraper);
+        //Scraper scraper = ScraperTestFactory.willThrowComicNotFound("comickey");
+        IssueAssemblyContext context = IssueAssemblyContextTestObjectFactory.createTestContext(null, null);
         ScrapeIssueCommand command = new ScrapeIssueCommand(context);
 
         //when

@@ -1,6 +1,5 @@
 package be.rommens.hera.providers.readcomics;
 
-import be.rommens.hera.api.exceptions.ComicNotFoundException;
 import be.rommens.hera.api.models.ScrapedComic;
 import be.rommens.hera.api.models.ScrapedIssue;
 import be.rommens.hera.api.models.ScrapedIssueDetails;
@@ -80,7 +79,7 @@ public class ReadComicsScraper extends AbstractScraper {
             return scrapedComic;
         }
         catch (HttpStatusException ex) {
-            throw new ComicNotFoundException("URL for " + technicalComicName + " is not found", ex);
+            throw throwComicNotFound(technicalComicName, ex);
         }
     }
 
@@ -96,7 +95,7 @@ public class ReadComicsScraper extends AbstractScraper {
             return null;
         }
         catch(HttpStatusException ex) {
-            throw new ComicNotFoundException("URL for " + technicalComicName + " with issue " + issue + " is not found", ex);
+            throw throwIssueNotFound(technicalComicName, issue, ex);
         }
     }
 
@@ -105,7 +104,7 @@ public class ReadComicsScraper extends AbstractScraper {
         try {
             return IOUtils.toByteArray(getUrlConnection(url));
         } catch (Exception e) {
-            throw new FileNotFoundException("Resource on " + url + " is not found");
+            throw throwPageNotFound(url);
         }
     }
 
