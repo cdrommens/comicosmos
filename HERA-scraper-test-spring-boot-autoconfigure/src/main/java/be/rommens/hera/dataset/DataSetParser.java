@@ -25,16 +25,16 @@ public class DataSetParser {
         if (StringUtils.isNotEmpty(dataset)) {
             InputStream inputStream = this.getClass().getResourceAsStream(dataset);
             Assert.notNull(inputStream, dataset + " is not found");
-            Comics comics = parseYaml(inputStream);
-            if (comics != null) {
-                return comics.getComics();
+            ComicsGroup comicsGroup = parseYaml(inputStream);
+            if (comicsGroup != null) {
+                return comicsGroup.getComics();
             }
         }
         return Collections.emptyList();
     }
 
-    private Comics parseYaml(InputStream inputStream) {
-        final Constructor comicsConstructor = new Constructor(Comics.class);
+    private ComicsGroup parseYaml(InputStream inputStream) {
+        final Constructor comicsConstructor = new Constructor(ComicsGroup.class);
         final TypeDescription comicsDescription = new TypeDescription(Comic.class);
         comicsDescription.addPropertyParameters("comics", Comic.class);
         comicsConstructor.addTypeDescription(comicsDescription);

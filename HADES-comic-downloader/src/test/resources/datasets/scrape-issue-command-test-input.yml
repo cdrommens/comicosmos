@@ -2,7 +2,7 @@ comics:
   - key: "comickey"
     title: "comickey"
     issues:
-      - issue: "1"
+      - issueNumber: "1"
         pages:
           - "page1"
           - "page2"

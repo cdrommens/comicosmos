@@ -74,12 +74,12 @@ public class DataSetParserTest {
                 .summary("summary")
                 .issues(Arrays.asList(
                     Issue.builder()
-                        .issue("1")
+                        .issueNumber("1")
                         .url("url1")
                         .date("2016-01-01")
                         .pages(Arrays.asList("page1.txt", "page2.jpg", "page3.jpg")).build(),
                     Issue.builder()
-                        .issue("2")
+                        .issueNumber("2")
                         .url("url2")
                         .date("2018-01-01")
                         .pages(Arrays.asList("page1.jpg", "page2.jpg")).build()))
@@ -109,12 +109,12 @@ public class DataSetParserTest {
                 .summary("summary")
                 .issues(Arrays.asList(
                     Issue.builder()
-                        .issue("1")
+                        .issueNumber("1")
                         .url("url1")
                         .date("2016-01-01")
                         .pages(Arrays.asList("page1.jpg", "page2.jpg", "page3.jpg")).build(),
                     Issue.builder()
-                        .issue("2")
+                        .issueNumber("2")
                         .url("url2")
                         .date("2018-01-01")
                         .pages(Arrays.asList("page1.jpg", "page2.jpg")).build()))
@@ -130,12 +130,12 @@ public class DataSetParserTest {
                 .summary("summary")
                 .issues(Arrays.asList(
                     Issue.builder()
-                        .issue("1")
+                        .issueNumber("1")
                         .url("url1")
                         .date("2016-01-01")
                         .pages(Arrays.asList("page1.jpg", "page2.jpg", "page3.jpg")).build(),
                     Issue.builder()
-                        .issue("2")
+                        .issueNumber("2")
                         .url("url2")
                         .date("2018-01-01")
                         .pages(Arrays.asList("page1.jpg", "page2.jpg")).build()))

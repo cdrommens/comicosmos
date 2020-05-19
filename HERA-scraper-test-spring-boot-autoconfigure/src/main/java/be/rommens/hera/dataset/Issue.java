@@ -23,7 +23,7 @@ import java.util.List;
 @Builder
 public class Issue {
 
-    private String issue;
+    private String issueNumber;
     private String url;
     private String date;
     private List<String> pages;

@@ -10,7 +10,7 @@ import java.util.List;
  * Time : 13:55
  */
 @Data
-public class Comics {
+public class ComicsGroup {
 
     private List<Comic> comics;
 }

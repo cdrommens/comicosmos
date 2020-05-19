@@ -48,7 +48,7 @@ public class ScraperMock extends AbstractScraper {
 
             for (Issue issue : comic.getIssues()) {
                 ScrapedIssueDetails scrapedIssueDetails = new ScrapedIssueDetailsBuilder()
-                    .issue(issue.getIssue())
+                    .issue(issue.getIssueNumber())
                     .date(issue.getDate())
                     .url(issue.getUrl())
                     .build();
@@ -56,11 +56,11 @@ public class ScraperMock extends AbstractScraper {
 
                 ScrapedIssue scrapedIssue = new ScrapedIssueBuilder()
                     .comic(comic.getKey())
-                    .issueNumber(issue.getIssue())
+                    .issueNumber(issue.getIssueNumber())
                     .numberOfPages(issue.getPages().size())
                     .addPages(issue.getPages())
                     .build();
-                scrapedIssues.putIfAbsent(composeKey(comic.getKey(), issue.getIssue()), scrapedIssue);
+                scrapedIssues.putIfAbsent(composeKey(comic.getKey(), issue.getIssueNumber()), scrapedIssue);
             }
             scrapedComics.putIfAbsent(comic.getKey(), scrapedComic);
         }

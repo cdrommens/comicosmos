@@ -10,8 +10,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-//import org.springframework.boot.test.autoconfigure.properties.PropertyMapping;
-
 /**
  * User : cederik
  * Date : 13/05/2020

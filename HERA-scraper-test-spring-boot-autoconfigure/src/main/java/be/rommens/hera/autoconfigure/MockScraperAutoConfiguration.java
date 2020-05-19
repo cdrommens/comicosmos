@@ -19,7 +19,6 @@ import java.util.List;
  * Date : 04/04/2020
  * Time : 14:46
  */
-//TODO : read yaml file
 @Configuration
 @RequiredArgsConstructor
 @Slf4j
@@ -28,8 +27,7 @@ public class MockScraperAutoConfiguration {
     private final Environment environment;
 
     private Scraper createMockScraper(List<Comic> givenResults) {
-        ScraperMock scraperMock = new ScraperMock(null, givenResults);
-        return scraperMock;
+        return new ScraperMock(null, givenResults);
     }
 
     @Bean
