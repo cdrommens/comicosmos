@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
  * Time : 15:11
  */
 @SpringBootTest(classes = {ScraperFactoryImpl.class, ScraperFactoryTest.TestConfig.class})
-public class ScraperFactoryTest {
+class ScraperFactoryTest {
 
     @Autowired
     private ScraperFactory scraperFactory;
@@ -48,17 +48,17 @@ public class ScraperFactoryTest {
     }
 
     @Test
-    public void testGetReadComicsScraper() {
+    void testGetReadComicsScraper() {
         assertThat(scraperFactory.createScraper(Provider.READCOMICS)).isInstanceOf(ReadComicsScraper.class);
     }
 
     @Test
-    public void testGetExampleScraper() {
+    void testGetExampleScraper() {
         assertThat(scraperFactory.createScraper(Provider.EXAMPLE)).isInstanceOf(ExampleScraper.class);
     }
 
     @Test
-    public void testWillThrowErrorWithNoProvider() {
+    void testWillThrowErrorWithNoProvider() {
         assertThatIllegalStateException().isThrownBy(() -> scraperFactory.createScraper(null));
     }
 

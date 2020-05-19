@@ -27,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Time : 14:35
  */
 @AutoConfigureScraperMock(value = "/datasets/scrape-issue-command-test-input.yml")
-public class ScrapeIssueCommandTest {
+class ScrapeIssueCommandTest {
 
     @TempDir
     Path tempDir;
@@ -36,7 +36,7 @@ public class ScrapeIssueCommandTest {
     private ScraperFactory scraperFactory;
 
     @Test
-    public void whenIssueExists_thenReturnCompletedAndScrapedIssue() {
+    void whenIssueExists_thenReturnCompletedAndScrapedIssue() {
         //given
         ScrapedIssue scrapedIssue = new ScrapedIssueBuilder()
             .comic("comickey")
@@ -57,7 +57,7 @@ public class ScrapeIssueCommandTest {
     }
 
     @Test
-    public void whenIssueNotExists_thenReturnErrorAndNoScrapedIssue() {
+    void whenIssueNotExists_thenReturnErrorAndNoScrapedIssue() {
         //given
         //Scraper scraper = ScraperTestFactory.willThrowComicNotFound("comickey");
         IssueAssemblyContext context = IssueAssemblyContextTestObjectFactory.createTestContext(null, null);
@@ -72,7 +72,7 @@ public class ScrapeIssueCommandTest {
     }
 
     @Test
-    public void testRollback() throws IOException {
+    void testRollback() throws IOException {
         //given
         File newDir = Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1").toFile();
         FileUtils.forceMkdir(newDir);

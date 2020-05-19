@@ -26,7 +26,7 @@ import static org.mockito.Mockito.times;
  */
 @Slf4j
 @ExtendWith(MockitoExtension.class)
-public class IssueServiceTest {
+class IssueServiceTest {
 
     @Mock
     private DomainEventPublisher publisher;
@@ -38,7 +38,7 @@ public class IssueServiceTest {
     private IssueService issueService;
 
     @Test
-    public void whenIssuesFound_thenPublisherIsCalledOneTime() {
+    void whenIssuesFound_thenPublisherIsCalledOneTime() {
         //given
         given(zeusConnectorService.getIssuesToDownload()).willReturn(getIssueToDownloadListWithSingleIssue());
 
@@ -58,7 +58,7 @@ public class IssueServiceTest {
     }
 
     @Test
-    public void whenNoIssuesFound_thenPublisherIsNotCalled() {
+    void whenNoIssuesFound_thenPublisherIsNotCalled() {
         //given
         given(zeusConnectorService.getIssuesToDownload()).willReturn(getEmptyIssueToDownloadList());
 

@@ -36,7 +36,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @AutoConfigureStubRunner(ids = {
     "be.rommens:ZEUS-comic-service:+:stubs" }, stubsMode = StubRunnerProperties.StubsMode.LOCAL)
 @AutoConfigureWireMock(port = 8977)
-public class IssueAssemblyListenerIT {
+class IssueAssemblyListenerIT {
 
     private static final String BASE_URL = Paths.get(FileUtils.getTempDirectoryPath(),"junit5/").toString();
 
@@ -52,17 +52,17 @@ public class IssueAssemblyListenerIT {
     }
 
     @BeforeEach
-    public void setUp() throws IOException {
+    void setUp() throws IOException {
         FileUtils.forceMkdir(Paths.get(BASE_URL).toFile());
     }
 
     @AfterEach
-    public void TearDown() throws IOException {
+    void TearDown() throws IOException {
         FileUtils.deleteDirectory(Paths.get(BASE_URL).toFile());
     }
 
     @Test
-    public void processMessageAndExecuteChain() throws ZipException {
+    void processMessageAndExecuteChain() throws ZipException {
         //when
         stubTrigger.trigger("download_issue");
 

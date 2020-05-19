@@ -25,7 +25,7 @@ public class CleanUpCommandTest {
     Path tempDir;
 
     @Test
-    public void whenIsDir_thenReturnCompleteAndDirDeleted() throws IOException {
+    void whenIsDir_thenReturnCompleteAndDirDeleted() throws IOException {
         //given
         File newDir = Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1").toFile();
         FileUtils.forceMkdir(newDir);
@@ -38,7 +38,7 @@ public class CleanUpCommandTest {
     }
 
     @Test
-    public void whenIsNotDir_thenReturnErrorAndDirNotCleanUp() throws IOException {
+    void whenIsNotDir_thenReturnErrorAndDirNotCleanUp() throws IOException {
         //given
         File newDir = Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1").toFile();
         FileUtils.touch(newDir);
@@ -51,7 +51,7 @@ public class CleanUpCommandTest {
     }
 
     @Test
-    public void testRollback() {
+    void testRollback() {
         //given
         CleanUpCommand command = new CleanUpCommand(IssueAssemblyContextTestObjectFactory.createTestContext(tempDir.toString(), null));
         //when

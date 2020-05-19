@@ -20,10 +20,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  * Time : 13:50
  */
 @Slf4j
-public class DataSetParserTest {
+class DataSetParserTest {
 
     @Test
-    public void whenDataSetNotFOund_thenReturnThrowError() {
+    void whenDataSetNotFOund_thenReturnThrowError() {
         //given
         DataSetParser parser = new DataSetParser("/datasets/unknown.yml");
 
@@ -32,7 +32,7 @@ public class DataSetParserTest {
     }
 
     @Test
-    public void whenNoDataSet_thenReturnEmptyList() {
+    void whenNoDataSet_thenReturnEmptyList() {
         //given
         DataSetParser parser = new DataSetParser(null);
 
@@ -41,7 +41,7 @@ public class DataSetParserTest {
     }
 
     @Test
-    public void whenEmptyDataSet_thenReturnEmptyList() {
+    void whenEmptyDataSet_thenReturnEmptyList() {
         //given
         DataSetParser parser = new DataSetParser("/datasets/scraper-empty.yml");
 
@@ -50,7 +50,7 @@ public class DataSetParserTest {
     }
 
     @Test
-    public void whenDataSetWithWrongFormat_thenReturnThrowError() {
+    void whenDataSetWithWrongFormat_thenReturnThrowError() {
         //given
         DataSetParser parser = new DataSetParser("/datasets/scraper-wrong-format.yml");
 
@@ -59,7 +59,7 @@ public class DataSetParserTest {
     }
 
     @Test
-    public void whenDataSetWith1Comic_thenReturnListWith1Comic() {
+    void whenDataSetWith1Comic_thenReturnListWith1Comic() {
         //given
         DataSetParser parser = new DataSetParser("/datasets/scraper-input.yml");
         List<Comic> expected = Collections.singletonList(
@@ -94,7 +94,7 @@ public class DataSetParserTest {
     }
 
     @Test
-    public void whenDataSetWith2Comics_thenReturnListWith2Comics() {
+    void whenDataSetWith2Comics_thenReturnListWith2Comics() {
         //given
         DataSetParser parser = new DataSetParser("/datasets/scraper-multiple-input.yml");
         List<Comic> expected = Arrays.asList(

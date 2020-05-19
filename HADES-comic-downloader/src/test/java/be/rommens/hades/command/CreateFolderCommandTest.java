@@ -19,13 +19,13 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Date : 26/04/2020
  * Time : 13:57
  */
-public class CreateFolderCommandTest {
+class CreateFolderCommandTest {
 
     @TempDir
     Path tempDir;
 
     @Test
-    public void whenIsFolder_returnCompletedAndFolderCreated() {
+    void whenIsFolder_returnCompletedAndFolderCreated() {
         //when
         CreateFolderCommand command = new CreateFolderCommand(IssueAssemblyContextTestObjectFactory.createTestContext(tempDir.toString(), null));
         CommandResult result = command.body();
@@ -35,7 +35,7 @@ public class CreateFolderCommandTest {
     }
 
     @Test
-    public void whenIsNotFolder_returnErrorAndDirNotCreated() throws IOException {
+    void whenIsNotFolder_returnErrorAndDirNotCreated() throws IOException {
         //given
         File newDir = Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1").toFile();
         FileUtils.touch(newDir);
@@ -48,7 +48,7 @@ public class CreateFolderCommandTest {
     }
 
     @Test
-    public void testRollback() {
+    void testRollback() {
         //given
         CreateFolderCommand command = new CreateFolderCommand(IssueAssemblyContextTestObjectFactory.createTestContext(tempDir.toString(), null));
         //when

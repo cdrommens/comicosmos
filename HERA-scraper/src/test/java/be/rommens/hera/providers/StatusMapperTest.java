@@ -11,24 +11,24 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Date : 04/04/2020
  * Time : 13:16
  */
-public class StatusMapperTest {
+class StatusMapperTest {
 
     @Test
-    public void testMapToOngoing() {
+    void testMapToOngoing() {
         assertThat(new StatusMapper().mapTo("Ongoing")).isEqualTo(Status.ONGOING);
         assertThat(new StatusMapper().mapTo("ongoing")).isEqualTo(Status.ONGOING);
         assertThat(new StatusMapper().mapTo("ONGOING")).isEqualTo(Status.ONGOING);
     }
 
     @Test
-    public void testMapToFinished() {
+    void testMapToFinished() {
         assertThat(new StatusMapper().mapTo("Complete")).isEqualTo(Status.FINISHED);
         assertThat(new StatusMapper().mapTo("complete")).isEqualTo(Status.FINISHED);
         assertThat(new StatusMapper().mapTo("COMPLETE")).isEqualTo(Status.FINISHED);
     }
 
     @Test
-    public void testEmptyOrNull() {
+    void testEmptyOrNull() {
         assertThat(new StatusMapper().mapTo(null)).isNull();
         assertThat(new StatusMapper().mapTo("")).isNull();
     }

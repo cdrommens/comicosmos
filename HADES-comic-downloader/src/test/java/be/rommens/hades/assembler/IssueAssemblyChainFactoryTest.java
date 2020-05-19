@@ -28,7 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @AutoConfigureScraperMock(value = "/datasets/issueassemblychain-scraper-input.yml")
-public class IssueAssemblyChainFactoryTest {
+class IssueAssemblyChainFactoryTest {
 
     private static final String BASE_URL = Paths.get(FileUtils.getTempDirectoryPath(),"junit5/").toString();
 
@@ -41,17 +41,17 @@ public class IssueAssemblyChainFactoryTest {
     }
 
     @BeforeEach
-    public void setUp() throws IOException {
+    void setUp() throws IOException {
         FileUtils.forceMkdir(Paths.get(BASE_URL).toFile());
     }
 
     @AfterEach
-    public void TearDown() throws IOException {
+    void TearDown() throws IOException {
         FileUtils.deleteDirectory(Paths.get(BASE_URL).toFile());
     }
 
     @Test
-    public void testIssueAssemblyChain_withNoErrors() throws ZipException {
+    void testIssueAssemblyChain_withNoErrors() throws ZipException {
         //given
         DownloadIssueMessage downloadIssueMessage = new DownloadIssueMessage(1, "comickey", Provider.READCOMICS, "1");
 

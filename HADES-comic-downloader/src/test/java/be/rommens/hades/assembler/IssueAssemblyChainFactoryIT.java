@@ -33,7 +33,7 @@ import static org.assertj.core.api.Assertions.assertThat;
     }
 )
 @AutoConfigureWireMock(port = 8977)
-public class IssueAssemblyChainFactoryIT {
+class IssueAssemblyChainFactoryIT {
 
     private static final String BASE_URL = Paths.get(FileUtils.getTempDirectoryPath(),"junit5/").toString();
 
@@ -46,17 +46,17 @@ public class IssueAssemblyChainFactoryIT {
     }
 
     @BeforeEach
-    public void setUp() throws IOException {
+    void setUp() throws IOException {
         FileUtils.forceMkdir(Paths.get(BASE_URL).toFile());
     }
 
     @AfterEach
-    public void TearDown() throws IOException {
+    void TearDown() throws IOException {
         FileUtils.deleteDirectory(Paths.get(BASE_URL).toFile());
     }
 
     @Test
-    public void testIssueAssemblyChain_withZipAlreadyExists() throws IOException {
+    void testIssueAssemblyChain_withZipAlreadyExists() throws IOException {
         //given
         FileUtils.forceMkdir(Paths.get(BASE_URL, "comickey", "comickey-1.cbz").toFile());
         DownloadIssueMessage downloadIssueMessage = new DownloadIssueMessage(1, "comickey", Provider.READCOMICS, "1");
@@ -70,7 +70,7 @@ public class IssueAssemblyChainFactoryIT {
     }
 
     @Test
-    public void testIssueAssemblyChain_withNoErrors() throws ZipException {
+    void testIssueAssemblyChain_withNoErrors() throws ZipException {
         //given
         DownloadIssueMessage downloadIssueMessage = new DownloadIssueMessage(1, "comickey", Provider.READCOMICS, "1");
 
@@ -86,7 +86,7 @@ public class IssueAssemblyChainFactoryIT {
     }
 
     @Test
-    public void testIssueAssemblyChain_withErrorsDuringCreateFolder() throws IOException {
+    void testIssueAssemblyChain_withErrorsDuringCreateFolder() throws IOException {
         //given
         FileUtils.touch(Paths.get(BASE_URL, "comickey", "comickey-1").toFile());
         DownloadIssueMessage downloadIssueMessage = new DownloadIssueMessage(1, "comickey", Provider.READCOMICS, "1");
@@ -100,7 +100,7 @@ public class IssueAssemblyChainFactoryIT {
     }
 
     @Test
-    public void testIssueAssemblyChain_withErrorsDuringScrapeIssue() throws IOException {
+    void testIssueAssemblyChain_withErrorsDuringScrapeIssue() throws IOException {
         //given
         DownloadIssueMessage downloadIssueMessage = new DownloadIssueMessage(1, "comickey", Provider.READCOMICS, "1");
 
@@ -112,7 +112,7 @@ public class IssueAssemblyChainFactoryIT {
     }
 
     @Test
-    public void testIssueAssemblyChain_withErrorsDuringDownloadPages() throws IOException {
+    void testIssueAssemblyChain_withErrorsDuringDownloadPages() throws IOException {
         //given
         FileUtils.forceMkdir(Paths.get(BASE_URL, "comickey", "comickey-1","02.jpg").toFile());
         DownloadIssueMessage downloadIssueMessage = new DownloadIssueMessage(1, "comickey", Provider.READCOMICS, "1");

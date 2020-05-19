@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @SpringBootTest
 @AutoConfigureMockMvc
-public class DomainEventPublisherTest {
+class DomainEventPublisherTest {
 
     @Autowired
     private Source source;
@@ -48,12 +48,12 @@ public class DomainEventPublisherTest {
     private BlockingQueue<Message<?>> events;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         this.events = this.messageCollector.forChannel(source.output());
     }
 
     @Test
-    public void whenDownloadNewIssues_thenDownloadIssueIsPublished() throws Exception {
+    void whenDownloadNewIssues_thenDownloadIssueIsPublished() throws Exception {
         //given
         given(zeusConnectorService.getIssuesToDownload()).willReturn(getIssueToDownloadListWithSingleIssue());
 
@@ -69,7 +69,7 @@ public class DomainEventPublisherTest {
     }
 
     @Test
-    public void whenNoIssues_thenPublisherIsNotTriggered() throws Exception {
+    void whenNoIssues_thenPublisherIsNotTriggered() throws Exception {
         //given
         given(zeusConnectorService.getIssuesToDownload()).willReturn(getEmptyIssueToDownloadList());
 
