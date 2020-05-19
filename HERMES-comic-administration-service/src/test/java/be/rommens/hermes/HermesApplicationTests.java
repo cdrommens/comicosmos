@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
  * Date : 13/05/2020
  * Time : 16:02
  */
-public class HermesApplicationTests {
+class HermesApplicationTests {
 
     @Test
     void contextLoads() {

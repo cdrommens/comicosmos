@@ -11,7 +11,6 @@ import be.rommens.hades.connectivity.DownloadIssueMessage;
 import be.rommens.hades.core.AssemblyChainFactory;
 import be.rommens.hera.api.service.ScraperFactory;
 import be.rommens.hera.core.Scraper;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -23,13 +22,16 @@ import org.springframework.stereotype.Component;
  * Time : 15:24
  */
 @Component
-@RequiredArgsConstructor
 public class IssueAssemblyChainFactory implements AssemblyChainFactory<DownloadIssueMessage> {
 
-    @Value("${download.folder.base}")
-    private String baseUrl;
-
     private final ScraperFactory scraperFactory;
+    private final String baseUrl;
+
+    public IssueAssemblyChainFactory(ScraperFactory scraperFactory,
+                                     @Value("${download.folder.base}") String baseUrl) {
+        this.scraperFactory = scraperFactory;
+        this.baseUrl = baseUrl;
+    }
 
     @Override
     public IssueAssemblyChain createAssemblyChain(DownloadIssueMessage downloadIssueMessage) {

@@ -24,13 +24,13 @@ import static org.hamcrest.Matchers.hasSize;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DBRider
 @DataSet(value = "datasets/comicservice/setup.yml")
-public class ComicRepositoryTest {
+class ComicRepositoryTest {
 
     @Autowired
     private ComicRepository comicRepository;
 
     @Test
-    public void testFindAll() {
+    void testFindAll() {
         List<Comic> result = comicRepository.findAll();
         MatcherAssert.assertThat(result, hasSize(1));
     }

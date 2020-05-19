@@ -21,7 +21,7 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
  * Time : 09:33
  */
 @RestClientTest(ZeusConnectorService.class)
-public class ZeusConnectorServiceTest {
+class ZeusConnectorServiceTest {
 
     @Autowired
     private ZeusConnectorService zeusConnectorService;
@@ -33,7 +33,7 @@ public class ZeusConnectorServiceTest {
     private MockRestServiceServer mockRestServiceServer;
 
     @Test
-    public void whenServiceIsCalled_returnList() throws JsonProcessingException {
+    void whenServiceIsCalled_returnList() throws JsonProcessingException {
         //given
         String expected = objectMapper.writeValueAsString(getIssueToDownloadListWith2Issues());
         this.mockRestServiceServer.expect(requestTo("/issue/todownload"))
@@ -46,7 +46,7 @@ public class ZeusConnectorServiceTest {
     }
 
     @Test
-    public void whenServiceIsCalled_returnEmptyList() throws JsonProcessingException {
+    void whenServiceIsCalled_returnEmptyList() throws JsonProcessingException {
         //given
         String expected = objectMapper.writeValueAsString(getEmptyIssueToDownloadList());
         this.mockRestServiceServer.expect(requestTo("/issue/todownload"))

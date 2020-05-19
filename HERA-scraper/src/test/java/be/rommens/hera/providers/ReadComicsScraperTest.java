@@ -40,7 +40,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
     }
 )
 @AutoConfigureWireMock(port = 0)
-public class ReadComicsScraperTest {
+class ReadComicsScraperTest {
 
     @Autowired
     private Scraper readComicsScraper;
@@ -63,7 +63,7 @@ public class ReadComicsScraperTest {
     }
 
     @Test
-    public void testScrapComicFound() throws IOException {
+    void testScrapComicFound() throws IOException {
         //when
         ScrapedComic scrapedComic = readComicsScraper.scrapeComic("batman-2016");
 
@@ -90,14 +90,14 @@ public class ReadComicsScraperTest {
     }
 
     @Test
-    public void testScrapeComicNotFound() {
+    void testScrapeComicNotFound() {
         assertThatThrownBy(() -> readComicsScraper.scrapeComic("unknown"))
             .isInstanceOf(ComicNotFoundException.class)
             .hasMessageContaining("URL for unknown is not found");
     }
 
     @Test
-    public void testScrapeIssueFound() throws IOException {
+    void testScrapeIssueFound() throws IOException {
         //given
         ScrapedIssue scrapedIssue = readComicsScraper.scrapeIssue("batman-2016", "1");
 
@@ -109,14 +109,14 @@ public class ReadComicsScraperTest {
         }
 
     @Test
-    public void testScrapeIssueNotFound() {
+    void testScrapeIssueNotFound() {
         assertThatThrownBy(() -> readComicsScraper.scrapeIssue("unknown", "999"))
             .isInstanceOf(ComicNotFoundException.class)
             .hasMessageContaining("URL for unknown with issue 999 is not found");
     }
 
     @Test
-    public void testDownloadPage_whenFound() throws IOException {
+    void testDownloadPage_whenFound() throws IOException {
         String url = scrapingConfig.get(ScrapingConfigParams.BASE_URL).toString();
         byte[] result = readComicsScraper.downloadPage(url.replace("readcomics/", "") + "page1.txt");
         assertThat(result).isNotNull();
@@ -124,7 +124,7 @@ public class ReadComicsScraperTest {
     }
 
     @Test
-    public void testDownloadPage_whenNotFound() {
+    void testDownloadPage_whenNotFound() {
         String url = scrapingConfig.get(ScrapingConfigParams.BASE_URL).toString();
         assertThatThrownBy(() -> readComicsScraper.downloadPage(url + "page1.txt"))
             .isInstanceOf(FileNotFoundException.class);

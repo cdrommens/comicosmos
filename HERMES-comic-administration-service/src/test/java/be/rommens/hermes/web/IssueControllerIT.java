@@ -34,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     ids = {"be.rommens:ZEUS-comic-service:+:stubs" },
     stubsMode = StubRunnerProperties.StubsMode.LOCAL)
 @AutoConfigureMockMvc
-public class IssueControllerIT {
+class IssueControllerIT {
 
     @Autowired
     private MockMvc mockMvc;
@@ -51,12 +51,12 @@ public class IssueControllerIT {
     private BlockingQueue<Message<?>> events;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         this.events = this.messageCollector.forChannel(source.output());
     }
 
     @Test
-    public void whenDownloadIssuesIsCalled_thenCheckTheResponseAndMessagesPublishedOnKafka() throws Exception {
+    void whenDownloadIssuesIsCalled_thenCheckTheResponseAndMessagesPublishedOnKafka() throws Exception {
         //given
         DownloadIssueOutput expected = new DownloadIssueOutput(2);
 

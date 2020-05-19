@@ -15,13 +15,13 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Time : 14:35
  */
 @DataJpaTest
-public class PublisherRepositoryTest {
+class PublisherRepositoryTest {
 
     @Autowired
     private PublisherRepository repository;
 
     @Test
-    public void testFindAll() {
+    void testFindAll() {
         List<Publisher> result = repository.findAll();
         assertThat(result).hasSize(2);
     }

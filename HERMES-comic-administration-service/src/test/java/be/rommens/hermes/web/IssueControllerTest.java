@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Time : 09:43
  */
 @WebMvcTest(controllers = IssueController.class)
-public class IssueControllerTest {
+class IssueControllerTest {
 
     private static final String DOWNLOAD_URL = "/issue/download";
 
@@ -35,7 +35,7 @@ public class IssueControllerTest {
     private IssueService issueService;
 
     @Test
-    public void whenServiceReturns2_thenNumberOfIssuesScheduledNotEmpty() throws Exception {
+    void whenServiceReturns2_thenNumberOfIssuesScheduledNotEmpty() throws Exception {
         //given
         given(issueService.downloadNewIssues()).willReturn(2);
         DownloadIssueOutput expected = new DownloadIssueOutput(2);
@@ -47,7 +47,7 @@ public class IssueControllerTest {
     }
 
     @Test
-    public void whenServiceReturnsEmpty_thenNumberOfIssuesScheduledZero() throws Exception {
+    void whenServiceReturnsEmpty_thenNumberOfIssuesScheduledZero() throws Exception {
         //given
         given(issueService.downloadNewIssues()).willReturn(0);
         DownloadIssueOutput expected = new DownloadIssueOutput(0);

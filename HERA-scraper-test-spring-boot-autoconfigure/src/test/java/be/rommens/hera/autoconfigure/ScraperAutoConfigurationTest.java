@@ -27,13 +27,13 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  */
 @SpringBootTest(classes = MockScraperAutoConfiguration.class)
 @AutoConfigureScraperMock(value = "/datasets/scraper-input.yml")
-public class ScraperAutoConfigurationTest {
+class ScraperAutoConfigurationTest {
 
     @Autowired
     private ScraperFactory scraperFactory;
 
     @Test
-    public void whenSpringContextIsBootstrapped_thenNoExceptions() throws IOException {
+    void whenSpringContextIsBootstrapped_thenNoExceptions() throws IOException {
         assertThat(scraperFactory).isNotNull();
         Scraper scraper = scraperFactory.createScraper(Provider.READCOMICS);
         assertThat(scraper).isInstanceOf(ScraperMock.class);
@@ -41,7 +41,7 @@ public class ScraperAutoConfigurationTest {
     }
 
     @Test
-    public void whenScrapeKnownComic_thenReturnScrapedComic() throws IOException {
+    void whenScrapeKnownComic_thenReturnScrapedComic() throws IOException {
         //given
         ScrapedComic scrapedComic = new ScrapedComicBuilder()
             .title("batman-2016")
@@ -69,7 +69,7 @@ public class ScraperAutoConfigurationTest {
     }
 
     @Test
-    public void whenScrapeunknownComic_thenReturnException() throws IOException {
+    void whenScrapeunknownComic_thenReturnException() throws IOException {
         //when
         Scraper scraper = scraperFactory.createScraper(Provider.READCOMICS);
 
@@ -79,7 +79,7 @@ public class ScraperAutoConfigurationTest {
     }
 
     @Test
-    public void whenScrapeKnownIssue_thenReturnScrapedIssue() throws IOException {
+    void whenScrapeKnownIssue_thenReturnScrapedIssue() throws IOException {
         //given
         ScrapedIssue scrapedIssue = new ScrapedIssueBuilder()
             .comic("batman-2016")
@@ -98,7 +98,7 @@ public class ScraperAutoConfigurationTest {
     }
 
     @Test
-    public void whenScrapeUnknownIssue_thenReturnException() throws IOException {
+    void whenScrapeUnknownIssue_thenReturnException() throws IOException {
         //when
         Scraper scraper = scraperFactory.createScraper(Provider.READCOMICS);
 
@@ -108,7 +108,7 @@ public class ScraperAutoConfigurationTest {
     }
 
     @Test
-    public void whenDownloadPage_thenReturnBytes() throws IOException {
+    void whenDownloadPage_thenReturnBytes() throws IOException {
         //when
         Scraper scraper = scraperFactory.createScraper(Provider.READCOMICS);
         byte[] result = scraper.downloadPage("page1.txt");
@@ -119,7 +119,7 @@ public class ScraperAutoConfigurationTest {
     }
 
     @Test
-    public void whenDownloadUnknownPage_thenReturnException() throws IOException {
+    void whenDownloadUnknownPage_thenReturnException() throws IOException {
         //when
         Scraper scraper = scraperFactory.createScraper(Provider.READCOMICS);
 

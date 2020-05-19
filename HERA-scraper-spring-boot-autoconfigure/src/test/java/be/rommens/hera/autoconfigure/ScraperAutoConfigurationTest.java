@@ -14,13 +14,13 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Time : 09:43
  */
 @SpringBootTest(classes = ScraperAutoConfiguration.class)
-public class ScraperAutoConfigurationTest {
+class ScraperAutoConfigurationTest {
 
     @Autowired
     private ScraperFactory scraperFactory;
 
     @Test
-    public void whenSpringContextIsBootstrapped_thenNoExceptions() {
+    void whenSpringContextIsBootstrapped_thenNoExceptions() {
         assertThat(scraperFactory).isNotNull();
         assertThat(scraperFactory.createScraper(Provider.READCOMICS)).isNotNull();
         assertThat(scraperFactory.createScraper(Provider.EXAMPLE)).isNotNull();

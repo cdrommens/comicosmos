@@ -20,13 +20,13 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Date : 26/04/2020
  * Time : 14:52
  */
-public class ZipFolderCommandTest {
+class ZipFolderCommandTest {
 
     @TempDir
     Path tempDir;
 
     @Test
-    public void whenNotDir_thenReturnErrorAndZipNotExist() throws IOException {
+    void whenNotDir_thenReturnErrorAndZipNotExist() throws IOException {
         //given
         File newDir = Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1").toFile();
         FileUtils.touch(newDir);
@@ -43,7 +43,7 @@ public class ZipFolderCommandTest {
     }
 
     @Test
-    public void whenEmptyDir_thenReturnErrorAndZipNotExist() throws IOException {
+    void whenEmptyDir_thenReturnErrorAndZipNotExist() throws IOException {
         //given
         File newDir = Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1").toFile();
         FileUtils.forceMkdir(newDir);
@@ -60,7 +60,7 @@ public class ZipFolderCommandTest {
     }
 
     @Test
-    public void whenIsDir_thenReturnCompletedAndZipExists() throws IOException {
+    void whenIsDir_thenReturnCompletedAndZipExists() throws IOException {
         //given
         File newDir = Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1").toFile();
         FileUtils.forceMkdir(newDir);
@@ -89,7 +89,7 @@ public class ZipFolderCommandTest {
     }
 
     @Test
-    public void testRollback() throws IOException {
+    void testRollback() throws IOException {
         //given
         File newDir = Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1").toFile();
         FileUtils.forceMkdir(newDir);

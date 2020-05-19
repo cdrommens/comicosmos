@@ -22,7 +22,7 @@ import static org.mockito.Mockito.times;
  * Time : 15:32
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
-public class IssueAssemblyListenerTest {
+class IssueAssemblyListenerTest {
 
     @Autowired
     private Sink sink;
@@ -31,7 +31,7 @@ public class IssueAssemblyListenerTest {
     private AssemblyChainFactory<DownloadIssueMessage> issueAssemblyChainFactory;
 
     @Test
-    public void testWiring() {
+    void testWiring() {
         //given
         DownloadIssueMessage downloadIssueMessage = new DownloadIssueMessage(1, "comickey", Provider.READCOMICS, "1");
         Message<DownloadIssueMessage> message = new GenericMessage<>(downloadIssueMessage);

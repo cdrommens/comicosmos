@@ -23,13 +23,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DBRider
 @DataSet(value = "datasets/comicservice/setup.yml")
-public class IssueRepositoryTest {
+class IssueRepositoryTest {
 
     @Autowired
     private IssueRepository issueRepository;
 
     @Test
-    public void findAllIssuesToDownloaded() {
+    void findAllIssuesToDownloaded() {
         List<Issue> result = issueRepository.findAllByDownloadedFalse();
         assertThat(result).isNotNull();
         assertThat(result).hasSize(1);

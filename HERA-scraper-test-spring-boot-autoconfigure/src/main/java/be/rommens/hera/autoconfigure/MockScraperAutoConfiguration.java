@@ -33,7 +33,7 @@ public class MockScraperAutoConfiguration {
     @Bean
     public ScraperFactory createScraperFactoryMock() {
         String dataset = this.environment.getProperty("hera.test.scrapermock.value");
-        log.info("dataset = {}", dataset);
+        log.info("using dataset for mocking the scraper = {}", dataset);
         List<Comic> parsedComics = processDataSet(dataset);
         return new ScraperFactoryMock(createMockScraper(parsedComics));
     }

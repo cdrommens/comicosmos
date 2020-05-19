@@ -28,7 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Time : 08:42
  */
 @AutoConfigureScraperMock(value = "/datasets/scrape-issue-command-test-input.yml")
-public class DownloadIssuePagesCommandTest {
+class DownloadIssuePagesCommandTest {
 
     @TempDir
     Path tempDir;
@@ -39,12 +39,12 @@ public class DownloadIssuePagesCommandTest {
     private Scraper scraper;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         this.scraper = scraperFactory.createScraper(null);
     }
 
     @Test
-    public void whenIssueExists_thenReturnCompletedAndDownloadAllPages() throws IOException {
+    void whenIssueExists_thenReturnCompletedAndDownloadAllPages() throws IOException {
         //given
         File newDir = Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1").toFile();
         FileUtils.forceMkdir(newDir);
@@ -72,7 +72,7 @@ public class DownloadIssuePagesCommandTest {
     }
 
     @Test
-    public void whenIssueNotExists_thenReturnErrorAndFilesNotDownloaded() throws IOException {
+    void whenIssueNotExists_thenReturnErrorAndFilesNotDownloaded() throws IOException {
         //given
         File newDir = Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1").toFile();
         FileUtils.forceMkdir(newDir);
@@ -99,7 +99,7 @@ public class DownloadIssuePagesCommandTest {
     }
 
     @Test
-    public void testRollback() throws IOException {
+    void testRollback() throws IOException {
         //given
         File newDir = Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1").toFile();
         FileUtils.forceMkdir(newDir);

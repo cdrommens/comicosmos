@@ -34,14 +34,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ActiveProfiles("container")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DataSet(value = "datasets/comicservice/setup.yml")
-public class ComicServiceIT {
+class ComicServiceIT {
 
     @Autowired
     private ComicService comicService;
 
     @Test
     @Transactional(readOnly = true)
-    public void whenGetComicById_thenReturnComic() {
+    void whenGetComicById_thenReturnComic() {
         //when
         Comic result = comicService.getComic(-1).orElse(null);
 
@@ -54,7 +54,7 @@ public class ComicServiceIT {
 
     @Test
     @ExpectedDataSet(value = "datasets/comicservice/add-issue-to-comic-expected.yml", orderBy = "DATE_OF_RELEASE", ignoreCols = "ISSUE_ID")
-    public void whenAddIssueToExistingComic_thenComicMustBeUpdated() {
+    void whenAddIssueToExistingComic_thenComicMustBeUpdated() {
         //given
         Comic comic = ComicTestObjectFactory.getFullDcComic(-1);
         Issue newIssue = IssueBuilder.anIssue()
@@ -70,7 +70,7 @@ public class ComicServiceIT {
 
     @Test
     @ExpectedDataSet(value = "datasets/comicservice/save-new-comic-expected.yml", orderBy = "DATE_OF_RELEASE", ignoreCols = {"COMIC_ID","ISSUE_ID"})
-    public void whenSaveNewComic_thenComicMustBeSaved() {
+    void whenSaveNewComic_thenComicMustBeSaved() {
         //given
         Comic comic = ComicTestObjectFactory.getFullMarvelComic(null);
         comic.getIssues().forEach(issue -> issue.setIssueId(null));
@@ -81,7 +81,7 @@ public class ComicServiceIT {
 
     @Test
     @Transactional(readOnly = true)
-    public void whenGetAllComics_thenReturnAllComics() {
+    void whenGetAllComics_thenReturnAllComics() {
         //when
         List<Comic> result = comicService.getAllComics();
 

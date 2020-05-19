@@ -34,14 +34,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DBUnit(caseInsensitiveStrategy = Orthography.LOWERCASE, cacheConnection = false)
 @ActiveProfiles("container")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class IssueServiceIT {
+class IssueServiceIT {
 
     @Autowired
     private IssueService issueService;
 
     @Test
     @DataSet(value = "datasets/comicservice/setup.yml")
-    public void whenIssuesFound_thenListIsReturned() {
+    void whenIssuesFound_thenListIsReturned() {
         //given
         Comic comic = ComicBuilder.aComic()
             .key("batman-2016")
@@ -62,7 +62,7 @@ public class IssueServiceIT {
     }
 
     @Test
-    public void whenNoIssuesFound_thenEmptyListIsReturned() {
+    void whenNoIssuesFound_thenEmptyListIsReturned() {
         //when
         List<Issue> result = issueService.downloadNewIssues();
 
