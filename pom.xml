@@ -34,7 +34,6 @@
     <module>HERA-scraper</module>
     <module>HERA-scraper-spring-boot-autoconfigure</module>
     <module>HERA-scraper-spring-boot-starter</module>
-    <module>HERA-scraper-test</module>
     <module>HERA-scraper-test-spring-boot-autoconfigure</module>
     <module>ZEUS-comic-service</module>
     <module>HADES-comic-downloader</module>

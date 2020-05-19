@@ -64,6 +64,7 @@ public class DataSetParserTest {
         DataSetParser parser = new DataSetParser("/datasets/scraper-input.yml");
         List<Comic> expected = Collections.singletonList(
             Comic.builder()
+                .key("batman-2016")
                 .title("batman-2016")
                 .cover("cover1.jpg")
                 .publisher("DC Comics")
@@ -76,7 +77,7 @@ public class DataSetParserTest {
                         .issue("1")
                         .url("url1")
                         .date("2016-01-01")
-                        .pages(Arrays.asList("page1.jpg", "page2.jpg", "page3.jpg")).build(),
+                        .pages(Arrays.asList("page1.txt", "page2.jpg", "page3.jpg")).build(),
                     Issue.builder()
                         .issue("2")
                         .url("url2")
@@ -98,6 +99,7 @@ public class DataSetParserTest {
         DataSetParser parser = new DataSetParser("/datasets/scraper-multiple-input.yml");
         List<Comic> expected = Arrays.asList(
             Comic.builder()
+                .key("batman-2016")
                 .title("batman-2016")
                 .cover("cover1.jpg")
                 .publisher("DC Comics")
@@ -118,6 +120,7 @@ public class DataSetParserTest {
                         .pages(Arrays.asList("page1.jpg", "page2.jpg")).build()))
                 .build(),
             Comic.builder()
+                .key("superman-2016")
                 .title("superman-2016")
                 .cover("cover1.jpg")
                 .publisher("DC Comics")

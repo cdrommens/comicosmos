@@ -2,19 +2,16 @@ package be.rommens.hades.command;
 
 import be.rommens.hades.assembler.IssueAssemblyContext;
 import be.rommens.hades.core.CommandResult;
-import be.rommens.hades.model.IssueAssemblyContextTestObjectFactory;
-import be.rommens.hera.ScraperTestFactory;
 import be.rommens.hera.api.models.ScrapedIssue;
+import be.rommens.hera.api.service.ScraperFactory;
+import be.rommens.hera.autoconfigure.AutoConfigureScraperMock;
 import be.rommens.hera.builders.ScrapedIssueBuilder;
 import be.rommens.hera.core.Scraper;
-import com.github.tomakehurst.wiremock.WireMockServer;
 import org.apache.commons.io.FileUtils;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
-import org.springframework.cloud.contract.wiremock.WireMockSpring;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,6 +19,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import static be.rommens.hades.model.IssueAssemblyContextTestObjectFactory.createTestContext;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -29,26 +27,20 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Date : 27/04/2020
  * Time : 08:42
  */
+@AutoConfigureScraperMock(value = "/datasets/scrape-issue-command-test-input.yml")
 public class DownloadIssuePagesCommandTest {
-
-    public static WireMockServer wiremock = new WireMockServer(WireMockSpring.options().dynamicPort());
 
     @TempDir
     Path tempDir;
 
-    @BeforeAll
-    static void setupClass() {
-        wiremock.start();
-    }
+    @Autowired
+    private ScraperFactory scraperFactory;
 
-    @AfterEach
-    void after() {
-        wiremock.resetAll();
-    }
+    private Scraper scraper;
 
-    @AfterAll
-    static void clean() {
-        wiremock.shutdown();
+    @BeforeEach
+    public void setUp() {
+        this.scraper = scraperFactory.createScraper(null);
     }
 
     @Test
@@ -61,11 +53,11 @@ public class DownloadIssuePagesCommandTest {
             .comic("comickey")
             .issueNumber("1")
             .numberOfPages(2)
-            .addPage("http://localhost:" + wiremock.port() + "/page1.txt")
-            .addPage("http://localhost:" + wiremock.port() + "/page2.txt")
+            .addPage("page1.txt")
+            .addPage("page2.txt")
             .build();
-        Scraper scraper = ScraperTestFactory.willReturnScrapedIssue(scrapedIssue);
-        IssueAssemblyContext context = IssueAssemblyContextTestObjectFactory.createTestContext(tempDir.toString(), scraper);
+
+        IssueAssemblyContext context = createTestContext(tempDir.toString(), scraper);
         context.setScrapedIssue(scrapedIssue);
         DownloadIssuePagesCommand command = new DownloadIssuePagesCommand(context);
 
@@ -89,12 +81,12 @@ public class DownloadIssuePagesCommandTest {
             .comic("comickey")
             .issueNumber("1")
             .numberOfPages(2)
-            .addPage("http://localhost:" + wiremock.port() + "/page1.txt")
-            .addPage("http://localhost:" + wiremock.port() + "/page2.txt")
-            .addPage("http://localhost:" + wiremock.port() + "/unknownpage.txt")
+            .addPage("page1.txt")
+            .addPage("page2.txt")
+            .addPage("unknownpage.txt")
             .build();
-        Scraper scraper = ScraperTestFactory.willReturnScrapedIssue(scrapedIssue);
-        IssueAssemblyContext context = IssueAssemblyContextTestObjectFactory.createTestContext(tempDir.toString(), scraper);
+
+        IssueAssemblyContext context = createTestContext(tempDir.toString(), scraper);
         context.setScrapedIssue(scrapedIssue);
         DownloadIssuePagesCommand command = new DownloadIssuePagesCommand(context);
 
@@ -111,7 +103,7 @@ public class DownloadIssuePagesCommandTest {
         //given
         File newDir = Paths.get(tempDir.toAbsolutePath().toString(), "comickey", "comickey-1").toFile();
         FileUtils.forceMkdir(newDir);
-        DownloadIssuePagesCommand command = new DownloadIssuePagesCommand(IssueAssemblyContextTestObjectFactory.createTestContext(tempDir.toString(), null));
+        DownloadIssuePagesCommand command = new DownloadIssuePagesCommand(createTestContext(tempDir.toString(), scraper));
         //when
         boolean result = command.rollback();
         //then

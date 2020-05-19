@@ -4,5 +4,5 @@ comics:
     issues:
       - issue: "1"
         pages:
-          - "02.jpg"
-          - "03.jpg"
+          - "page1"
+          - "page2"

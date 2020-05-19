@@ -3,12 +3,12 @@ package be.rommens.hades.assembler;
 import be.rommens.hades.connectivity.DownloadIssueMessage;
 import be.rommens.hades.core.AssemblyChainFactory;
 import be.rommens.hera.api.Provider;
+import be.rommens.hera.autoconfigure.AutoConfigureScraperMock;
 import net.lingala.zip4j.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,9 +26,8 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Date : 14/05/2020
  * Time : 09:29
  */
-// used for autoconfigure test
-@Disabled
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@AutoConfigureScraperMock(value = "/datasets/issueassemblychain-scraper-input.yml")
 public class IssueAssemblyChainFactoryTest {
 
     private static final String BASE_URL = Paths.get(FileUtils.getTempDirectoryPath(),"junit5/").toString();

@@ -60,12 +60,6 @@
     </dependency>
 
     <dependency>
-      <groupId>be.rommens</groupId>
-      <artifactId>HERA-scraper-test</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-
-    <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-contract-stub-runner</artifactId>
       <scope>test</scope>
