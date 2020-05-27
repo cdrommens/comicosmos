@@ -3,11 +3,9 @@ package be.rommens.hermes.service;
 import be.rommens.hermes.model.event.DomainEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.stream.messaging.Source;
-import org.springframework.messaging.support.GenericMessage;
+import org.springframework.integration.support.MessageBuilder;
+import org.springframework.messaging.Message;
 import org.springframework.stereotype.Component;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * User : cederik
@@ -22,8 +20,10 @@ public class KafkaDomainEventPublisher implements DomainEventPublisher {
 
     @Override
     public void publish(DomainEvent domainEvent) {
-        Map<String, Object> headers = new HashMap<>();
-        headers.put("type", domainEvent.getType());
-        source.output().send(new GenericMessage<>(domainEvent, headers));
+        Message<?> message = MessageBuilder
+            .withPayload(domainEvent)
+            .setHeader("type", domainEvent.getType())
+            .build();
+        source.output().send(message);
     }
 }

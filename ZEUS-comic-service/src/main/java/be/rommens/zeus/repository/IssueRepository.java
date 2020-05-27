@@ -15,6 +15,7 @@ import java.util.List;
 @Repository
 public interface IssueRepository extends JpaRepository<Issue, Integer> {
 
+    //TODO: transform this to NamedEntityGraph
     @Query("select issue from Issue issue join fetch Comic comic on comic.comicId = issue.comic.comicId where issue.downloaded = false")
     List<Issue> findAllByDownloadedFalse();
 

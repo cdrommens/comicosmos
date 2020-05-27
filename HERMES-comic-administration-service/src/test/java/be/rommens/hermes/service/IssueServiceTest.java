@@ -35,7 +35,7 @@ class IssueServiceTest {
     private ZeusConnectorService zeusConnectorService;
 
     @InjectMocks
-    private IssueService issueService;
+    private IssueServiceImpl issueService;
 
     @Test
     void whenIssuesFound_thenPublisherIsCalledOneTime() {

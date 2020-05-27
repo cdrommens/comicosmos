@@ -1,6 +1,7 @@
 package be.rommens.hermes.model.event;
 
 import be.rommens.hera.api.Provider;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -20,6 +21,7 @@ public class DownloadIssue implements DomainEvent {
     private LocalDate dateOfRelease;
 
     @Override
+    @JsonIgnore
     public String getType() {
         return "download-issue";
     }

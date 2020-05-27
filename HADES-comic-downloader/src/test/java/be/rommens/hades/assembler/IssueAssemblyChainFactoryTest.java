@@ -53,7 +53,7 @@ class IssueAssemblyChainFactoryTest {
     @Test
     void testIssueAssemblyChain_withNoErrors() throws ZipException {
         //given
-        DownloadIssueMessage downloadIssueMessage = new DownloadIssueMessage(1, "comickey", Provider.READCOMICS, "1");
+        DownloadIssueMessage downloadIssueMessage = new DownloadIssueMessage(1, "comickey", Provider.READCOMICS, "1", null);
 
         //when
         issueAssemblyChainFactory.createAssemblyChain(downloadIssueMessage).execute();

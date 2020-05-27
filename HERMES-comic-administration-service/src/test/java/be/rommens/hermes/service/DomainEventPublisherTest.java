@@ -65,7 +65,7 @@ class DomainEventPublisherTest {
             .andExpect(content().json(mapper.writeValueAsString(expected)))
             .andDo(print());
 
-        assertThat(events.poll().getPayload().toString()).contains("download-issue");
+        assertThat(events.poll().getHeaders().toString()).contains("download-issue");
     }
 
     @Test

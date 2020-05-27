@@ -16,7 +16,7 @@ import java.nio.file.Paths;
 public class IssueAssemblyContextTestObjectFactory {
 
     public static IssueAssemblyContext createTestContext(String baseUrl, Scraper scraper) {
-        DownloadIssueMessage downloadIssueMessage = new DownloadIssueMessage(1, "comickey", Provider.READCOMICS, "1");
+        DownloadIssueMessage downloadIssueMessage = new DownloadIssueMessage(1, "comickey", Provider.READCOMICS, "1", null);
         IssueAssemblyContext context = new IssueAssemblyContext(downloadIssueMessage, baseUrl, scraper);
         if (StringUtils.isNotEmpty(baseUrl)) {
             context.setIssueFolder(Paths.get(baseUrl, "comickey", "comickey-1").toString());
