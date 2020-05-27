@@ -5,7 +5,7 @@ import be.rommens.hera.api.Status;
 import be.rommens.zeus.model.builder.ComicBuilder;
 import be.rommens.zeus.model.builder.IssueBuilder;
 import be.rommens.zeus.model.entity.Comic;
-import be.rommens.zeus.service.IssueService;
+import be.rommens.zeus.service.IssueServiceImpl;
 import be.rommens.zeus.web.IssueController;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,7 +24,7 @@ public class ControllerBaseClass {
 
     @BeforeEach
     public void setup() {
-        IssueService issueService = Mockito.mock(IssueService.class);
+        IssueServiceImpl issueService = Mockito.mock(IssueServiceImpl.class);
 
         Comic comic = ComicBuilder.aComic()
             .key("batman-2016")

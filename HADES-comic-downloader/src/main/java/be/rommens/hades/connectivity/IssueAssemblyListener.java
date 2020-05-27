@@ -1,29 +1,11 @@
 package be.rommens.hades.connectivity;
 
-import be.rommens.hades.core.AssemblyChainFactory;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.cloud.stream.annotation.StreamListener;
-import org.springframework.cloud.stream.messaging.Sink;
-import org.springframework.stereotype.Component;
-
-import javax.validation.Valid;
-
 /**
  * User : cederik
- * Date : 28/04/2020
- * Time : 15:25
+ * Date : 27/05/2020
+ * Time : 12:53
  */
-@Slf4j
-@RequiredArgsConstructor
-@Component
-public class IssueAssemblyListener {
+public interface IssueAssemblyListener {
 
-    private final AssemblyChainFactory<DownloadIssueMessage> issueAssemblyChainFactory;
-
-    @StreamListener(Sink.INPUT)
-    public void processIssue(@Valid DownloadIssueMessage downloadIssueMessage) {
-        log.info("message received {} - {}", downloadIssueMessage.getComicKey(), downloadIssueMessage.getIssueNumber());
-        issueAssemblyChainFactory.createAssemblyChain(downloadIssueMessage).execute();
-    }
+    void processIssue(DownloadIssueMessage downloadIssueMessage);
 }

@@ -1,9 +1,11 @@
 package be.rommens.hades.connectivity;
 
 import be.rommens.hera.api.Provider;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import javax.annotation.Nonnull;
 import java.time.LocalDate;
 
 /**
@@ -12,15 +14,14 @@ import java.time.LocalDate;
  * Time : 13:46
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class DownloadIssueMessage {
 
-    @Nonnull
     private Integer issueId;
-    @Nonnull
     private String comicKey;
-    @Nonnull
     private Provider provider;
-    @Nonnull
     private String issueNumber;
     private LocalDate dateOfRelease;
 

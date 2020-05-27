@@ -6,6 +6,9 @@ spring:
       bindings:
         output:
           destination: downloader-in
+      kafka:
+        binder:
+          brokers: localhost:29092
 service:
   zeus:
     hostname: http://localhost:8610

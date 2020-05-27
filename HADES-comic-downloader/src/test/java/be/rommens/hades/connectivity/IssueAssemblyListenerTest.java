@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.cloud.stream.messaging.Sink;
+import org.springframework.integration.support.MessageBuilder;
 import org.springframework.messaging.Message;
-import org.springframework.messaging.support.GenericMessage;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
@@ -33,8 +33,8 @@ class IssueAssemblyListenerTest {
     @Test
     void testWiring() {
         //given
-        DownloadIssueMessage downloadIssueMessage = new DownloadIssueMessage(1, "comickey", Provider.READCOMICS, "1");
-        Message<DownloadIssueMessage> message = new GenericMessage<>(downloadIssueMessage);
+        DownloadIssueMessage downloadIssueMessage = new DownloadIssueMessage(1, "comickey", Provider.READCOMICS, "1", null);
+        Message<DownloadIssueMessage> message = MessageBuilder.withPayload(downloadIssueMessage).setHeader("type","download-issue").build();
 
         IssueAssemblyChain mock = Mockito.mock(IssueAssemblyChain.class);
         given(mock.execute()).willReturn(Boolean.TRUE);

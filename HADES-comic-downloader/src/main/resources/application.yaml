@@ -7,3 +7,6 @@ spring:
       bindings:
         input:
           destination: downloader-in
+      kafka:
+        binder:
+          brokers: localhost:29092
