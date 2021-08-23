@@ -19,7 +19,7 @@
 		<java.version>1.8</java.version>
     <spring-cloud.version>Hoxton.SR4</spring-cloud.version>
     <spring-cloud-contract.version>2.2.2.RELEASE</spring-cloud-contract.version>
-    <jsoup.version>1.12.1</jsoup.version> <!-- //TODO : latest is 1.13.1 -->
+    <jsoup.version>1.14.2</jsoup.version> <!-- //TODO : latest is 1.13.1 -->
     <apache.commons.version>3.9</apache.commons.version>
     <guava.version>28.2-jre</guava.version>
     <jacoco.maven.version>0.8.2</jacoco.maven.version>
